@@ -65,7 +65,19 @@ const locales = {
     "connect.locationName": "Tokyo, Japan",
     "connect.locationSub": "Minato City · JST (UTC+9)",
     "connect.openText": "Open to new projects & collaborations",
-    "footer.copy": "© 2026 Sarveshwar Singh. Built with intention."
+    "footer.copy": "© 2026 Sarveshwar Singh. Built with intention.",
+    "projects.label": "Notable Work",
+    "projects.heading": "Selected contributions & projects",
+    "projects.intro": "Six years of Ethereum smart-contract development — designing and shipping marketplace architecture for SBI Group companies, alongside open-source contributions to Cardano infrastructure.",
+    "projects.p1Role": "Smart Contract Architecture",
+    "projects.p1Body": "Designed and built the smart-contract architecture for SBINFT's NFT marketplace — multi-chain minting, trading, and secondary-market flows across Ethereum, Polygon, and Oasys.",
+    "projects.p1Link": "View project ↗",
+    "projects.p2Role": "RWA Marketplace Architecture",
+    "projects.p2Body": "Designed and built the SBITA RWA marketplace smart-contract architecture for SBI Traceability — tokenizing real-world assets with on-chain provenance and traceability.",
+    "projects.p2Link": "Visit site ↗",
+    "projects.p3Role": "Open-source Contribution",
+    "projects.p3Body": "Contributed to Yoroi, EMURGO's light wallet for Cardano — across the browser extension, mobile apps, and Ledger hardware bridge.",
+    "projects.p3Link": "View on GitHub ↗"
   },
   "ja": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -132,7 +144,19 @@ const locales = {
     "connect.locationName": "東京、日本",
     "connect.locationSub": "港区 · JST (UTC+9)",
     "connect.openText": "新しいプロジェクト & コラボレーション募集中",
-    "footer.copy": "© 2026 Sarveshwar Singh. 意図を持って構築。"
+    "footer.copy": "© 2026 Sarveshwar Singh. 意図を持って構築。",
+    "projects.label": "注目の実績",
+    "projects.heading": "主な貢献とプロジェクト",
+    "projects.intro": "6年間のEthereumスマートコントラクト開発 — SBIグループ企業向けのマーケットプレイスアーキテクチャの設計と構築、およびCardanoインフラへのオープンソース貢献。",
+    "projects.p1Role": "スマートコントラクト・アーキテクチャ",
+    "projects.p1Body": "SBINFTのNFTマーケットプレイスのスマートコントラクトアーキテクチャを設計・構築 — Ethereum、Polygon、Oasysにまたがるマルチチェーンのミント、取引、二次流通フロー。",
+    "projects.p1Link": "プロジェクトを見る ↗",
+    "projects.p2Role": "RWAマーケットプレイス・アーキテクチャ",
+    "projects.p2Body": "SBIトレーサビリティ向けのSBITA RWAマーケットプレイスのスマートコントラクトアーキテクチャを設計・構築 — オンチェーンの来歴とトレーサビリティによる現実資産のトークン化。",
+    "projects.p2Link": "サイトを見る ↗",
+    "projects.p3Role": "オープンソース貢献",
+    "projects.p3Body": "EMURGOのCardanoライトウォレット「Yoroi」に貢献 — ブラウザ拡張機能、モバイルアプリ、Ledgerハードウェアブリッジを横断。",
+    "projects.p3Link": "GitHubで見る ↗"
   },
   "ko": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -199,7 +223,19 @@ const locales = {
     "connect.locationName": "도쿄, 일본",
     "connect.locationSub": "미나토구 · JST (UTC+9)",
     "connect.openText": "새 프로젝트 & 협업 환영",
-    "footer.copy": "© 2026 Sarveshwar Singh. 의도를 담아 구축."
+    "footer.copy": "© 2026 Sarveshwar Singh. 의도를 담아 구축.",
+    "projects.label": "주요 실적",
+    "projects.heading": "선정된 기여 및 프로젝트",
+    "projects.intro": "6년간의 Ethereum 스마트 컨트랙트 개발 — SBI 그룹사를 위한 마켓플레이스 아키텍처 설계 및 구축, 그리고 Cardano 인프라에 대한 오픈소스 기여.",
+    "projects.p1Role": "스마트 컨트랙트 아키텍처",
+    "projects.p1Body": "SBINFT의 NFT 마켓플레이스 스마트 컨트랙트 아키텍처 설계 및 구축 — Ethereum, Polygon, Oasys에 걸친 멀티체인 민팅, 거래, 이차 시장 흐름.",
+    "projects.p1Link": "프로젝트 보기 ↗",
+    "projects.p2Role": "RWA 마켓플레이스 아키텍처",
+    "projects.p2Body": "SBI Traceability를 위한 SBITA RWA 마켓플레이스 스마트 컨트랙트 아키텍처 설계 및 구축 — 온체인 출처와 추적성을 통한 실물 자산 토큰화.",
+    "projects.p2Link": "사이트 방문 ↗",
+    "projects.p3Role": "오픈소스 기여",
+    "projects.p3Body": "EMURGO의 Cardano 라이트 지갑 Yoroi에 기여 — 브라우저 확장, 모바일 앱, Ledger 하드웨어 브리지 전반.",
+    "projects.p3Link": "GitHub에서 보기 ↗"
   },
   "zh": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -266,7 +302,19 @@ const locales = {
     "connect.locationName": "东京，日本",
     "connect.locationSub": "港区 · JST (UTC+9)",
     "connect.openText": "欢迎新项目与合作",
-    "footer.copy": "© 2026 Sarveshwar Singh. 用心构建。"
+    "footer.copy": "© 2026 Sarveshwar Singh. 用心构建。",
+    "projects.label": "代表性工作",
+    "projects.heading": "精选贡献与项目",
+    "projects.intro": "六年 Ethereum 智能合约开发——为 SBI 集团公司设计并交付市场架构，并对 Cardano 基础设施做出开源贡献。",
+    "projects.p1Role": "智能合约架构",
+    "projects.p1Body": "为 SBINFT 的 NFT 市场设计并构建智能合约架构——覆盖 Ethereum、Polygon 和 Oasys 的多链铸造、交易与二级市场流转。",
+    "projects.p1Link": "查看项目 ↗",
+    "projects.p2Role": "RWA 市场架构",
+    "projects.p2Body": "为 SBI Traceability 设计并构建 SBITA RWA 市场智能合约架构——以链上溯源实现真实世界资产的代币化。",
+    "projects.p2Link": "访问网站 ↗",
+    "projects.p3Role": "开源贡献",
+    "projects.p3Body": "为 EMURGO 的 Cardano 轻钱包 Yoroi 做出贡献——涵盖浏览器扩展、移动应用与 Ledger 硬件桥接。",
+    "projects.p3Link": "在 GitHub 上查看 ↗"
   },
   "es": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -333,7 +381,19 @@ const locales = {
     "connect.locationName": "Tokio, Japón",
     "connect.locationSub": "Ciudad de Minato · JST (UTC+9)",
     "connect.openText": "Abierto a nuevos proyectos y colaboraciones",
-    "footer.copy": "© 2026 Sarveshwar Singh. Construido con intención."
+    "footer.copy": "© 2026 Sarveshwar Singh. Construido con intención.",
+    "projects.label": "Trabajo Destacado",
+    "projects.heading": "Contribuciones y proyectos seleccionados",
+    "projects.intro": "Seis años de desarrollo de smart contracts en Ethereum — diseñando y entregando arquitectura de marketplace para empresas del grupo SBI, junto con contribuciones open-source a la infraestructura de Cardano.",
+    "projects.p1Role": "Arquitectura de Smart Contracts",
+    "projects.p1Body": "Diseñé y construí la arquitectura de smart contracts del marketplace NFT de SBINFT — mintado multichain, trading y flujos de mercado secundario en Ethereum, Polygon y Oasys.",
+    "projects.p1Link": "Ver proyecto ↗",
+    "projects.p2Role": "Arquitectura de Marketplace RWA",
+    "projects.p2Body": "Diseñé y construí la arquitectura de smart contracts del marketplace RWA SBITA para SBI Traceability — tokenización de activos del mundo real con procedencia y trazabilidad on-chain.",
+    "projects.p2Link": "Visitar sitio ↗",
+    "projects.p3Role": "Contribución Open-source",
+    "projects.p3Body": "Contribuciones a Yoroi, el light wallet de Cardano de EMURGO — en la extensión de navegador, apps móviles y el puente hardware Ledger.",
+    "projects.p3Link": "Ver en GitHub ↗"
   },
   "de": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -400,7 +460,19 @@ const locales = {
     "connect.locationName": "Tokio, Japan",
     "connect.locationSub": "Minato · JST (UTC+9)",
     "connect.openText": "Offen für neue Projekte & Kooperationen",
-    "footer.copy": "© 2026 Sarveshwar Singh. Mit Absicht gebaut."
+    "footer.copy": "© 2026 Sarveshwar Singh. Mit Absicht gebaut.",
+    "projects.label": "Besonderes Wirken",
+    "projects.heading": "Ausgewählte Beiträge & Projekte",
+    "projects.intro": "Sechs Jahre Smart-Contract-Entwicklung auf Ethereum — Entwurf und Umsetzung von Marketplace-Architektur für SBI-Gruppenunternehmen, plus Open-Source-Beiträge zur Cardano-Infrastruktur.",
+    "projects.p1Role": "Smart-Contract-Architektur",
+    "projects.p1Body": "Entwarf und baute die Smart-Contract-Architektur für den NFT-Marketplace von SBINFT — Multi-Chain-Minting, Trading und Sekundärmarkt-Flüsse über Ethereum, Polygon und Oasys.",
+    "projects.p1Link": "Projekt ansehen ↗",
+    "projects.p2Role": "RWA-Marketplace-Architektur",
+    "projects.p2Body": "Entwarf und baute die SBITA-RWA-Marketplace-Smart-Contract-Architektur für SBI Traceability — Tokenisierung realer Werte mit On-Chain-Provenienz und Rückverfolgbarkeit.",
+    "projects.p2Link": "Seite besuchen ↗",
+    "projects.p3Role": "Open-Source-Beitrag",
+    "projects.p3Body": "Beiträge zu Yoroi, EMURGOs Light Wallet für Cardano — über Browser-Erweiterung, mobile Apps und Ledger-Hardware-Bridge.",
+    "projects.p3Link": "Auf GitHub ansehen ↗"
   },
   "fr": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -467,7 +539,19 @@ const locales = {
     "connect.locationName": "Tokyo, Japon",
     "connect.locationSub": "Arrondissement de Minato · JST (UTC+9)",
     "connect.openText": "Ouvert aux nouveaux projets & collaborations",
-    "footer.copy": "© 2026 Sarveshwar Singh. Construit avec intention."
+    "footer.copy": "© 2026 Sarveshwar Singh. Construit avec intention.",
+    "projects.label": "Travaux Notables",
+    "projects.heading": "Contributions et projets sélectionnés",
+    "projects.intro": "Six ans de développement de smart contracts sur Ethereum — conception et livraison d'architectures de marketplace pour les entreprises du groupe SBI, et contributions open-source à l'infrastructure Cardano.",
+    "projects.p1Role": "Architecture de Smart Contracts",
+    "projects.p1Body": "Conception et construction de l'architecture de smart contracts du marketplace NFT de SBINFT — minting multi-chaînes, trading et flux de marché secondaire sur Ethereum, Polygon et Oasys.",
+    "projects.p1Link": "Voir le projet ↗",
+    "projects.p2Role": "Architecture de Marketplace RWA",
+    "projects.p2Body": "Conception et construction de l'architecture de smart contracts du marketplace RWA SBITA pour SBI Traceability — tokenisation d'actifs réels avec provenance et traçabilité on-chain.",
+    "projects.p2Link": "Visiter le site ↗",
+    "projects.p3Role": "Contribution Open-source",
+    "projects.p3Body": "Contributions à Yoroi, le light wallet Cardano d'EMURGO — extension navigateur, apps mobiles et pont matériel Ledger.",
+    "projects.p3Link": "Voir sur GitHub ↗"
   },
   "pt": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -534,7 +618,19 @@ const locales = {
     "connect.locationName": "Tóquio, Japão",
     "connect.locationSub": "Cidade de Minato · JST (UTC+9)",
     "connect.openText": "Aberto a novos projetos e colaborações",
-    "footer.copy": "© 2026 Sarveshwar Singh. Construído com intenção."
+    "footer.copy": "© 2026 Sarveshwar Singh. Construído com intenção.",
+    "projects.label": "Trabalhos Notáveis",
+    "projects.heading": "Contribuições e projetos selecionados",
+    "projects.intro": "Seis anos de desenvolvimento de smart contracts no Ethereum — projetando e entregando arquitetura de marketplace para empresas do grupo SBI, além de contribuições open-source para a infraestrutura da Cardano.",
+    "projects.p1Role": "Arquitetura de Smart Contracts",
+    "projects.p1Body": "Projetei e construí a arquitetura de smart contracts do marketplace NFT da SBINFT — mint multichain, negociação e fluxos de mercado secundário em Ethereum, Polygon e Oasys.",
+    "projects.p1Link": "Ver projeto ↗",
+    "projects.p2Role": "Arquitetura de Marketplace RWA",
+    "projects.p2Body": "Projetei e construí a arquitetura de smart contracts do marketplace RWA SBITA para a SBI Traceability — tokenização de ativos do mundo real com proveniência e rastreabilidade on-chain.",
+    "projects.p2Link": "Visitar site ↗",
+    "projects.p3Role": "Contribuição Open-source",
+    "projects.p3Body": "Contribuições para a Yoroi, light wallet da Cardano da EMURGO — extensão de navegador, apps móveis e ponte de hardware Ledger.",
+    "projects.p3Link": "Ver no GitHub ↗"
   },
   "ru": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -601,7 +697,19 @@ const locales = {
     "connect.locationName": "Токио, Япония",
     "connect.locationSub": "Район Минато · JST (UTC+9)",
     "connect.openText": "Открыт к новым проектам и сотрудничеству",
-    "footer.copy": "© 2026 Sarveshwar Singh. Создано с намерением."
+    "footer.copy": "© 2026 Sarveshwar Singh. Создано с намерением.",
+    "projects.label": "Заметные работы",
+    "projects.heading": "Избранные вклады и проекты",
+    "projects.intro": "Шесть лет разработки смарт-контрактов на Ethereum — проектирование и внедрение архитектуры маркетплейсов для компаний группы SBI, а также open-source-вклады в инфраструктуру Cardano.",
+    "projects.p1Role": "Архитектура смарт-контрактов",
+    "projects.p1Body": "Спроектировал и построил архитектуру смарт-контрактов NFT-маркетплейса SBINFT — multi-chain-минт, торговля и потоки вторичного рынка на Ethereum, Polygon и Oasys.",
+    "projects.p1Link": "Открыть проект ↗",
+    "projects.p2Role": "Архитектура RWA-маркетплейса",
+    "projects.p2Body": "Спроектировал и построил архитектуру смарт-контрактов RWA-маркетплейса SBITA для SBI Traceability — токенизация реальных активов с on-chain-происхождением и прослеживаемостью.",
+    "projects.p2Link": "Открыть сайт ↗",
+    "projects.p3Role": "Open-source-вклад",
+    "projects.p3Body": "Вклад в Yoroi, лёгкий кошелёк Cardano от EMURGO — расширение для браузера, мобильные приложения и аппаратный мост Ledger.",
+    "projects.p3Link": "Смотреть на GitHub ↗"
   },
   "ar": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -668,7 +776,19 @@ const locales = {
     "connect.locationName": "طوكيو، اليابان",
     "connect.locationSub": "حي ميناتو · JST (UTC+9)",
     "connect.openText": "منفتح على مشاريع وتعاونات جديدة",
-    "footer.copy": "© 2026 Sarveshwar Singh. بُني بنيةً مقصودة."
+    "footer.copy": "© 2026 Sarveshwar Singh. بُني بنيةً مقصودة.",
+    "projects.label": "أعمال بارزة",
+    "projects.heading": "مساهمات ومشاريع مختارة",
+    "projects.intro": "ست سنوات من تطوير العقود الذكية على Ethereum — تصميم وتسليم بنية السوق للشركات التابعة لمجموعة SBI، إلى جانب مساهمات مفتوحة المصدر في بنية Cardano.",
+    "projects.p1Role": "بنية العقود الذكية",
+    "projects.p1Body": "صممت وبنيت بنية العقود الذكية لسوق NFT التابع لـ SBINFT — سك متعدد السلاسل وتداول وتدفقات السوق الثانوية عبر Ethereum وPolygon وOasys.",
+    "projects.p1Link": "عرض المشروع ↗",
+    "projects.p2Role": "بنية سوق RWA",
+    "projects.p2Body": "صممت وبنيت بنية العقود الذكية لسوق SBITA RWA لـ SBI Traceability — توكيد الأصول الحقيقية مع إثبات المنشأ والتتبع على السلسلة.",
+    "projects.p2Link": "زيارة الموقع ↗",
+    "projects.p3Role": "مساهمة مفتوحة المصدر",
+    "projects.p3Body": "مساهمات في Yoroi، محفظة Cardano الخفيفة من EMURGO — عبر إضافة المتصفح وتطبيقات الجوال وجسر Ledger للأجهزة.",
+    "projects.p3Link": "العرض على GitHub ↗"
   },
   "hi": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -735,7 +855,19 @@ const locales = {
     "connect.locationName": "टोक्यो, जापान",
     "connect.locationSub": "मिनातो शहर · JST (UTC+9)",
     "connect.openText": "नई परियोजनाओं और सहयोग के लिए खुला",
-    "footer.copy": "© 2026 Sarveshwar Singh. इरादे के साथ निर्मित।"
+    "footer.copy": "© 2026 Sarveshwar Singh. इरादे के साथ निर्मित।",
+    "projects.label": "उल्लेखनीय कार्य",
+    "projects.heading": "चयनित योगदान और परियोजनाएँ",
+    "projects.intro": "Ethereum पर छह वर्षों का स्मार्ट अनुबंध विकास — SBI समूह की कंपनियों के लिए मार्केटप्लेस आर्किटेक्चर का डिज़ाइन और वितरण, साथ ही Cardano इन्फ़्रास्ट्रक्चर में ओपन-सोर्स योगदान।",
+    "projects.p1Role": "स्मार्ट अनुबंध आर्किटेक्चर",
+    "projects.p1Body": "SBINFT के NFT मार्केटप्लेस के लिए स्मार्ट अनुबंध आर्किटेक्चर का डिज़ाइन और निर्माण — Ethereum, Polygon और Oasys पर मल्टी-चेन मिंटिंग, ट्रेडिंग और द्वितीयक बाज़ार प्रवाह।",
+    "projects.p1Link": "परियोजना देखें ↗",
+    "projects.p2Role": "RWA मार्केटप्लेस आर्किटेक्चर",
+    "projects.p2Body": "SBI Traceability के लिए SBITA RWA मार्केटप्लेस स्मार्ट अनुबंध आर्किटेक्चर का डिज़ाइन और निर्माण — ऑन-चेन उद्गम और ट्रेसेबिलिटी के साथ वास्तविक संपत्तियों का टोकनीकरण।",
+    "projects.p2Link": "साइट देखें ↗",
+    "projects.p3Role": "ओपन-सोर्स योगदान",
+    "projects.p3Body": "EMURGO के Cardano लाइट वॉलेट Yoroi में योगदान — ब्राउज़र एक्सटेंशन, मोबाइल ऐप्स और Ledger हार्डवेयर ब्रिज में।",
+    "projects.p3Link": "GitHub पर देखें ↗"
   },
   "it": {
     "meta.title": "Sunveda — Sarveshwar Singh",
@@ -802,7 +934,19 @@ const locales = {
     "connect.locationName": "Tokyo, Giappone",
     "connect.locationSub": "Città di Minato · JST (UTC+9)",
     "connect.openText": "Aperto a nuovi progetti e collaborazioni",
-    "footer.copy": "© 2026 Sarveshwar Singh. Costruito con intenzione."
+    "footer.copy": "© 2026 Sarveshwar Singh. Costruito con intenzione.",
+    "projects.label": "Lavori Notabili",
+    "projects.heading": "Contributi e progetti selezionati",
+    "projects.intro": "Sei anni di sviluppo di smart contract su Ethereum — progettazione e consegna di architetture di marketplace per aziende del gruppo SBI, oltre a contributi open-source all'infrastruttura di Cardano.",
+    "projects.p1Role": "Architettura di Smart Contract",
+    "projects.p1Body": "Ho progettato e costruito l'architettura di smart contract del marketplace NFT di SBINFT — minting multi-chain, trading e flussi di mercato secondario su Ethereum, Polygon e Oasys.",
+    "projects.p1Link": "Vedi progetto ↗",
+    "projects.p2Role": "Architettura Marketplace RWA",
+    "projects.p2Body": "Ho progettato e costruito l'architettura di smart contract del marketplace RWA SBITA per SBI Traceability — tokenizzazione di asset del mondo reale con provenance e tracciabilità on-chain.",
+    "projects.p2Link": "Visita il sito ↗",
+    "projects.p3Role": "Contributo Open-source",
+    "projects.p3Body": "Contributi a Yoroi, il light wallet di Cardano di EMURGO — estensione del browser, app mobili e bridge hardware Ledger.",
+    "projects.p3Link": "Vedi su GitHub ↗"
   }
 };
 
