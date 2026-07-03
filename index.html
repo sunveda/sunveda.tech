@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){var d=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',d);})();</script>
   <title>Sunveda — Sarveshwar Singh</title>
   <meta name="description" content="Software engineer, blockchain builder, and entrepreneur based in Tokyo. Building at the intersection of technology and real-world industry." />
   <meta property="og:title" content="Sunveda — Sarveshwar Singh" />
@@ -883,7 +884,7 @@
     (function(){
       const t = document.querySelector('[data-theme-toggle]');
       const r = document.documentElement;
-      let d = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      let d = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
       r.setAttribute('data-theme', d);
       function updateIcon() {
         if (!t) return;
