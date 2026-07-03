@@ -172,14 +172,14 @@
       border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.06);
       transition: background var(--transition-interactive);
     }
-    .nav__inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: nowrap; } .nav__logo, .nav__links, .nav__actions { min-width: 0; }
     .nav__logo { display: flex; align-items: center; gap: var(--space-2); text-decoration: none; color: var(--color-text); }
     .nav__logo-text { font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; letter-spacing: -0.02em; }
     .nav__logo-text { white-space: nowrap; }
-    .nav__links { display: flex; align-items: center; gap: var(--space-8); }
+    .nav__links { display: flex; align-items: center; gap: clamp(var(--space-4), 2vw, var(--space-8)); flex: 1 1 auto; justify-content: center; }
     .nav__link { text-decoration: none; font-size: var(--text-sm); color: var(--color-text-muted); letter-spacing: 0.02em; }
     .nav__link:hover { color: var(--color-text); }
-    .nav__actions { display: flex; align-items: center; gap: var(--space-4); }
+    .nav__actions { display: flex; align-items: center; gap: var(--space-3); flex: 0 0 auto; }
     .theme-toggle {
       width: 36px; height: 36px;
       border-radius: var(--radius-full);
@@ -198,7 +198,11 @@
       font-weight: 500;
     }
     .nav__cta:hover { background: var(--color-primary-hover); }
-
+    .lang-switch__select, .theme-toggle, .nav__cta { height: 36px; }
+    .nav__cta { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
+    .lang-switch__select { min-width: 96px; }
+    .nav__logo { flex-shrink: 0; }
+    
     /* LANGUAGE SWITCHER */
     .lang-switch { position: relative; display: flex; align-items: center; }
     .lang-switch__icon {
@@ -459,6 +463,9 @@
     .reveal.visible { opacity: 1; transform: none; }
 
     /* MOBILE */
+    @media (max-width: 1024px) { .nav__links { gap: var(--space-4); } .nav__actions { gap: var(--space-2); } }
+    @media (max-width: 900px) { .nav__links { display: none; } }
+
     @media (max-width: 767px) {
       .nav__links { display: none; }
       .nav__logo-text { font-size: var(--text-base); }
