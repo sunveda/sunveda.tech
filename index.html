@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+  <script src="i18n.js" defer></script>
   <style>
     /* Art direction: Tech entrepreneur / blockchain builder in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -195,6 +196,36 @@
       font-weight: 500;
     }
     .nav__cta:hover { background: var(--color-primary-hover); }
+
+    /* LANGUAGE SWITCHER */
+    .lang-switch { position: relative; display: flex; align-items: center; }
+    .lang-switch__icon {
+      position: absolute; left: 8px; pointer-events: none;
+      color: var(--color-text-muted); width: 14px; height: 14px;
+    }
+    .lang-switch__select {
+      appearance: none; -webkit-appearance: none;
+      font-family: inherit; font-size: var(--text-sm);
+      padding: 7px 26px 7px 28px;
+      border-radius: var(--radius-full);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.1);
+      background: var(--color-surface);
+      color: var(--color-text);
+      cursor: pointer;
+      direction: ltr;
+    }
+    .lang-switch__select:hover { border-color: oklch(from var(--color-primary) l c h / 0.5); }
+    .lang-switch__select:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+    .lang-switch::after {
+      content: ""; position: absolute; right: 10px; top: 50%; transform: translateY(-25%);
+      width: 0; height: 0; pointer-events: none;
+      border-left: 4px solid transparent; border-right: 4px solid transparent;
+      border-top: 5px solid var(--color-text-muted);
+    }
+    @media (max-width: 480px) {
+      .nav__cta { display: none; }
+      .lang-switch__select { padding-right: 20px; font-size: var(--text-xs); }
+    }
 
     /* HERO */
     .hero {
@@ -392,10 +423,22 @@
     @media (max-width: 480px) {
       .hero__actions { flex-direction: column; align-items: flex-start; }
     }
+
+    /* RTL (Arabic) */
+    html[dir="rtl"] .connect__link-arrow { transform: scaleX(-1); }
+    html[dir="rtl"] .lang-switch__icon { left: auto; right: 8px; }
+    html[dir="rtl"] .lang-switch__select { padding: 7px 28px 7px 26px; }
+    html[dir="rtl"] .lang-switch::after { right: auto; left: 10px; }
+
+    /* CJK line-break: don't break words across lines */
+    .hero__heading, .section-heading, .connect__heading, .work-card__title {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
   </style>
 </head>
 <body>
-  <a href="#main" class="skip-link">Skip to content</a>
+  <a href="#main" class="skip-link" data-i18n="nav.skipToContent">Skip to content</a>
 
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="container">
@@ -411,16 +454,20 @@
           <span class="nav__logo-text">sunveda</span>
         </a>
         <div class="nav__links">
-          <a href="#about" class="nav__link">About</a>
-          <a href="#work" class="nav__link">Work</a>
-          <a href="#stack" class="nav__link">Stack</a>
-          <a href="#connect" class="nav__link">Connect</a>
+          <a href="#about" class="nav__link" data-i18n="nav.about">About</a>
+          <a href="#work" class="nav__link" data-i18n="nav.work">Work</a>
+          <a href="#stack" class="nav__link" data-i18n="nav.stack">Stack</a>
+          <a href="#connect" class="nav__link" data-i18n="nav.connect">Connect</a>
         </div>
         <div class="nav__actions">
+          <div class="lang-switch">
+            <svg class="lang-switch__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <select class="lang-switch__select" data-language-select aria-label="Language"></select>
+          </div>
           <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
-          <a href="#connect" class="nav__cta">Get in touch</a>
+          <a href="#connect" class="nav__cta" data-i18n="nav.getInTouch">Get in touch</a>
         </div>
       </div>
     </div>
@@ -432,33 +479,33 @@
       <div class="container">
         <div class="hero__eyebrow">
           <span class="hero__eyebrow-dot" aria-hidden="true"></span>
-          Tokyo, Japan · Available for collaboration
+          <span data-i18n="hero.eyebrow">Tokyo, Japan · Available for collaboration</span>
         </div>
-        <h1 class="hero__heading" id="hero-heading">
+        <h1 class="hero__heading" id="hero-heading" data-i18n-html="hero.heading">
           Building the <em>future</em> on-chain.
         </h1>
-        <p class="hero__sub">
+        <p class="hero__sub" data-i18n="hero.sub">
           Software engineer and entrepreneur focused on blockchain, Ethereum, and decentralized systems — working at the intersection of code and real-world industry since 2010.
         </p>
         <div class="hero__actions">
           <a href="https://github.com/sunveda" class="btn-primary" target="_blank" rel="noopener noreferrer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.72.08-.72 1.2.08 1.83 1.23 1.83 1.23 1.06 1.82 2.79 1.29 3.47.99.1-.77.41-1.29.75-1.59-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.57C20.57 21.8 24 17.3 24 12 24 5.37 18.63 0 12 0z"/></svg>
-            View GitHub
+            <span data-i18n="hero.viewGithub">View GitHub</span>
           </a>
-          <a href="#work" class="btn-ghost">Explore work ↓</a>
+          <a href="#work" class="btn-ghost" data-i18n="hero.exploreWork">Explore work ↓</a>
         </div>
         <div class="hero__meta">
           <div>
-            <div class="hero__stat-label">Experience</div>
-            <div class="hero__stat-value">15+ yrs</div>
+            <div class="hero__stat-label" data-i18n="hero.statExperience">Experience</div>
+            <div class="hero__stat-value" data-i18n="hero.statExpValue">15+ yrs</div>
           </div>
           <div>
-            <div class="hero__stat-label">Repos</div>
-            <div class="hero__stat-value">31+</div>
+            <div class="hero__stat-label" data-i18n="hero.statRepos">Repos</div>
+            <div class="hero__stat-value" data-i18n="hero.statReposValue">31+</div>
           </div>
           <div>
-            <div class="hero__stat-label">Base</div>
-            <div class="hero__stat-value">Tokyo</div>
+            <div class="hero__stat-label" data-i18n="hero.statBase">Base</div>
+            <div class="hero__stat-value" data-i18n="hero.statBaseValue">Tokyo</div>
           </div>
         </div>
       </div>
@@ -472,11 +519,11 @@
       <div class="container">
         <div class="about__grid">
           <div class="reveal">
-            <p class="section-label">About</p>
-            <h2 class="section-heading" id="about-heading">Engineer.<br/>Builder.<br/>Entrepreneur.</h2>
+            <p class="section-label" data-i18n="about.label">About</p>
+            <h2 class="section-heading" id="about-heading" data-i18n-html="about.heading">Engineer.<br/>Builder.<br/>Entrepreneur.</h2>
             <div class="about__body">
-              <p>I'm Sarveshwar Singh — a software engineer and entrepreneur based in Tokyo, Japan. With over 15 years in the industry, I specialise in building decentralised systems, blockchain infrastructure, and enterprise software across retail, HR, and real estate sectors.</p>
-              <p>Deep in the Ethereum ecosystem since its early days, I work with Cardano, NFTs, IPFS, and smart contract platforms. I believe the most important software isn't just technically sound — it solves real human problems.</p>
+              <p data-i18n="about.body1">I'm Sarveshwar Singh — a software engineer and entrepreneur based in Tokyo, Japan. With over 15 years in the industry, I specialise in building decentralised systems, blockchain infrastructure, and enterprise software across retail, HR, and real estate sectors.</p>
+              <p data-i18n="about.body2">Deep in the Ethereum ecosystem since its early days, I work with Cardano, NFTs, IPFS, and smart contract platforms. I believe the most important software isn't just technically sound — it solves real human problems.</p>
             </div>
             <div class="about__tags">
               <span class="tag">Blockchain</span>
@@ -495,29 +542,29 @@
               <div class="about__item">
                 <div class="about__item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
                 <div>
-                  <div class="about__item-title">Software Engineering</div>
-                  <div class="about__item-desc">Full-stack development since 2010, specialising in distributed systems and Web3 infrastructure.</div>
+                  <div class="about__item-title" data-i18n="about.item1Title">Software Engineering</div>
+                  <div class="about__item-desc" data-i18n="about.item1Desc">Full-stack development since 2010, specialising in distributed systems and Web3 infrastructure.</div>
                 </div>
               </div>
               <div class="about__item">
                 <div class="about__item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
                 <div>
-                  <div class="about__item-title">Blockchain & Web3</div>
-                  <div class="about__item-desc">Building on Ethereum, Cardano, IPFS. Smart contracts, DeFi, and NFT platforms.</div>
+                  <div class="about__item-title" data-i18n="about.item2Title">Blockchain & Web3</div>
+                  <div class="about__item-desc" data-i18n="about.item2Desc">Building on Ethereum, Cardano, IPFS. Smart contracts, DeFi, and NFT platforms.</div>
                 </div>
               </div>
               <div class="about__item">
                 <div class="about__item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
                 <div>
-                  <div class="about__item-title">Entrepreneurship</div>
-                  <div class="about__item-desc">Founding and scaling ventures in retail, HR, and real estate within Tokyo's startup community.</div>
+                  <div class="about__item-title" data-i18n="about.item3Title">Entrepreneurship</div>
+                  <div class="about__item-desc" data-i18n="about.item3Desc">Founding and scaling ventures in retail, HR, and real estate within Tokyo's startup community.</div>
                 </div>
               </div>
               <div class="about__item">
                 <div class="about__item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
                 <div>
-                  <div class="about__item-title">Global Mindset</div>
-                  <div class="about__item-desc">Multilingual professional. Building bridges across cultures, industries, and technology ecosystems.</div>
+                  <div class="about__item-title" data-i18n="about.item4Title">Global Mindset</div>
+                  <div class="about__item-desc" data-i18n="about.item4Desc">Multilingual professional. Building bridges across cultures, industries, and technology ecosystems.</div>
                 </div>
               </div>
             </div>
@@ -532,27 +579,27 @@
     <section id="work" class="work" aria-labelledby="work-heading">
       <div class="container">
         <div class="reveal">
-          <p class="section-label">Focus Areas</p>
-          <h2 class="section-heading" id="work-heading">Where I spend my energy</h2>
+          <p class="section-label" data-i18n="work.label">Focus Areas</p>
+          <h2 class="section-heading" id="work-heading" data-i18n="work.heading">Where I spend my energy</h2>
         </div>
         <div class="work__grid">
           <div class="work-card reveal">
             <div class="work-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-            <h3 class="work-card__title">Blockchain Infrastructure</h3>
-            <p class="work-card__body">Building decentralised protocols and smart contract systems on Ethereum and Cardano. From DeFi primitives to NFT platforms and IPFS-based storage solutions.</p>
-            <span class="work-card__badge">Web3</span>
+            <h3 class="work-card__title" data-i18n="work.card1Title">Blockchain Infrastructure</h3>
+            <p class="work-card__body" data-i18n="work.card1Body">Building decentralised protocols and smart contract systems on Ethereum and Cardano. From DeFi primitives to NFT platforms and IPFS-based storage solutions.</p>
+            <span class="work-card__badge" data-i18n="work.card1Badge">Web3</span>
           </div>
           <div class="work-card reveal">
             <div class="work-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
-            <h3 class="work-card__title">Enterprise Software</h3>
-            <p class="work-card__body">Developing scalable software solutions for retail operations, HR management, and real estate platforms. Focused on operational efficiency and data-driven decision making.</p>
-            <span class="work-card__badge">Startup</span>
+            <h3 class="work-card__title" data-i18n="work.card2Title">Enterprise Software</h3>
+            <p class="work-card__body" data-i18n="work.card2Body">Developing scalable software solutions for retail operations, HR management, and real estate platforms. Focused on operational efficiency and data-driven decision making.</p>
+            <span class="work-card__badge" data-i18n="work.card2Badge">Startup</span>
           </div>
           <div class="work-card reveal">
             <div class="work-card__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div>
-            <h3 class="work-card__title">Community & Ecosystem</h3>
-            <p class="work-card__body">Active in Tokyo's entrepreneurial community. Connecting founders, engineers, and business leaders to accelerate innovation across sectors in Japan's unique market.</p>
-            <span class="work-card__badge">Tokyo</span>
+            <h3 class="work-card__title" data-i18n="work.card3Title">Community & Ecosystem</h3>
+            <p class="work-card__body" data-i18n="work.card3Body">Active in Tokyo's entrepreneurial community. Connecting founders, engineers, and business leaders to accelerate innovation across sectors in Japan's unique market.</p>
+            <span class="work-card__badge" data-i18n="work.card3Badge">Tokyo</span>
           </div>
         </div>
       </div>
@@ -564,13 +611,13 @@
     <section id="stack" aria-labelledby="stack-heading">
       <div class="container">
         <div class="reveal">
-          <p class="section-label">Tech Stack</p>
-          <h2 class="section-heading" id="stack-heading">Tools of the trade</h2>
-          <p class="stack__intro">A curated set of technologies I reach for when building serious products — from smart contracts to full-stack web applications.</p>
+          <p class="section-label" data-i18n="stack.label">Tech Stack</p>
+          <h2 class="section-heading" id="stack-heading" data-i18n="stack.heading">Tools of the trade</h2>
+          <p class="stack__intro" data-i18n="stack.intro">A curated set of technologies I reach for when building serious products — from smart contracts to full-stack web applications.</p>
         </div>
         <div class="stack__categories reveal">
           <div>
-            <p class="stack__category-title">Blockchain</p>
+            <p class="stack__category-title" data-i18n="stack.catBlockchain">Blockchain</p>
             <div class="stack__items">
               <span class="stack__item"><span class="stack__item-dot"></span>Ethereum</span>
               <span class="stack__item"><span class="stack__item-dot"></span>Cardano</span>
@@ -582,7 +629,7 @@
             </div>
           </div>
           <div>
-            <p class="stack__category-title">Frontend</p>
+            <p class="stack__category-title" data-i18n="stack.catFrontend">Frontend</p>
             <div class="stack__items">
               <span class="stack__item"><span class="stack__item-dot"></span>React</span>
               <span class="stack__item"><span class="stack__item-dot"></span>TypeScript</span>
@@ -591,7 +638,7 @@
             </div>
           </div>
           <div style="margin-top: var(--space-8);">
-            <p class="stack__category-title">Backend & Infra</p>
+            <p class="stack__category-title" data-i18n="stack.catBackend">Backend & Infra</p>
             <div class="stack__items">
               <span class="stack__item"><span class="stack__item-dot"></span>Node.js</span>
               <span class="stack__item"><span class="stack__item-dot"></span>Python</span>
@@ -601,11 +648,11 @@
             </div>
           </div>
           <div style="margin-top: var(--space-8);">
-            <p class="stack__category-title">Currently Learning</p>
+            <p class="stack__category-title" data-i18n="stack.catLearning">Currently Learning</p>
             <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span>Japanese (JLPT)</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>ZK Proofs</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Layer 2 Protocols</span>
+              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningJlpt">Japanese (JLPT)</span></span>
+              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningZk">ZK Proofs</span></span>
+              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningL2">Layer 2 Protocols</span></span>
             </div>
           </div>
         </div>
@@ -619,9 +666,9 @@
       <div class="container">
         <div class="connect__inner">
           <div class="reveal">
-            <p class="section-label">Connect</p>
-            <h2 class="connect__heading" id="connect-heading">Let's build something <em>meaningful</em>.</h2>
-            <p class="connect__body">Open to interesting projects, collaborations, and conversations — especially at the frontier of blockchain, enterprise software, and the Japanese market.</p>
+            <p class="section-label" data-i18n="connect.label">Connect</p>
+            <h2 class="connect__heading" id="connect-heading" data-i18n-html="connect.heading">Let's build something <em>meaningful</em>.</h2>
+            <p class="connect__body" data-i18n="connect.body">Open to interesting projects, collaborations, and conversations — especially at the frontier of blockchain, enterprise software, and the Japanese market.</p>
             <div class="connect__links">
               <a href="https://github.com/sunveda" class="connect__link" target="_blank" rel="noopener noreferrer">
                 <div class="connect__link-left">
@@ -687,13 +734,13 @@
           </div>
           <div class="connect__visual reveal">
             <div class="connect__location">
-              <div class="connect__location-title">Current location</div>
-              <div class="connect__location-name">Tokyo, Japan</div>
-              <div class="connect__location-sub">Minato City · JST (UTC+9)</div>
+              <div class="connect__location-title" data-i18n="connect.locationTitle">Current location</div>
+              <div class="connect__location-name" data-i18n="connect.locationName">Tokyo, Japan</div>
+              <div class="connect__location-sub" data-i18n="connect.locationSub">Minato City · JST (UTC+9)</div>
             </div>
             <div class="connect__open">
               <span class="connect__open-dot" aria-hidden="true"></span>
-              <span class="connect__open-text">Open to new projects & collaborations</span>
+              <span class="connect__open-text" data-i18n="connect.openText">Open to new projects & collaborations</span>
             </div>
           </div>
         </div>
@@ -705,7 +752,7 @@
     <div class="container">
       <div class="footer__inner">
         <div class="footer__logo">sunveda.tech</div>
-        <div class="footer__copy">© 2026 Sarveshwar Singh. Built with intention.</div>
+        <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
       </div>
     </div>
   </footer>
