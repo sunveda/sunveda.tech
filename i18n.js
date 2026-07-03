@@ -1031,8 +1031,7 @@ const SUPPORTED = LANGUAGES.map(l => l.code);
 function resolveLang() {
   const saved = localStorage.getItem("lang");
   if (SUPPORTED.includes(saved)) return saved;
-  const browser = (navigator.language || "en").toLowerCase().split("-")[0];
-  return SUPPORTED.includes(browser) ? browser : "en";
+  return "en"; // default to English; user's explicit choice is remembered
 }
 
 function applyLang(lang) {
