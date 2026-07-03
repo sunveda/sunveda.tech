@@ -1,9 +1,9 @@
 /* Sunveda i18n — client-side translations */
 const locales = {
   "en": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "Software engineer, blockchain builder, and entrepreneur based in Tokyo. Building at the intersection of technology and real-world industry.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "Software engineer, blockchain builder, and entrepreneur based in Tokyo.",
     "nav.skipToContent": "Skip to content",
     "nav.about": "About",
@@ -116,9 +116,9 @@ const locales = {
     "projects.p3Link": "View on GitHub ↗"
   },
   "ja": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "東京を拠点とするソフトウェアエンジニア、ブロックチェーンビルダー、起業家。テクノロジーと現実の産業の交差点で構築しています。",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "東京を拠点とするソフトウェアエンジニア、ブロックチェーンビルダー、起業家。",
     "nav.skipToContent": "コンテンツへスキップ",
     "nav.about": "自己紹介",
@@ -231,9 +231,9 @@ const locales = {
     "projects.p3Link": "GitHubで見る ↗"
   },
   "ko": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "도쿄를 거점으로 활동하는 소프트웨어 엔지니어, 블록체인 빌더, 그리고 창업가. 기술과 현실 산업의 교차점에서 구축합니다.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "도쿄를 거점으로 활동하는 소프트웨어 엔지니어, 블록체인 빌더, 창업가.",
     "nav.skipToContent": "콘텐츠로 건너뛰기",
     "nav.about": "소개",
@@ -346,9 +346,9 @@ const locales = {
     "projects.p3Link": "GitHub에서 보기 ↗"
   },
   "zh": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "驻东京的软件工程师、区块链构建者和创业者。在技术与现实产业的交汇处创造价值。",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "驻东京的软件工程师、区块链构建者和创业者。",
     "nav.skipToContent": "跳到内容",
     "nav.about": "关于",
@@ -461,9 +461,9 @@ const locales = {
     "projects.p3Link": "在 GitHub 上查看 ↗"
   },
   "es": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "Ingeniero de software, constructor de blockchain y emprendedor con base en Tokio. Construyendo en la intersección de la tecnología y la industria real.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "Ingeniero de software, constructor de blockchain y emprendedor con base en Tokio.",
     "nav.skipToContent": "Saltar al contenido",
     "nav.about": "Acerca de",
@@ -576,10 +576,10 @@ const locales = {
     "projects.p3Link": "Ver en GitHub ↗"
   },
   "de": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
-    "meta.description": "Softwareingenieur, Blockchain-Ersteller und Unternehmer mit Sitz in Tokio. Baut an der Schnittstelle von Technologie und realer Industrie.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
-    "meta.ogDescription": "Softwareingenieur, Blockchain-Ersteller und Unternehmer mit Sitz in Tokio.",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
+    "meta.description": "Softwareingenieur, Blockchain-Entwickler und Unternehmer mit Sitz in Tokio. Baut an der Schnittstelle von Technologie und realer Industrie.",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
+    "meta.ogDescription": "Softwareingenieur, Blockchain-Entwickler und Unternehmer mit Sitz in Tokio.",
     "nav.skipToContent": "Zum Inhalt springen",
     "nav.about": "Über",
     "nav.work": "Projekte",
@@ -602,7 +602,7 @@ const locales = {
     "hero.statBornValue": "Wo die Null entstand",
     "hero.statWorkingValue": "Wo die Sonne zuerst aufgeht",
     "about.label": "Über",
-    "about.heading": "Ingenieur.<br/>Ersteller.<br/>Unternehmer.",
+    "about.heading": "Ingenieur.<br/>Macher.<br/>Unternehmer.",
     "about.body1": "Ich bin Sarveshwar Singh — Softwareingenieur und Unternehmer mit Sitz in Tokio, Japan. Mit über 15 Jahren in der Branche spezialisiere ich mich auf dezentrale Systeme, Blockchain-Infrastruktur und Unternehmenssoftware für den Einzelhandel, HR und Immobilien.",
     "about.body2": "Seit den frühen Tagen tief im Ethereum-Ökosystem verwurzelt, arbeite ich mit Cardano, NFTs, IPFS und Smart-Contract-Plattformen. Ich glaube, dass die wichtigste Software nicht nur technisch fundiert ist — sie löst reale menschliche Probleme.",
     "about.focus": "Mein Fokus liegt auf Lösungen, die Reibung abbauen — indem sie Systeme von vertrauensbasierten Strukturen hin zu trustless Modellen weiterentwickeln. Mich interessieren die Digitalisierung und Tokenisierung realer Vermögenswerte, dezentrale digitale Identität (DID) und Gemeinwohl-Infrastruktur — besonders Governance- und Civic-Tech-Projekte mit Regierungen in Indien, Japan und darüber hinaus.",
@@ -691,9 +691,9 @@ const locales = {
     "projects.p3Link": "Auf GitHub ansehen ↗"
   },
   "fr": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "Ingénieur logiciel, développeur blockchain et entrepreneur basé à Tokyo. À la croisée de la technologie et de l'économie réelle.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "Ingénieur logiciel, développeur blockchain et entrepreneur basé à Tokyo.",
     "nav.skipToContent": "Aller au contenu",
     "nav.about": "À propos",
@@ -738,7 +738,7 @@ const locales = {
     "work.card2Body": "Développement de solutions logicielles évolutives pour les opérations de retail, la gestion des RH et les plateformes immobilières. Axé sur l'efficacité opérationnelle et la décision basée sur les données.",
     "work.card2Badge": "Startup",
     "work.card3Title": "Communauté & Écosystème",
-    "work.card3Body": "Actif dans la communauté entrepreneuriale de Tokyo. Connecter fondateurs, ingénieurs et dirigeants pour accélérer l'innovation dans le marché unique du Japon.",
+    "work.card3Body": "Actif dans la communauté entrepreneuriale de Tokyo. Je connecte des fondateurs, des ingénieurs et des dirigeants pour accélérer l'innovation dans le marché unique du Japon.",
     "work.card3Badge": "Tokyo",
     "stack.label": "Stack Technique",
     "stack.heading": "Outils du métier",
@@ -806,9 +806,9 @@ const locales = {
     "projects.p3Link": "Voir sur GitHub ↗"
   },
   "pt": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "Engenheiro de software, construtor de blockchain e empreendedor baseado em Tóquio. Construindo na interseção da tecnologia e da indústria real.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "Engenheiro de software, construtor de blockchain e empreendedor baseado em Tóquio.",
     "nav.skipToContent": "Pular para o conteúdo",
     "nav.about": "Sobre",
@@ -921,9 +921,9 @@ const locales = {
     "projects.p3Link": "Ver no GitHub ↗"
   },
   "ru": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "Программный инженер, блокчейн-разработчик и предприниматель из Токио. Создаю на стыке технологий и реальной индустрии.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "Программный инженер, блокчейн-разработчик и предприниматель из Токио.",
     "nav.skipToContent": "Перейти к содержанию",
     "nav.about": "Обо мне",
@@ -1036,9 +1036,9 @@ const locales = {
     "projects.p3Link": "Смотреть на GitHub ↗"
   },
   "ar": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "مهندس برمجيات ومطوّر بلوكشين ورائد أعمال مقيم في طوكيو. يبني عند تقاطع التكنولوجيا والقطاعات الواقعية.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "مهندس برمجيات ومطوّر بلوكشين ورائد أعمال مقيم في طوكيو.",
     "nav.skipToContent": "تخطَّ إلى المحتوى",
     "nav.about": "نبذة",
@@ -1083,7 +1083,7 @@ const locales = {
     "work.card2Body": "تطوير حلول برمجية قابلة للتوسع لعمليات التجزئة وإدارة الموارد البشرية ومنصات العقارات. مع التركيز على الكفاءة التشغيلية واتخاذ القرارات المبنية على البيانات.",
     "work.card2Badge": "شركة ناشئة",
     "work.card3Title": "المجتمع والمنظومة",
-    "work.card3Body": "نشط في مجتمع رواد الأعمال في طوكيو. يربط المؤسسين والمهندسين وقادة الأعمال لتسريع الابتكار في السوق الياباني الفريد.",
+    "work.card3Body": "نشط في مجتمع رواد الأعمال في طوكيو. أربط بين المؤسسين والمهندسين وقادة الأعمال لتسريع الابتكار في السوق الياباني الفريد.",
     "work.card3Badge": "طوكيو",
     "stack.label": "الحزمة التقنية",
     "stack.heading": "أدوات المهنة",
@@ -1151,9 +1151,9 @@ const locales = {
     "projects.p3Link": "العرض على GitHub ↗"
   },
   "hi": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "टोक्यो में स्थित सॉफ़्टवेयर इंजीनियर, ब्लॉकचेन बिल्डर और उद्यमी। प्रौद्योगिकी और वास्तविक उद्योग के चौराहे पर निर्माण कर रहे हैं।",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "टोक्यो में स्थित सॉफ़्टवेयर इंजीनियर, ब्लॉकचेन बिल्डर और उद्यमी।",
     "nav.skipToContent": "सामग्री पर जाएँ",
     "nav.about": "परिचय",
@@ -1246,7 +1246,7 @@ const locales = {
     "services.s9Tag": "समुदाय",
     "connect.label": "संपर्क",
     "connect.heading": "आइए कुछ <em>सार्थक</em> बनाएँ।",
-    "connect.body": "रोचक परियोजनाओं, सहयोग और वार्तालापों के लिए खुला — विशेष रूप से ब्लॉकचेन, एंटरप्राइज़ सॉफ़्टवेयर और जापानी बाज़ार की सीमा पर।",
+    "connect.body": "रोचक परियोजनाओं, सहयोग और वार्तालापों के लिए खुला — विशेष रूप से ब्लॉकचेन, एंटरप्राइज़ सॉफ़्टवेयर और जापानी बाज़ार के अग्रणी क्षेत्रों में।",
     "connect.locationTitle": "वर्तमान स्थान",
     "connect.locationName": "टोक्यो, जापान",
     "connect.locationSub": "मिनातो शहर · JST (UTC+9)",
@@ -1266,9 +1266,9 @@ const locales = {
     "projects.p3Link": "GitHub पर देखें ↗"
   },
   "it": {
-    "meta.title": "Sunveda — Sarveshwar Singh",
+    "meta.title": "SunVeda Technologies — Sarveshwar Singh",
     "meta.description": "Ingegnere del software, sviluppatore blockchain e imprenditore con sede a Tokyo. Costruisce all'intersezione tra tecnologia e industria reale.",
-    "meta.ogTitle": "Sunveda — Sarveshwar Singh",
+    "meta.ogTitle": "SunVeda Technologies — Sarveshwar Singh",
     "meta.ogDescription": "Ingegnere del software, sviluppatore blockchain e imprenditore con sede a Tokyo.",
     "nav.skipToContent": "Vai al contenuto",
     "nav.about": "Chi sono",
@@ -1401,10 +1401,6 @@ const LANGUAGES = [
 const SUPPORTED = LANGUAGES.map(l => l.code);
 
 function resolveLang() {
-  // i18n disabled for now — English only. To re-enable at the final translation pass,
-  // restore the browser-detection block below and remove this early return.
-  return "en";
-  /* eslint-disable */
   const saved = localStorage.getItem("lang");
   if (SUPPORTED.includes(saved)) return saved;
   // Detect from browser preferred languages (e.g. ja-JP -> ja)
