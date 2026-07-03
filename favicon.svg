@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+  <linearGradient id="petal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4f98a3"/>
+    <stop offset="1" stop-color="#01696f"/>
+  </linearGradient>
+  <radialGradient id="core" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#e9b44c"/>
+    <stop offset="1" stop-color="#c97b1b"/>
+  </radialGradient>
+</defs>
+<polygon points="256.0,24.0 456.9,140.0 456.9,372.0 256.0,488.0 55.1,372.0 55.1,140.0" fill="none" stroke="#01696f" stroke-width="9" stroke-linejoin="round" opacity="0.85"/>
+<polygon points="256.0,68.0 388.9,123.1 444.0,256.0 388.9,388.9 256.0,444.0 123.1,388.9 68.0,256.0 123.1,123.1" fill="none" stroke="#01696f" stroke-width="4" opacity="0.30"/>
+<path d="M247.9,220.9 Q232.7,155.3 256.0,68.0 Q279.3,155.3 264.1,220.9 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M275.1,225.5 Q310.8,168.3 388.9,123.1 Q343.7,201.2 286.5,236.9 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M291.1,247.9 Q356.7,232.7 444.0,256.0 Q356.7,279.3 291.1,264.1 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M286.5,275.1 Q343.7,310.8 388.9,388.9 Q310.8,343.7 275.1,286.5 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M264.1,291.1 Q279.3,356.7 256.0,444.0 Q232.7,356.7 247.9,291.1 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M236.9,286.5 Q201.2,343.7 123.1,388.9 Q168.3,310.8 225.5,275.1 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M220.9,264.1 Q155.3,279.3 68.0,256.0 Q155.3,232.7 220.9,247.9 Z" fill="url(#petal)" opacity="0.92"/>
+<path d="M225.5,236.9 Q168.3,201.2 123.1,123.1 Q201.2,168.3 236.9,225.5 Z" fill="url(#petal)" opacity="0.92"/>
+<circle cx="256.0" cy="68.0" r="13" fill="#01696f"/>
+<circle cx="256.0" cy="68.0" r="5.9" fill="#e9b44c"/>
+<circle cx="388.9" cy="123.1" r="13" fill="#01696f"/>
+<circle cx="388.9" cy="123.1" r="5.9" fill="#e9b44c"/>
+<circle cx="444.0" cy="256.0" r="13" fill="#01696f"/>
+<circle cx="444.0" cy="256.0" r="5.9" fill="#e9b44c"/>
+<circle cx="388.9" cy="388.9" r="13" fill="#01696f"/>
+<circle cx="388.9" cy="388.9" r="5.9" fill="#e9b44c"/>
+<circle cx="256.0" cy="444.0" r="13" fill="#01696f"/>
+<circle cx="256.0" cy="444.0" r="5.9" fill="#e9b44c"/>
+<circle cx="123.1" cy="388.9" r="13" fill="#01696f"/>
+<circle cx="123.1" cy="388.9" r="5.9" fill="#e9b44c"/>
+<circle cx="68.0" cy="256.0" r="13" fill="#01696f"/>
+<circle cx="68.0" cy="256.0" r="5.9" fill="#e9b44c"/>
+<circle cx="123.1" cy="123.1" r="13" fill="#01696f"/>
+<circle cx="123.1" cy="123.1" r="5.9" fill="#e9b44c"/>
+<circle cx="256" cy="256" r="32" fill="url(#core)"/>
+<circle cx="256" cy="256" r="32" fill="none" stroke="#01696f" stroke-width="5"/>
+</svg>

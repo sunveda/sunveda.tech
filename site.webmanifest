@@ -1,0 +1,14 @@
+{
+  "name": "Sunveda — Sarveshwar Singh",
+  "short_name": "Sunveda",
+  "description": "Software engineer, blockchain builder, and entrepreneur based in Tokyo.",
+  "icons": [
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "theme_color": "#01696f",
+  "background_color": "#0e0d0c",
+  "display": "standalone",
+  "start_url": "/"
+}
