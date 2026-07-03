@@ -413,6 +413,8 @@
     .connect__location-title { font-size: var(--text-xs); color: var(--color-text-faint); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-2); }
     .connect__location-name { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-text); font-style: italic; }
     .connect__location-sub { font-size: var(--text-sm); color: var(--color-text-muted); margin-top: var(--space-1); }
+    .connect__instagram { margin-top: var(--space-8); max-width: 540px; }
+    .connect__instagram .instagram-media { background: var(--color-surface) !important; }
     .connect__open {
       display: flex; align-items: center; gap: var(--space-3);
       background: var(--color-primary-highlight);
@@ -739,9 +741,16 @@
             </div>
           </div>
           <div style="margin-top: var(--space-8);">
+            <p class="stack__category-title" data-i18n="stack.catLanguages">Languages</p>
+            <div class="stack__items">
+              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.langJp">Japanese · JLPT N2</span></span>
+              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.langHi">Hindi</span></span>
+              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.langEn">English</span></span>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-8);">
             <p class="stack__category-title" data-i18n="stack.catLearning">Currently Learning</p>
             <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningJlpt">Japanese (JLPT)</span></span>
               <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningZk">ZK Proofs</span></span>
               <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningL2">Layer 2 Protocols</span></span>
             </div>
@@ -829,6 +838,25 @@
               <div class="connect__location-name" data-i18n="connect.locationName">Tokyo, Japan</div>
               <div class="connect__location-sub" data-i18n="connect.locationSub">Minato City · JST (UTC+9)</div>
             </div>
+            <div class="connect__instagram">
+              <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/CX2qdkzJhVF/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+                <div style="padding:16px;">
+                  <a href="https://www.instagram.com/p/CX2qdkzJhVF/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank" rel="noopener noreferrer">
+                    <div style=" display: flex; flex-direction: row; align-items: center;">
+                      <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div>
+                      <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;">
+                        <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div>
+                        <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div>
+                      </div>
+                    </div>
+                    <div style="padding: 19% 0;"></div>
+                    <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.198,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.198,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.198 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.198 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.648,26.702 563.948,22.952 C560.197,19.201 558.523,18.192 556.549,17.426 C554.641,16.684 552.461,16.177 549.265,16.031 C548.058,15.975 547.163,15.944 545.698,15.929 C544.779,15.919 543.708,15.917 542.227,15.917 L539.779,15.917 C537.5,15.929 536.295,15.983 535.149,16.031 C531.953,16.177 529.773,16.684 527.865,17.426 C525.891,18.192 524.216,19.201 520.466,22.952 C516.715,26.702 515.707,28.377 514.941,30.349 C514.199,32.258 513.692,34.438 513.546,37.631 C513.401,40.831 513.368,41.842 513.368,50 C513.368,58.158 513.401,59.169 513.546,62.369 C513.692,65.562 514.199,67.742 514.941,69.651 C515.707,71.625 516.715,73.3 520.466,77.049 C524.216,80.799 525.891,81.808 527.865,82.574 C529.773,83.316 531.953,83.823 535.149,83.969 C538.348,84.115 539.359,84.148 541,84.148 C542.641,84.148 543.652,84.115 546.851,83.969 C550.047,83.823 552.227,83.316 554.135,82.574 C556.109,81.808 557.784,80.799 561.534,77.049 C565.285,73.3 566.293,71.625 567.059,69.651 C567.801,67.742 568.308,65.562 568.454,62.369 C568.6,59.169 568.633,58.158 568.633,50 C568.633,41.842 568.6,40.831 568.454,37.631"/></g></g></g></svg></div>
+                    <div style="padding-top: 4px;"> <a href="https://www.instagram.com/p/CX2qdkzJhVF/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#3897f0; font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px; text-decoration:none;" target="_blank" rel="noopener noreferrer">View this post on Instagram</a></div>
+                    <div style="padding: 12.5% 0;"></div>
+                  </a>
+                </div>
+              </blockquote>
+            </div>
             <div class="connect__open">
               <span class="connect__open-dot" aria-hidden="true"></span>
               <span class="connect__open-text" data-i18n="connect.openText">Open to new projects & collaborations</span>
@@ -848,6 +876,7 @@
     </div>
   </footer>
 
+  <script async src="//www.instagram.com/embed.js"></script>
   <script>
     // Theme toggle
     (function(){
