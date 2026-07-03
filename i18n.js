@@ -1092,7 +1092,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const lang = resolveLang();
   applyLang(lang);
   const sel = document.querySelector("[data-language-select]");
-  if (sel) sel.addEventListener("change", e => applyLang(e.target.value));
+  if (sel) {
+    sel.value = lang; // sync dropdown to the active language
+    sel.addEventListener("change", e => {
+      applyLang(e.target.value);
+      sel.value = e.target.value; // keep in sync after manual switch
+    });
+  }
 });
 
 // Re-sync theme aria-label when theme toggles (theme script runs first)
