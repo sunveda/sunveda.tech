@@ -16,7 +16,7 @@ const locales = {
     "nav.themeToDark": "Switch to dark mode",
     "hero.eyebrow": "Tokyo, Japan · Available for collaboration",
     "hero.heading": "Building the <em>future</em> on-chain.",
-    "hero.sub": "Software engineer and entrepreneur focused on blockchain, Ethereum, and decentralized systems — working at the intersection of code and real-world industry since 2010.",
+    "hero.sub": "Ingegnere del software e imprenditore che costruisce sistemi decentralizzati su Cardano, Solana, Ethereum e oltre — all'intersezione tra codice e industria reale dal 2010.",
     "hero.viewGithub": "View GitHub",
     "hero.exploreWork": "Explore work ↓",
     "hero.statExperience": "Experience",
