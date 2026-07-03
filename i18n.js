@@ -1401,6 +1401,10 @@ const LANGUAGES = [
 const SUPPORTED = LANGUAGES.map(l => l.code);
 
 function resolveLang() {
+  // i18n disabled for now — English only. To re-enable at the final translation pass,
+  // restore the browser-detection block below and remove this early return.
+  return "en";
+  /* eslint-disable */
   const saved = localStorage.getItem("lang");
   if (SUPPORTED.includes(saved)) return saved;
   // Detect from browser preferred languages (e.g. ja-JP -> ja)
