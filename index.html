@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>(function(){var d=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',d);})();</script>
-  <title>Sunveda — Sarveshwar Singh</title>
+  <title>SunVeda Technologies — Sarveshwar Singh</title>
   <meta name="description" content="Software engineer, blockchain builder, and entrepreneur based in Tokyo. Building at the intersection of technology and real-world industry." />
-  <meta property="og:title" content="Sunveda — Sarveshwar Singh" />
+  <meta property="og:title" content="SunVeda Technologies — Sarveshwar Singh" />
   <meta property="og:description" content="Software engineer, blockchain builder, and entrepreneur based in Tokyo." />
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -175,6 +175,7 @@
     .nav__inner { display: flex; align-items: center; justify-content: space-between; }
     .nav__logo { display: flex; align-items: center; gap: var(--space-2); text-decoration: none; color: var(--color-text); }
     .nav__logo-text { font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; letter-spacing: -0.02em; }
+    .nav__logo-text { white-space: nowrap; }
     .nav__links { display: flex; align-items: center; gap: var(--space-8); }
     .nav__link { text-decoration: none; font-size: var(--text-sm); color: var(--color-text-muted); letter-spacing: 0.02em; }
     .nav__link:hover { color: var(--color-text); }
@@ -460,6 +461,7 @@
     /* MOBILE */
     @media (max-width: 767px) {
       .nav__links { display: none; }
+      .nav__logo-text { font-size: var(--text-base); }
       .about__grid, .work__grid, .stack__categories, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-10); }
       .work__grid { gap: var(--space-4); }
       .services__grid { gap: var(--space-4); }
@@ -512,7 +514,7 @@
             <circle cx="14" cy="14" r="2.0" fill="#e9b44c"/>
             <circle cx="14" cy="14" r="2.0" fill="none" stroke="currentColor" stroke-width="0.6"/>
           </svg>
-          <span class="nav__logo-text">sunveda</span>
+          <span class="nav__logo-text">SunVeda Technologies</span>
         </a>
         <div class="nav__links">
           <a href="#about" class="nav__link" data-i18n="nav.about">About</a>
@@ -962,7 +964,7 @@
   <footer>
     <div class="container">
       <div class="footer__inner">
-        <div class="footer__logo">sunveda.tech</div>
+        <div class="footer__logo">SunVeda Technologies</div>
         <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
       </div>
     </div>
