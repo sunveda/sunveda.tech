@@ -204,7 +204,7 @@
     .nav__logo { flex-shrink: 0; }
     
     /* LANGUAGE SWITCHER */
-    .lang-switch { position: relative; display: flex; align-items: center; display: none; }
+    .lang-switch { position: relative; display: flex; align-items: center; }
     .lang-switch__icon {
       position: absolute; left: 8px; pointer-events: none;
       color: var(--color-text-muted); width: 14px; height: 14px;
@@ -389,19 +389,55 @@
     }
 
     /* STACK SECTION */
-    .stack__intro { max-width: 52ch; font-size: var(--text-base); color: var(--color-text-muted); margin-bottom: var(--space-12); }
-    .stack__categories { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); }
-    .stack__category-title { font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-faint); margin-bottom: var(--space-4); }
-    .stack__items { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-    .stack__item {
-      display: flex; align-items: center; gap: var(--space-2);
-      padding: var(--space-2) var(--space-4);
+    .stack__intro { max-width: 62ch; font-size: var(--text-base); color: var(--color-text-muted); margin-bottom: var(--space-12); }
+    .stack__label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-primary); margin-bottom: var(--space-4); }
+    .stack__ecosystems { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .stack-card {
       background: var(--color-surface);
-      border: 1px solid oklch(from var(--color-text) l c h / 0.08);
-      border-radius: var(--radius-md);
-      font-size: var(--text-sm); color: var(--color-text-muted);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.1);
+      border-radius: var(--radius-xl);
+      overflow: clip;
+      transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive);
     }
-    .stack__item-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); flex-shrink: 0; }
+    .stack-card:hover, .stack-card[open] { border-color: oklch(from var(--color-primary) l c h / 0.38); box-shadow: var(--shadow-sm); }
+    .stack-card summary { list-style: none; cursor: pointer; padding: var(--space-6); }
+    .stack-card summary::-webkit-details-marker { display: none; }
+    .stack-card__top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
+    .stack-card__name { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.15; color: var(--color-text); }
+    .stack-card__description { margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-muted); max-width: 42ch; }
+    .stack-card__toggle {
+      width: 34px; height: 34px; flex: 0 0 34px;
+      display: grid; place-items: center;
+      color: var(--color-primary); background: var(--color-primary-highlight);
+      border-radius: var(--radius-full);
+    }
+    .stack-card__toggle svg { transition: transform var(--transition-interactive); }
+    .stack-card[open] .stack-card__toggle svg { transform: rotate(45deg); }
+    .stack-card__networks { margin-top: var(--space-5); font-size: var(--text-xs); color: var(--color-text-faint); }
+    .stack-card__tools { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+    .stack-chip {
+      padding: 0.35rem 0.7rem;
+      border: 1px solid oklch(from var(--color-text) l c h / 0.1);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs); color: var(--color-text-muted);
+      background: var(--color-bg);
+    }
+    .stack-card__action { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: var(--space-5); color: var(--color-primary); font-size: var(--text-xs); font-weight: 600; }
+    .stack-card__details { padding: 0 var(--space-6) var(--space-6); border-top: 1px solid oklch(from var(--color-text) l c h / 0.07); }
+    .stack-card__rows { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-6); padding-top: var(--space-3); }
+    .stack-row { padding: var(--space-3) 0; border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.06); }
+    .stack-row__label { display: block; margin-bottom: 0.15rem; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-faint); }
+    .stack-row__value { font-size: var(--text-xs); line-height: 1.55; color: var(--color-text-muted); }
+    .stack__shared { margin-top: var(--space-12); }
+    .stack__shared-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+    .shared-stack {
+      padding: var(--space-6);
+      background: var(--color-surface);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.09);
+      border-radius: var(--radius-lg);
+    }
+    .shared-stack__title { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-text); margin-bottom: var(--space-2); }
+    .shared-stack__body { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.65; }
 
     /* CONNECT SECTION */
     .connect { border-top: 1px solid oklch(from var(--color-text) l c h / 0.06); }
@@ -469,7 +505,8 @@
     @media (max-width: 767px) {
       .nav__links { display: none; }
       .nav__logo-text { font-size: var(--text-base); }
-      .about__grid, .work__grid, .stack__categories, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-10); }
+      .about__grid, .work__grid, .stack__ecosystems, .stack__shared-grid, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-4); }
+      .stack-card__rows { grid-template-columns: 1fr; }
       .work__grid { gap: var(--space-4); }
       .services__grid { gap: var(--space-4); }
       .hero__bg-text { display: none; }
@@ -594,17 +631,22 @@
             <h2 class="section-heading" id="about-heading" data-i18n-html="about.heading">Engineer.<br/>Builder.<br/>Entrepreneur.</h2>
             <div class="about__body">
               <p data-i18n="about.body1">I'm Sarveshwar Singh — a software engineer and entrepreneur based in Tokyo, Japan. With over 15 years in the industry, I specialise in building decentralised systems, blockchain infrastructure, and enterprise software across retail, HR, and real estate sectors.</p>
-              <p data-i18n="about.body2">Deep in the Ethereum ecosystem since its early days, I work with Cardano, NFTs, IPFS, and smart contract platforms. I believe the most important software isn't just technically sound — it solves real human problems.</p>
+              <p data-i18n="about.body2">Deep in the Ethereum ecosystem since its early days, I now build across EVM networks, Solana, Cardano, and Canton Network. I believe the most important software isn't just technically sound — it solves real human problems.</p>
               <p data-i18n="about.focus">My focus is on solutions that remove friction — moving systems from trust-based to trustless. I'm drawn to the digitization and tokenization of real-world assets, decentralized digital identity (DID), and public-good infrastructure — especially governance and civic-tech projects built with governments like India, Japan, and beyond.</p>
             </div>
             <div class="about__tags">
               <span class="tag">Blockchain</span>
               <span class="tag">Ethereum</span>
+              <span class="tag">Solana</span>
               <span class="tag">Cardano</span>
+              <span class="tag">Canton Network</span>
+              <span class="tag">RWA</span>
               <span class="tag">IPFS</span>
               <span class="tag">NFT</span>
               <span class="tag">Solidity</span>
-              <span class="tag">Node.js</span>
+              <span class="tag">iOS App</span>
+              <span class="tag">Android App</span>
+              <span class="tag">Full Stack</span>
               <span class="tag">React</span>
               <span class="tag">Tokyo</span>
             </div>
@@ -734,54 +776,106 @@
         <div class="reveal">
           <p class="section-label" data-i18n="stack.label">Tech Stack</p>
           <h2 class="section-heading" id="stack-heading" data-i18n="stack.heading">Tools of the trade</h2>
-          <p class="stack__intro" data-i18n="stack.intro">A curated set of technologies I reach for when building serious products — from smart contracts to full-stack web applications.</p>
+          <p class="stack__intro" data-i18n="stack.intro">A production-minded toolkit for building secure on-chain systems and the applications around them.</p>
         </div>
-        <div class="stack__categories reveal">
-          <div>
-            <p class="stack__category-title" data-i18n="stack.catBlockchain">Blockchain</p>
-            <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span>Ethereum</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Cardano</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Solidity</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>IPFS</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>NFT Standards</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Web3.js</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Ethers.js</span>
-            </div>
+        <div class="reveal">
+          <p class="stack__label" data-i18n="stack.ecosystems">Blockchain ecosystems</p>
+          <div class="stack__ecosystems">
+            <details class="stack-card">
+              <summary>
+                <div class="stack-card__top">
+                  <div><h3 class="stack-card__name">EVM ecosystem</h3><p class="stack-card__description" data-i18n="stack.evmDescription">Secure smart contracts and full-stack applications across major EVM networks.</p></div>
+                  <span class="stack-card__toggle" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
+                </div>
+                <p class="stack-card__networks">Ethereum · Base · Arbitrum · Optimism · Polygon · BNB Chain · Avalanche</p>
+                <div class="stack-card__tools"><span class="stack-chip">Solidity</span><span class="stack-chip">Foundry</span><span class="stack-chip">Hardhat</span><span class="stack-chip">viem</span><span class="stack-chip">Slither</span><span class="stack-chip">AWS KMS</span></div>
+                <span class="stack-card__action"><span data-i18n="stack.exploreEvm">Explore EVM stack</span> <span aria-hidden="true">↓</span></span>
+              </summary>
+              <div class="stack-card__details"><div class="stack-card__rows">
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.smartContracts">Smart contracts</span><span class="stack-row__value">Solidity · OpenZeppelin</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.devTesting">Development & testing</span><span class="stack-row__value">Foundry · Hardhat · fuzz & invariant tests</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.security">Security</span><span class="stack-row__value">Slither static analysis</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.blockchainClients">Blockchain clients</span><span class="stack-row__value">viem · ethers.js</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.walletIntegration">Wallet integration</span><span class="stack-row__value">wagmi · WalletConnect</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.secureSigning">Secure signing</span><span class="stack-row__value">AWS KMS-backed key management</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.indexing">Indexing</span><span class="stack-row__value">The Graph · Envio · Subsquid · custom indexers</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.applicationLayer">Application layer</span><span class="stack-row__value">Next.js · NestJS · PostgreSQL · Prisma</span></div>
+              </div></div>
+            </details>
+
+            <details class="stack-card">
+              <summary>
+                <div class="stack-card__top">
+                  <div><h3 class="stack-card__name">Solana</h3><p class="stack-card__description" data-i18n="stack.solanaDescription">High-performance programs and applications built for the Solana ecosystem.</p></div>
+                  <span class="stack-card__toggle" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
+                </div>
+                <p class="stack-card__networks">Mainnet · Devnet · Local validator</p>
+                <div class="stack-card__tools"><span class="stack-chip">Rust</span><span class="stack-chip">Anchor</span><span class="stack-chip">Solana CLI</span><span class="stack-chip">LiteSVM</span><span class="stack-chip">@solana/kit</span><span class="stack-chip">Wallet Standard</span></div>
+                <span class="stack-card__action"><span data-i18n="stack.exploreSolana">Explore Solana stack</span> <span aria-hidden="true">↓</span></span>
+              </summary>
+              <div class="stack-card__details"><div class="stack-card__rows">
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.onchainPrograms">On-chain programs</span><span class="stack-row__value">Rust · Anchor</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.development">Development</span><span class="stack-row__value">Solana CLI · Anchor CLI · Codama</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.testing">Testing</span><span class="stack-row__value">LiteSVM · Anchor tests · local validator</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.blockchainClients">Blockchain clients</span><span class="stack-row__value">@solana/kit · @solana/client · @solana/web3.js</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.walletIntegration">Wallet integration</span><span class="stack-row__value">Wallet Standard · @solana/react-hooks</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.dataIndexing">Data & indexing</span><span class="stack-row__value">Geyser · Yellowstone gRPC · Helius · custom indexers</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.infrastructure">Infrastructure</span><span class="stack-row__value">RPC redundancy · simulation · priority fees · monitoring</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.applicationLayer">Application layer</span><span class="stack-row__value">Next.js · NestJS · PostgreSQL · Prisma</span></div>
+              </div></div>
+            </details>
+
+            <details class="stack-card">
+              <summary>
+                <div class="stack-card__top">
+                  <div><h3 class="stack-card__name">Cardano</h3><p class="stack-card__description" data-i18n="stack.cardanoDescription">Smart contracts and applications designed around Cardano’s eUTxO model.</p></div>
+                  <span class="stack-card__toggle" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
+                </div>
+                <p class="stack-card__networks">Mainnet · Preprod · Preview</p>
+                <div class="stack-card__tools"><span class="stack-chip">Aiken</span><span class="stack-chip">Plutus</span><span class="stack-chip">Mesh</span><span class="stack-chip">Ogmios</span><span class="stack-chip">Kupo</span><span class="stack-chip">Blockfrost</span></div>
+                <span class="stack-card__action"><span data-i18n="stack.exploreCardano">Explore Cardano stack</span> <span aria-hidden="true">↓</span></span>
+              </summary>
+              <div class="stack-card__details"><div class="stack-card__rows">
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.smartContracts">Smart contracts</span><span class="stack-row__value">Aiken · Plutus</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.development">Development</span><span class="stack-row__value">Aiken CLI · cardano-cli</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.testing">Testing</span><span class="stack-row__value">Unit tests · property tests · execution-cost evaluation</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.transactionBuilding">Transaction building</span><span class="stack-row__value">Mesh · Lucid Evolution</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.walletIntegration">Wallet integration</span><span class="stack-row__value">CIP-30 compatible wallets</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.nodeIndexing">Node & indexing</span><span class="stack-row__value">Ogmios · Kupo</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.providers">Providers</span><span class="stack-row__value">Blockfrost · Koios · Maestro</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.applicationLayer">Application layer</span><span class="stack-row__value">Next.js · NestJS · PostgreSQL · Prisma</span></div>
+              </div></div>
+            </details>
+
+            <details class="stack-card">
+              <summary>
+                <div class="stack-card__top">
+                  <div><h3 class="stack-card__name">Canton Network</h3><p class="stack-card__description" data-i18n="stack.cantonDescription">Privacy-enabled applications and multi-party workflows for regulated assets.</p></div>
+                  <span class="stack-card__toggle" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
+                </div>
+                <p class="stack-card__networks">Global Synchronizer · Participant nodes · Validators</p>
+                <div class="stack-card__tools"><span class="stack-chip">Daml</span><span class="stack-chip">Canton</span><span class="stack-chip">Splice</span><span class="stack-chip">Ledger API</span><span class="stack-chip">PQS</span><span class="stack-chip">PostgreSQL</span></div>
+                <span class="stack-card__action"><span data-i18n="stack.exploreCanton">Explore Canton stack</span> <span aria-hidden="true">↓</span></span>
+              </summary>
+              <div class="stack-card__details"><div class="stack-card__rows">
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.contractsWorkflows">Contracts & workflows</span><span class="stack-row__value">Daml</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.development">Development</span><span class="stack-row__value">Daml SDK · Canton Sandbox · Canton Console</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.testing">Testing</span><span class="stack-row__value">Daml Script · scenario & workflow tests</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.deployment">Deployment</span><span class="stack-row__value">DAR packages · package vetting · upgrades</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.applicationApis">Application APIs</span><span class="stack-row__value">Ledger API · gRPC · JSON</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.identitySigning">Identity & signing</span><span class="stack-row__value">Canton parties · external-party signing · HSM/KMS</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.ledgerQueries">Ledger queries</span><span class="stack-row__value">Participant Query Store (PQS)</span></div>
+                <div class="stack-row"><span class="stack-row__label" data-i18n="stack.applicationLayer">Application layer</span><span class="stack-row__value">TypeScript · Java · Python · PostgreSQL · Prisma</span></div>
+              </div></div>
+            </details>
           </div>
-          <div>
-            <p class="stack__category-title" data-i18n="stack.catFrontend">Frontend</p>
-            <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span>React</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>TypeScript</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Next.js</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Tailwind CSS</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--space-8);">
-            <p class="stack__category-title" data-i18n="stack.catBackend">Backend & Infra</p>
-            <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span>Node.js</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Python</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>PostgreSQL</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>Docker</span>
-              <span class="stack__item"><span class="stack__item-dot"></span>AWS</span>
-            </div>
-          </div>
-          <div style="margin-top: var(--space-8);">
-            <p class="stack__category-title" data-i18n="stack.catLanguages">Languages</p>
-            <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.langJp">Japanese · JLPT N2</span></span>
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.langHi">Hindi</span></span>
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.langEn">English</span></span>
-            </div>
-          </div>
-          <div style="margin-top: var(--space-8);">
-            <p class="stack__category-title" data-i18n="stack.catLearning">Currently Learning</p>
-            <div class="stack__items">
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningAi">AI Engineering</span></span>
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningZk">ZK Proofs</span></span>
-              <span class="stack__item"><span class="stack__item-dot"></span><span data-i18n="stack.learningL2">Layer 2 Protocols</span></span>
+
+          <div class="stack__shared">
+            <p class="stack__label" data-i18n="stack.shared">Shared application stack</p>
+            <div class="stack__shared-grid">
+              <article class="shared-stack"><h3 class="shared-stack__title" data-i18n="stack.webFrontend">Web frontend</h3><p class="shared-stack__body">TypeScript · React · Next.js · Tailwind CSS</p></article>
+              <article class="shared-stack"><h3 class="shared-stack__title" data-i18n="stack.mobile">Mobile</h3><p class="shared-stack__body">Swift · SwiftUI · Kotlin · Jetpack Compose · React Native</p></article>
+              <article class="shared-stack"><h3 class="shared-stack__title" data-i18n="stack.backendCloud">Backend & cloud</h3><p class="shared-stack__body">TypeScript · Node.js · NestJS · REST · GraphQL · WebSockets · PostgreSQL · Prisma · AWS · Docker · CI/CD</p></article>
             </div>
           </div>
         </div>
