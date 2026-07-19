@@ -1618,6 +1618,18 @@ Object.entries(stackTranslations).forEach(([lang, values]) => {
   stackKeys.forEach((key, index) => { locales[lang][key] = values[index]; });
 });
 
+const meetingTranslations = {
+  en: "Book a meeting", ja: "ミーティングを予約", ko: "미팅 예약", zh: "预约会议",
+  es: "Reservar una reunión", de: "Termin buchen", fr: "Réserver un rendez-vous",
+  pt: "Agendar uma reunião", ru: "Записаться на встречу", ar: "احجز اجتماعًا",
+  hi: "मीटिंग बुक करें", it: "Prenota un incontro"
+};
+
+Object.entries(meetingTranslations).forEach(([lang, value]) => {
+  locales[lang]["nav.bookMeeting"] = value;
+  locales[lang]["connect.bookMeeting"] = value;
+});
+
 const LANGUAGES = [
   { code: "en", name: "English" },
   { code: "ja", name: "日本語" },
