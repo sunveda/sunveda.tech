@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="i18n.js?v=10" defer></script>
+  <script src="i18n.js?v=11" defer></script>
   <style>
     /* Art direction: Tech entrepreneur / blockchain builder in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -140,6 +140,26 @@
       color: var(--color-text);
       background-color: var(--color-bg);
     }
+    html:lang(ja) {
+      --font-body: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+      --font-display: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    }
+    html:lang(ko) {
+      --font-body: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-display: "AppleMyungjo", "Batang", serif;
+    }
+    html:lang(zh) {
+      --font-body: "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-display: "Songti SC", "STSong", serif;
+    }
+    html:lang(ar) {
+      --font-body: "Geeza Pro", "Noto Sans Arabic", sans-serif;
+      --font-display: "Noto Naskh Arabic", "Geeza Pro", serif;
+    }
+    html:lang(hi) {
+      --font-body: "Kohinoor Devanagari", "Noto Sans Devanagari", sans-serif;
+      --font-display: "Kohinoor Devanagari", "Noto Serif Devanagari", serif;
+    }
     img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
     input, button, textarea, select { font: inherit; color: inherit; }
     h1, h2, h3, h4 { text-wrap: balance; line-height: 1.15; }
@@ -175,10 +195,10 @@
     .nav .container { max-width: var(--content-wide); }
     .nav__inner { display: flex; align-items: center; justify-content: space-between; gap: clamp(var(--space-4), 2vw, var(--space-8)); flex-wrap: nowrap; } .nav__logo, .nav__links, .nav__actions { min-width: 0; }
     .nav__logo { display: flex; align-items: center; gap: var(--space-2); text-decoration: none; color: var(--color-text); }
-    .nav__logo-text { font-family: var(--font-display); font-size: var(--text-lg); font-style: italic; letter-spacing: -0.02em; }
+    .nav__logo-text { font-family: 'Instrument Serif', Georgia, serif; font-size: var(--text-lg); font-style: italic; letter-spacing: -0.02em; }
     .nav__logo-text { white-space: nowrap; }
     .nav__links { display: flex; align-items: center; gap: clamp(var(--space-4), 2vw, var(--space-8)); flex: 1 1 auto; justify-content: flex-end; margin-left: auto; }
-    .nav__link { text-decoration: none; font-size: var(--text-sm); color: var(--color-text-muted); letter-spacing: 0.02em; }
+    .nav__link { text-decoration: none; font-size: var(--text-sm); color: var(--color-text-muted); letter-spacing: 0.02em; white-space: nowrap; }
     .nav__link:hover { color: var(--color-text); }
     .nav__actions { display: flex; align-items: center; gap: var(--space-3); flex: 0 0 auto; }
     .theme-toggle {
@@ -241,6 +261,9 @@
     @media (max-width: 480px) {
       .nav__cta { display: none; }
       .lang-switch__select { padding-right: 20px; font-size: var(--text-xs); }
+    }
+    @media (max-width: 440px) {
+      .nav__logo-text { display: none; }
     }
 
     /* HERO */
@@ -491,8 +514,8 @@
       text-decoration: none;
     }
     .connect__open-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); animation: pulse 2s ease-in-out infinite; }
-    .connect__open-text { font-size: var(--text-sm); color: var(--color-primary); font-weight: 500; }
-    .connect__open-action { margin-left: auto; font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; white-space: nowrap; }
+    .connect__open-text { min-width: 0; flex: 1 1 12rem; font-size: var(--text-sm); color: var(--color-primary); font-weight: 500; }
+    .connect__open-action { margin-inline-start: auto; flex: 0 0 auto; font-size: var(--text-xs); color: var(--color-primary); font-weight: 600; white-space: nowrap; }
     .connect__open:hover { background: color-mix(in oklch, var(--color-primary-highlight) 80%, var(--color-primary) 20%); }
 
     /* FOOTER */
@@ -501,7 +524,7 @@
       padding: var(--space-10) 0;
     }
     .footer__inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
-    .footer__logo { font-family: var(--font-display); font-size: var(--text-base); font-style: italic; color: var(--color-text-muted); }
+    .footer__logo { font-family: 'Instrument Serif', Georgia, serif; font-size: var(--text-base); font-style: italic; color: var(--color-text-muted); }
     .footer__copy { font-size: var(--text-xs); color: var(--color-text-faint); }
 
     /* DIVIDER */
@@ -531,6 +554,8 @@
     }
     @media (max-width: 480px) {
       .hero__actions { flex-direction: column; align-items: flex-start; }
+      .connect__open { align-items: flex-start; flex-wrap: wrap; }
+      .connect__open-action { width: 100%; margin-inline-start: calc(8px + var(--space-3)); white-space: normal; }
     }
 
     /* RTL (Arabic) */
@@ -543,6 +568,17 @@
     .hero__heading, .section-heading, .connect__heading, .work-card__title {
       word-break: keep-all;
       overflow-wrap: break-word;
+    }
+    html:lang(ja) .hero__heading,
+    html:lang(ja) .section-heading,
+    html:lang(ja) .connect__heading,
+    html:lang(ja) .work-card__title,
+    html:lang(zh) .hero__heading,
+    html:lang(zh) .section-heading,
+    html:lang(zh) .connect__heading,
+    html:lang(zh) .work-card__title {
+      word-break: normal;
+      overflow-wrap: anywhere;
     }
   </style>
 </head>
