@@ -22,7 +22,7 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="i18n.js?v=13" defer></script>
   <style>
-    /* Art direction: Independent software engineer / blockchain builder in Tokyo
+    /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
        Typography: Instrument Serif (display) + DM Sans (body)
        Density: Spacious editorial */
@@ -417,9 +417,10 @@
     .project-card__contribution strong { color: var(--color-text); font-weight: 600; }
     .project-card__link { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: var(--space-5); font-size: var(--text-sm); color: var(--color-primary); text-decoration: none; font-weight: 500; }
     .project-card__link:hover { text-decoration: underline; }
+    .project-card--linked { position: relative; cursor: pointer; text-decoration: none; color: inherit; }
+    .project-card--linked:hover .project-card__link { text-decoration: underline; }
     .project-card__logo { width: 72px; height: 72px; border-radius: var(--radius-md); background: #fff; display: flex; align-items: center; justify-content: center; padding: var(--space-3); border: 1px solid oklch(from var(--color-text) l c h / 0.08); flex-shrink: 0; }
     .project-card__logo img { width: 100%; height: 100%; object-fit: contain; }
-    .project-card__monogram { font-family: var(--font-display); font-size: var(--text-xl); color: #28251d; font-style: italic; }
     @media (max-width: 767px) {
       .project-card { grid-template-columns: 1fr; gap: var(--space-6); }
     }
@@ -695,7 +696,7 @@
             <p class="section-label" data-i18n="about.label">About</p>
             <h2 class="section-heading" id="about-heading" data-i18n-html="about.heading">Engineer.<br/>Bridge-builder.<br/>Transformation partner.</h2>
             <div class="about__body">
-              <p data-i18n="about.body1">I'm Sarveshwar Singh — an independent technology consultant and engineer based in Tokyo. Since 2010, I have worked across full-stack software, enterprise systems, and decentralised technology.</p>
+              <p data-i18n="about.body1">I'm Sarveshwar Singh — a technology consultant and engineer based in Tokyo. Since 2010, I have worked across full-stack software, enterprise systems, and decentralised technology.</p>
               <p data-i18n="about.body2">My strength is connecting the layers: understanding business context, translating ambiguity into technical priorities, and working with teams to move from idea to shipped solution. I stay hands-on wherever emerging technology must create practical value.</p>
             </div>
             <div class="about__tags">
@@ -781,9 +782,9 @@
           <p class="projects__intro" data-i18n="projects.intro">Evidence over claims: selected work spanning team-based market expansion, production software, and open-source contribution.</p>
         </div>
         <div class="projects__list">
-          <article class="project-card reveal">
+          <a class="project-card project-card--linked reveal" href="https://samuraimasterpieces.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Samurai Masterpieces website">
             <div class="project-card__meta">
-              <div class="project-card__logo"><span class="project-card__monogram" aria-hidden="true">SM</span></div>
+              <div class="project-card__logo"><img src="logo-samurai-masterpieces.png" alt="Samurai Masterpieces logo" width="48" height="48" /></div>
               <div class="project-card__org">Samurai Masterpieces · Japan → Europe</div>
               <div class="project-card__role" data-i18n="projects.p4Role">Current team collaboration</div>
             </div>
@@ -791,9 +792,9 @@
               <h3 class="project-card__title" data-i18n="projects.p4Title">Technical enablement for European expansion</h3>
               <p class="project-card__body" data-i18n="projects.p4Body">Through SunVeda Technologies, our team supports Samurai Masterpieces, a Tokyo-based Japanese culinary-tools brand, as it develops its presence across European markets.</p>
               <p class="project-card__contribution"><strong data-i18n="projects.myContribution">My contribution:</strong> <span data-i18n="projects.p4Contribution">connecting expansion goals with technical priorities, coordinating within the team, and contributing hands-on technical support.</span></p>
-              <a class="project-card__link" href="https://samuraimasterpieces.com/" target="_blank" rel="noopener noreferrer" data-i18n="projects.p4Link">Visit Samurai Masterpieces ↗</a>
+              <span class="project-card__link" data-i18n="projects.p4Link">Visit Samurai Masterpieces ↗</span>
             </div>
-          </article>
+          </a>
           <article class="project-card reveal">
             <div class="project-card__meta">
               <div class="project-card__logo"><img src="logo-yoroi.png" alt="Yoroi wallet logo" width="48" height="48" /></div>
