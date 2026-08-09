@@ -417,6 +417,8 @@
     .project-card__contribution strong { color: var(--color-text); font-weight: 600; }
     .project-card__link { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: var(--space-5); font-size: var(--text-sm); color: var(--color-primary); text-decoration: none; font-weight: 500; }
     .project-card__link:hover { text-decoration: underline; }
+    .project-card__link--muted { color: var(--color-text-faint); cursor: default; }
+    .project-card__link--muted:hover { text-decoration: none; }
     .project-card--linked { position: relative; cursor: pointer; text-decoration: none; color: inherit; }
     .project-card--linked:hover .project-card__link { text-decoration: underline; }
     .project-card__logo { width: 72px; height: 72px; border-radius: var(--radius-md); background: #fff; display: flex; align-items: center; justify-content: center; padding: var(--space-3); border: 1px solid oklch(from var(--color-text) l c h / 0.08); flex-shrink: 0; }
@@ -640,7 +642,7 @@
           <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
-          <a href="https://cal.com/sunveda" class="nav__meeting" target="_blank" rel="noopener noreferrer" data-i18n="nav.bookMeeting">Book a meeting</a>
+          <a href="https://calendar.app.google/Z7Dx2r3WQDApGX5eA" class="nav__meeting" target="_blank" rel="noopener noreferrer" data-i18n="nav.bookMeeting">Book a meeting</a>
           <a href="#connect" class="nav__cta" data-i18n="nav.getInTouch">Get in touch</a>
         </div>
       </div>
@@ -797,25 +799,15 @@
           </a>
           <article class="project-card reveal">
             <div class="project-card__meta">
-              <div class="project-card__logo"><img src="logo-yoroi.png" alt="Yoroi wallet logo" width="48" height="48" /></div>
-              <div class="project-card__org">EMURGO · Cardano</div>
-              <div class="project-card__role" data-i18n="projects.p3Role">Open-source Contribution</div>
-            </div>
-            <div>
-              <h3 class="project-card__title">Yoroi Wallet</h3>
-              <p class="project-card__body" data-i18n="projects.p3Body">Contributed to Yoroi, EMURGO's light wallet for Cardano — across the browser extension, mobile apps, and Ledger hardware bridge.</p>
-              <a class="project-card__link" href="https://github.com/Emurgo/yoroi-frontend/graphs/contributors?all=1" target="_blank" rel="noopener noreferrer" data-i18n="projects.p3Link">View on GitHub ↗</a>
-            </div>
-          </article>
-          <article class="project-card reveal">
-            <div class="project-card__meta">
               <div class="project-card__logo"><img src="logo-rwa-v3.png" alt="RWA marketplace logo" width="48" height="48" /></div>
               <div class="project-card__org">RWA · Tokenization</div>
               <div class="project-card__role" data-i18n="projects.p2Role">RWA Marketplace Architecture</div>
             </div>
             <div>
               <h3 class="project-card__title">RWA Marketplace</h3>
-              <p class="project-card__body" data-i18n="projects.p2Body">Contributed to the design and delivery of smart-contract architecture for an RWA marketplace supporting real-world asset tokenization with on-chain provenance and traceability.</p>
+              <p class="project-card__body" data-i18n="projects.p2Body">A marketplace supporting real-world asset tokenization with on-chain provenance and traceability.</p>
+              <p class="project-card__contribution"><strong data-i18n="projects.myContribution">My contribution:</strong> <span data-i18n="projects.p2Contribution">contributed to the design and delivery of its smart-contract architecture.</span></p>
+              <span class="project-card__link project-card__link--muted" data-i18n="projects.p2Status">Contribution summary</span>
             </div>
           </article>
           <article class="project-card reveal">
@@ -826,9 +818,24 @@
             </div>
             <div>
               <h3 class="project-card__title">NFT Marketplace</h3>
-              <p class="project-card__body" data-i18n="projects.p1Body">Contributed to the design and delivery of smart-contract architecture for an NFT marketplace — multi-chain minting, trading, and secondary-market flows across Ethereum, Polygon, and Oasys.</p>
+              <p class="project-card__body" data-i18n="projects.p1Body">A multi-chain marketplace supporting minting, trading, and secondary-market flows across Ethereum, Polygon, and Oasys.</p>
+              <p class="project-card__contribution"><strong data-i18n="projects.myContribution">My contribution:</strong> <span data-i18n="projects.p1Contribution">contributed to the design and delivery of its smart-contract architecture.</span></p>
+              <span class="project-card__link project-card__link--muted" data-i18n="projects.p1Status">Contribution summary</span>
             </div>
           </article>
+          <a class="project-card project-card--linked reveal" href="https://github.com/Emurgo/yoroi-frontend/graphs/contributors?all=1" target="_blank" rel="noopener noreferrer" aria-label="View the SecondFi Wallet contribution history on GitHub">
+            <div class="project-card__meta">
+              <div class="project-card__logo"><img src="logo-secondfi.png" alt="SecondFi Wallet logo" width="48" height="48" /></div>
+              <div class="project-card__org">EMURGO · Cardano</div>
+              <div class="project-card__role" data-i18n="projects.p3Role">Open-source contribution · Formerly Yoroi</div>
+            </div>
+            <div>
+              <h3 class="project-card__title" data-i18n="projects.p3Title">SecondFi Wallet</h3>
+              <p class="project-card__body" data-i18n="projects.p3Body">SecondFi is the current name of the wallet formerly known as Yoroi, built on its established Cardano wallet infrastructure.</p>
+              <p class="project-card__contribution"><strong data-i18n="projects.myContribution">My contribution:</strong> <span data-i18n="projects.p3Contribution">contributed to the original Yoroi codebase across the browser extension, mobile apps, and Ledger hardware bridge.</span></p>
+              <span class="project-card__link" data-i18n="projects.p3Link">View contribution on GitHub ↗</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -1091,7 +1098,7 @@
                 </div>
               </blockquote>
             </div>
-            <a class="connect__open" href="https://cal.com/sunveda" target="_blank" rel="noopener noreferrer" aria-label="Book a meeting with SunVeda">
+            <a class="connect__open" href="https://calendar.app.google/Z7Dx2r3WQDApGX5eA" target="_blank" rel="noopener noreferrer" aria-label="Book a meeting with SunVeda">
               <span class="connect__open-dot" aria-hidden="true"></span>
               <span class="connect__open-text" data-i18n="connect.openText">Open to new projects & collaborations</span>
               <span class="connect__open-action"><span data-i18n="connect.bookMeeting">Book a meeting</span> ↗</span>
