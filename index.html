@@ -64,7 +64,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script async src="//www.instagram.com/embed.js"></script>
-  <script src="i18n.js?v=19" defer></script>
+  <script src="i18n.js?v=20" defer></script>
   <style>
     /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -277,7 +277,43 @@
     .nav__cta { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
     .lang-switch__select { min-width: 96px; }
     .nav__logo { flex-shrink: 0; }
-    
+    .nav__toggle {
+      display: none;
+      width: 36px; height: 36px; flex-shrink: 0;
+      align-items: center; justify-content: center;
+      border-radius: var(--radius-full);
+      color: var(--color-text-muted);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.1);
+      background: transparent;
+    }
+    .nav__toggle:hover { color: var(--color-text); background: var(--color-surface); }
+    .nav__toggle-icon--close { display: none; }
+    .nav__toggle.is-open .nav__toggle-icon--open { display: none; }
+    .nav__toggle.is-open .nav__toggle-icon--close { display: block; }
+    .nav__mobile-menu {
+      display: none;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--color-bg);
+      border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.06);
+      box-shadow: 0 16px 32px -16px oklch(from var(--color-text) l c h / 0.2);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .nav__mobile-menu.is-open { display: block; }
+    .nav__mobile-menu .container { display: flex; flex-direction: column; padding-block: var(--space-2) var(--space-6); }
+    .nav__mobile-link {
+      display: block; padding: var(--space-3) 0;
+      text-decoration: none; font-size: var(--text-base);
+      color: var(--color-text-muted);
+      border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.06);
+    }
+    .nav__mobile-link:hover, .nav__mobile-link:focus-visible { color: var(--color-text); }
+    .nav__mobile-actions { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
+    .nav__mobile-actions .nav__meeting, .nav__mobile-actions .nav__cta { width: 100%; height: 44px; }
+    @media (min-width: 1101px) {
+      .nav__mobile-menu { display: none !important; }
+    }
+
     /* LANGUAGE SWITCHER */
     .lang-switch { position: relative; display: flex; align-items: center; }
     .lang-switch__icon {
@@ -304,7 +340,7 @@
       border-top: 5px solid var(--color-text-muted);
     }
     @media (max-width: 480px) {
-      .nav__cta { display: none; }
+      .nav__actions > .nav__cta { display: none; }
       .lang-switch__select { padding-right: 20px; font-size: var(--text-xs); }
     }
     @media (max-width: 440px) {
@@ -672,7 +708,8 @@
     @media (max-width: 1100px) {
       .nav__links { gap: var(--space-4); }
       .nav__actions { gap: var(--space-2); }
-      .nav__cta, .nav__meeting { display: none; }
+      .nav__actions > .nav__cta, .nav__actions > .nav__meeting { display: none; }
+      .nav__toggle { display: inline-flex; }
     }
     @media (max-width: 940px) { .nav__links { display: none; } }
 
@@ -763,6 +800,21 @@
           </button>
           <a href="https://calendar.app.google/Z7Dx2r3WQDApGX5eA" class="nav__meeting" target="_blank" rel="noopener noreferrer" data-i18n="nav.bookMeeting">Book a meeting</a>
           <a href="#connect" class="nav__cta" data-i18n="nav.getInTouch">Get in touch</a>
+          <button class="nav__toggle" data-nav-toggle aria-expanded="false" aria-controls="nav-mobile-menu" aria-label="Menu">
+            <svg class="nav__toggle-icon nav__toggle-icon--open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            <svg class="nav__toggle-icon nav__toggle-icon--close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="nav__mobile-menu" id="nav-mobile-menu" data-nav-mobile-menu>
+      <div class="container">
+        <a href="#about" class="nav__mobile-link" data-i18n="nav.about" data-nav-mobile-link>About</a>
+        <a href="#projects" class="nav__mobile-link" data-i18n="nav.notableWork" data-nav-mobile-link>Notable work</a>
+        <a href="#stack" class="nav__mobile-link" data-i18n="nav.techStack" data-nav-mobile-link>Tech stack</a>
+        <div class="nav__mobile-actions">
+          <a href="https://calendar.app.google/Z7Dx2r3WQDApGX5eA" class="nav__meeting" target="_blank" rel="noopener noreferrer" data-i18n="nav.bookMeeting" data-nav-mobile-link>Book a meeting</a>
+          <a href="#connect" class="nav__cta" data-i18n="nav.getInTouch" data-nav-mobile-link>Get in touch</a>
         </div>
       </div>
     </div>
@@ -1307,7 +1359,7 @@
           <a href="terms.html">Service terms</a>
         </nav>
         <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
-        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/12" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #12">v12 · a4847dd</a></div>
+        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/13" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #13">v13 · 75a49f3</a></div>
       </div>
     </div>
   </footer>
@@ -1332,6 +1384,35 @@
         d = d === 'dark' ? 'light' : 'dark';
         r.setAttribute('data-theme', d);
         updateIcon();
+      });
+    })();
+
+    // Mobile nav menu
+    (function(){
+      const toggle = document.querySelector('[data-nav-toggle]');
+      const menu = document.querySelector('[data-nav-mobile-menu]');
+      if (!toggle || !menu) return;
+      function closeMenu() {
+        menu.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      function openMenu() {
+        menu.classList.add('is-open');
+        toggle.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+      toggle.addEventListener('click', function() {
+        if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
+      });
+      menu.querySelectorAll('[data-nav-mobile-link]').forEach(function(link) {
+        link.addEventListener('click', closeMenu);
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeMenu();
+      });
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 1100) closeMenu();
       });
     })();
 

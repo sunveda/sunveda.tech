@@ -1905,6 +1905,17 @@ Object.entries(askQuestionTranslations).forEach(([lang, value]) => {
   locales[lang]["connect.askQuestion"] = value;
 });
 
+const menuTranslations = {
+  en: "Menu", ja: "メニュー", ko: "메뉴", zh: "菜单",
+  es: "Menú", de: "Menü", fr: "Menu",
+  pt: "Menu", ru: "Меню", ar: "القائمة",
+  hi: "मेनू", it: "Menu"
+};
+
+Object.entries(menuTranslations).forEach(([lang, value]) => {
+  locales[lang]["nav.menu"] = value;
+});
+
 const LANGUAGES = [
   { code: "en", name: "English" },
   { code: "ja", name: "日本語" },
@@ -1967,6 +1978,10 @@ function applyLang(lang) {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
     themeBtn.setAttribute("aria-label", isDark ? dict["nav.themeToLight"] : dict["nav.themeToDark"]);
   }
+
+  // Update mobile nav toggle aria-label for current language
+  const navToggle = document.querySelector("[data-nav-toggle]");
+  if (navToggle && dict["nav.menu"] != null) navToggle.setAttribute("aria-label", dict["nav.menu"]);
 
   // Keep switcher in sync
   const sel = document.querySelector("[data-language-select]");
