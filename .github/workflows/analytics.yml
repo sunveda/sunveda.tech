@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+
       - name: Run Analytics Collector
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
@@ -23,14 +24,32 @@ jobs:
           GA_SERVICE_ACCOUNT_JSON: ${{ secrets.GA_SERVICE_ACCOUNT_JSON }}
           GOATCOUNTER_API_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN }}
         run: |
-          mkdir -p analytics/reports
           DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
-          node analytics/collect.mjs > analytics/reports/${DATE}.md
-      - name: Commit report
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+          node analytics/collect.mjs > /tmp/report-${DATE}.md
+
+      - name: Commit report to analytics-data branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
-          git add analytics/reports/
+
+          # Fetch the analytics-data branch (or note it doesn't exist yet)
+          git fetch origin analytics-data 2>/dev/null || true
+
+          # Use a worktree — a completely separate directory for analytics-data.
+          # This never touches the main checkout, so no site files can leak in.
+          git worktree add /tmp/analytics-worktree analytics-data 2>/dev/null || \
+            git worktree add --orphan -b analytics-data /tmp/analytics-worktree
+
+          # The worktree starts empty (orphan) or with only previous reports.
+          # Ensure the reports directory exists.
+          mkdir -p /tmp/analytics-worktree/analytics/reports
+
+          # Copy today's report in.
+          cp /tmp/report-${DATE}.md /tmp/analytics-worktree/analytics/reports/${DATE}.md
+
+          # Commit only from inside the isolated worktree.
+          cd /tmp/analytics-worktree
+          git add analytics/reports/${DATE}.md
           git diff --cached --quiet || git commit -m "analytics: daily report ${DATE}"
-          git push
+          git push origin analytics-data
