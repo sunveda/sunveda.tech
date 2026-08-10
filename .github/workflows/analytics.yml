@@ -22,11 +22,15 @@ jobs:
           CF_ZONE_TAG: ${{ secrets.CF_ZONE_TAG }}
           GA_SERVICE_ACCOUNT_JSON: ${{ secrets.GA_SERVICE_ACCOUNT_JSON }}
           GOATCOUNTER_API_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN }}
-        run: node analytics/collect.mjs > analytics/report.md
+        run: |
+          mkdir -p analytics/reports
+          DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
+          node analytics/collect.mjs > analytics/reports/${DATE}.md
       - name: Commit report
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add analytics/report.md
-          git diff --cached --quiet || git commit -m "analytics: daily report $(date -u '+%Y-%m-%d')"
+          DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
+          git add analytics/reports/
+          git diff --cached --quiet || git commit -m "analytics: daily report ${DATE}"
           git push
