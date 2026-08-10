@@ -54,9 +54,38 @@ Then open `http://localhost:8000/index.html`.
 - Branch naming pattern used for larger changes: `agent/<short-description>` (e.g. `agent/redesign-tools-of-trade`, `agent/fix-multilingual-layout`), merged via PR.
 - The site has previously been adjusted for: multilingual responsive layout bugs, legal/compliance wording (sole proprietor status, service terms), and cache-busting after asset changes.
 
+## Footer version line
+
+> **MANDATORY — update this on every PR before merging.**
+
+The footer shows the current site version as a link to the last merged PR with its short commit hash, e.g.:
+
+```
+v10 · da8be08
+```
+
+**Format:** `v{PR number} · {short hash (7 chars)}` — rendered as a single `<a>` inside `.footer__version` pointing to the GitHub PR URL.
+
+**When working on a PR branch**, update the footer to reflect the *upcoming* PR number and the branch tip hash:
+
+1. Find the next PR number (look at the last merged PR number and add 1, or check GitHub)
+2. Get the current branch tip hash: `git rev-parse --short HEAD`
+3. Update the footer in `index.html`:
+   ```html
+   <div class="footer__version">
+     <a href="https://github.com/sunveda/sunveda.tech/pull/{N}" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #{N}">v{N} · {hash}</a>
+   </div>
+   ```
+4. Include this update in the PR — it must be part of every merged PR, no exceptions.
+
+The GitHub repo URL pattern is `https://github.com/sunveda/sunveda.tech/pull/{N}`.
+
+A `.kiro/hooks/update-footer-version.json` hook runs automatically after each agent task to keep this in sync. Do not remove it.
+
 ## What NOT to do
 
 - Don't introduce a build tool, framework, or bundler unless explicitly asked — the whole point of this repo is a zero-build static site.
 - Don't add a translation key in one language without adding it in all supported languages.
 - Don't hardcode colors/spacing that duplicate an existing design token.
 - Don't forget to bump `i18n.js`'s cache-busting version query param when editing it.
+- Don't merge a PR without updating the `.footer__version` link in `index.html` to the new PR number and commit hash.
