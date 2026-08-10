@@ -52,6 +52,7 @@ Then open `http://localhost:8000/index.html`.
 
 - Commits are small and scoped (one visual/content change per commit).
 - Branch naming pattern used for larger changes: `agent/<short-description>` (e.g. `agent/redesign-tools-of-trade`, `agent/fix-multilingual-layout`), merged via PR.
+- **All PRs must be assigned to `sunveda`** — always pass `--assignee sunveda` when running `gh pr create`.
 - The site has previously been adjusted for: multilingual responsive layout bugs, legal/compliance wording (sole proprietor status, service terms), and cache-busting after asset changes.
 
 ## Footer version line
@@ -89,3 +90,4 @@ A `.kiro/hooks/update-footer-version.json` hook runs automatically after each ag
 - Don't hardcode colors/spacing that duplicate an existing design token.
 - Don't forget to bump `i18n.js`'s cache-busting version query param when editing it.
 - Don't merge a PR without updating the `.footer__version` link in `index.html` to the new PR number and commit hash.
+- Don't create a PR without assigning it to `sunveda` (`--assignee sunveda` in `gh pr create`).
