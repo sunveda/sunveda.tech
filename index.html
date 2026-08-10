@@ -64,7 +64,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script async src="//www.instagram.com/embed.js"></script>
-  <script src="i18n.js?v=18" defer></script>
+  <script src="i18n.js?v=19" defer></script>
   <style>
     /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -491,13 +491,25 @@
     .community-card__link {
       display: inline-flex; align-items: center; gap: var(--space-2);
       margin-top: var(--space-3);
-      padding: var(--space-2) var(--space-5);
+      padding: var(--space-2) var(--space-6);
       border: 1px solid oklch(from var(--color-text) l c h / 0.15);
       border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 500;
       color: var(--color-text-muted);
+      white-space: nowrap;
+      text-decoration: none;
       transition: color var(--transition-interactive), border-color var(--transition-interactive);
     }
-    .community-card:hover .community-card__link { color: var(--color-primary); border-color: var(--color-primary); }
+    .community-card__actions {
+      display: flex; flex-wrap: wrap; gap: var(--space-3);
+      justify-content: center; align-items: center;
+      margin-top: var(--space-3);
+    }
+    .community-card__actions .community-card__link { margin-top: 0; }
+    a.community-card:hover .community-card__link,
+    .community-card__link:hover {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
     @media (max-width: 767px) {
       .community__grid { grid-template-columns: 1fr; }
     }
@@ -610,6 +622,20 @@
       animation: heartbeat 1.8s ease-in-out infinite;
     }
     .connect__open:hover .connect__open-action { background: var(--color-primary-hover); animation-play-state: paused; }
+    .connect__ask {
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--space-3) var(--space-6);
+      background: var(--color-surface);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.12);
+      border-radius: var(--radius-full);
+      text-decoration: none; color: var(--color-text);
+      font-size: var(--text-sm); font-weight: 600;
+      transition: background var(--transition-interactive), border-color var(--transition-interactive);
+    }
+    .connect__ask:hover {
+      background: var(--color-surface-2);
+      border-color: oklch(from var(--color-primary) l c h / 0.35);
+    }
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.06); }
@@ -627,6 +653,9 @@
     .footer__legal { display: flex; gap: var(--space-4); flex-wrap: wrap; }
     .footer__legal a { color: var(--color-text-muted); font-size: var(--text-xs); text-decoration: none; }
     .footer__legal a:hover { color: var(--color-text); }
+    .footer__version { font-size: var(--text-xs); color: var(--color-text-faint); font-family: 'DM Mono', ui-monospace, monospace; }
+    .footer__version a { color: var(--color-text-faint); text-decoration: none; }
+    .footer__version a:hover { color: var(--color-text-muted); text-decoration: underline; }
     .services__notice { max-width: 76ch; margin-top: var(--space-8); color: var(--color-text-muted); font-size: var(--text-xs); line-height: 1.7; }
 
     /* DIVIDER */
@@ -661,6 +690,7 @@
     @media (max-width: 480px) {
       .hero__actions { flex-direction: column; align-items: flex-start; }
       .connect__open-action { width: 100%; justify-content: center; }
+      .connect__ask { width: 100%; }
     }
 
     /* RTL (Arabic) */
@@ -1106,12 +1136,15 @@
           <p class="projects__intro" data-i18n="community.intro">Two communities I run outside client work — open to anyone who wants to join in.</p>
         </div>
         <div class="community__grid">
-          <a class="community-card reveal" href="https://line.me/ti/g2/9yrvBzwsohWhwGsk2F1Ns8ZjkFVHlh5k03pDGg?utm_source=invitation&amp;utm_medium=link_copy&amp;utm_campaign=default" target="_blank" rel="noopener noreferrer">
+          <div class="community-card reveal">
             <img class="community-card__avatar" src="community-ai-openchat.png" alt="今こそAI｜Learn AI Now logo" width="96" height="96" loading="lazy" />
             <h3 class="community-card__title">今こそAI｜Learn AI Now</h3>
             <p class="community-card__desc" data-i18n="community.c1Desc">A LINE OpenChat group for people learning and experimenting with AI tools together.</p>
-            <span class="community-card__link" data-i18n="community.join">Join on LINE ↗</span>
-          </a>
+            <div class="community-card__actions">
+              <a class="community-card__link" href="https://line.me/ti/g2/9yrvBzwsohWhwGsk2F1Ns8ZjkFVHlh5k03pDGg?utm_source=invitation&amp;utm_medium=link_copy&amp;utm_campaign=default" target="_blank" rel="noopener noreferrer" data-i18n="community.join">Join on LINE ↗</a>
+              <a class="community-card__link" href="https://forms.gle/Ja4xyHqHTvGdqPiH9" target="_blank" rel="noopener noreferrer" data-i18n="connect.askQuestion">Ask a question</a>
+            </div>
+          </div>
           <a class="community-card reveal" href="https://line.me/ti/g2/lgYsACXlOsAeA5cYWKgH9GL4cUFCe8-qjTA_Sw?utm_source=invitation&amp;utm_medium=link_copy&amp;utm_campaign=default" target="_blank" rel="noopener noreferrer">
             <img class="community-card__avatar" src="community-badminton-openchat.png" alt="SunnyDays Badminton Stories logo" width="96" height="96" loading="lazy" />
             <h3 class="community-card__title">SunnyDays Badminton Stories</h3>
@@ -1253,6 +1286,9 @@
               </span>
               <span class="connect__open-action"><span data-i18n="connect.bookMeeting">Book a meeting</span></span>
             </a>
+            <a class="connect__ask" href="https://forms.gle/Ja4xyHqHTvGdqPiH9" target="_blank" rel="noopener noreferrer" aria-label="Ask a question">
+              <span data-i18n="connect.askQuestion">Ask a question</span>
+            </a>
           </div>
         </div>
       </div>
@@ -1271,6 +1307,7 @@
           <a href="terms.html">Service terms</a>
         </nav>
         <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
+        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/12" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #12">v12 · a4847dd</a></div>
       </div>
     </div>
   </footer>

@@ -1894,6 +1894,17 @@ Object.entries(meetingTranslations).forEach(([lang, value]) => {
   locales[lang]["connect.bookMeeting"] = value;
 });
 
+const askQuestionTranslations = {
+  en: "Ask a question", ja: "質問する", ko: "질문하기", zh: "提问",
+  es: "Hacer una pregunta", de: "Frage stellen", fr: "Poser une question",
+  pt: "Fazer uma pergunta", ru: "Задать вопрос", ar: "اطرح سؤالاً",
+  hi: "प्रश्न पूछें", it: "Fai una domanda"
+};
+
+Object.entries(askQuestionTranslations).forEach(([lang, value]) => {
+  locales[lang]["connect.askQuestion"] = value;
+});
+
 const LANGUAGES = [
   { code: "en", name: "English" },
   { code: "ja", name: "日本語" },

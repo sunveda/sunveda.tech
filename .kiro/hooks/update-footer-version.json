@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Update footer version after task",
+      "trigger": "PostTaskExec",
+      "description": "After each agent task completes, reads the current branch HEAD hash and last merged PR number, increments the PR number by 1, and patches the .footer__version link in index.html automatically.",
+      "action": {
+        "type": "command",
+        "command": "cd /Users/singh/repo/sunveda && HASH=$(git rev-parse --short HEAD) && LAST_MERGE=$(git log --merges --oneline -1) && PR_NUM=$(echo \"$LAST_MERGE\" | grep -o '#[0-9]*' | tr -d '#' | head -1) && NEXT_PR=$((PR_NUM + 1)) && sed -i '' \"s|footer__version\\\">.*</div>|footer__version\\\"><a href=\\\"https://github.com/sunveda/sunveda.tech/pull/${NEXT_PR}\\\" target=\\\"_blank\\\" rel=\\\"noopener noreferrer\\\" aria-label=\\\"Last merged pull request #${NEXT_PR}\\\">v${NEXT_PR} · ${HASH}<\\/a><\\/div>|\" index.html",
+        "timeout": 30
+      }
+    }
+  ]
+}
