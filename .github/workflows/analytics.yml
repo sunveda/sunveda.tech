@@ -1,0 +1,36 @@
+name: Daily Analytics Collection
+
+on:
+  schedule:
+    # 23:00 UTC = 8:00 AM JST
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  collect-analytics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run Analytics Collector
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_TAG: ${{ secrets.CF_ZONE_TAG }}
+          GA_SERVICE_ACCOUNT_JSON: ${{ secrets.GA_SERVICE_ACCOUNT_JSON }}
+          GOATCOUNTER_API_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN }}
+        run: |
+          mkdir -p analytics/reports
+          DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
+          node analytics/collect.mjs > analytics/reports/${DATE}.md
+      - name: Commit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
+          git add analytics/reports/
+          git diff --cached --quiet || git commit -m "analytics: daily report ${DATE}"
+          git push
