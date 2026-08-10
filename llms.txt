@@ -1,0 +1,20 @@
+# Sarveshwar Singh - SunVeda Technologies
+
+> Tokyo-based technology consultant and hands-on engineer connecting business goals, customer needs, and technical delivery. 15+ years across full-stack software, enterprise systems, and decentralised technology.
+
+Sarveshwar Singh runs SunVeda Technologies, working with a trusted team on transformation strategy, product thinking, and hands-on engineering - spanning blockchain/Web3 systems (EVM networks, Solana, Cardano, Canton Network) as well as cloud, full-stack, and mobile development. Based in Tokyo, Japan, with particular experience in cross-market and Japan-market technical enablement, and a growing focus on security-first architecture and AI safety review.
+
+## Site sections
+
+- [About](https://sunveda.tech/#about): Background, focus areas, and approach to transformation work
+- [Notable Work](https://sunveda.tech/#projects): Selected contributions - NFT and RWA marketplace smart-contract architecture, SecondFi (formerly Yoroi) Cardano wallet, Samurai Masterpieces European market expansion
+- [Tech Stack](https://sunveda.tech/#stack): Tools across blockchain ecosystems (EVM, Solana, Cardano, Canton Network), frontend, and backend & infrastructure
+- [Capabilities](https://sunveda.tech/#services): Ways to collaborate - transformation discovery, product & technical roadmaps, customer journey & service design, architecture & delivery, security-first & AI safety review, and cross-market technical enablement
+- [Community](https://sunveda.tech/#community): LINE OpenChat communities run outside client work - "Ima Koso AI | Learn AI Now" (AI tools) and SunnyDays Badminton Stories
+- [Gallery](https://sunveda.tech/#gallery): Instagram moments from community meetups
+- [Connect](https://sunveda.tech/#connect): Contact links (GitHub, X, LinkedIn, Instagram, Telegram) and meeting booking
+
+## Legal
+
+- [Privacy Policy](https://sunveda.tech/privacy.html)
+- [Terms of Service](https://sunveda.tech/terms.html)
