@@ -54,7 +54,8 @@
       "https://x.com/sunvedatech",
       "https://www.linkedin.com/in/sarveshwar",
       "https://www.instagram.com/sunvedatech",
-      "https://t.me/sunvedatech"
+      "https://t.me/sunvedatech",
+      "https://www.youtube.com/@sunnyinTKY"
     ]
   }
   </script>
@@ -269,8 +270,9 @@
       border-radius: var(--radius-full);
       color: var(--color-primary); text-decoration: none;
       font-size: var(--text-sm); font-weight: 500; white-space: nowrap;
+      animation: heartbeat 1.8s ease-in-out infinite;
     }
-    .nav__meeting:hover { background: var(--color-primary-highlight); border-color: var(--color-primary); }
+    .nav__meeting:hover { background: var(--color-primary-highlight); border-color: var(--color-primary); animation-play-state: paused; }
     .lang-switch__select, .theme-toggle, .nav__cta { height: 36px; }
     .nav__cta { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
     .lang-switch__select { min-width: 96px; }
@@ -576,7 +578,7 @@
     .connect__inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: start; }
     .connect__heading { font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: var(--space-4); }
     .connect__heading em { color: var(--color-primary); font-style: italic; }
-    .connect__body { font-size: var(--text-base); color: var(--color-text-muted); margin-bottom: var(--space-8); max-width: 44ch; }
+    .connect__body { font-size: var(--text-base); color: var(--color-text-muted); margin-bottom: var(--space-8); }
     .connect__links { display: flex; flex-direction: column; gap: var(--space-3); }
     .connect__link {
       display: flex; align-items: center; justify-content: space-between;
@@ -611,8 +613,7 @@
       border-radius: var(--radius-lg); padding: var(--space-6);
       text-decoration: none;
     }
-    .connect__open-status { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
-    .connect__open-dot { flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); }
+    .connect__open-status { display: flex; align-items: center; min-width: 0; }
     .connect__open-text { min-width: 0; font-size: var(--text-sm); color: var(--color-primary); font-weight: 500; }
     .connect__open-action {
       display: inline-flex; align-items: center; gap: var(--space-2);
@@ -621,12 +622,12 @@
       border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600;
       white-space: nowrap;
       transition: background var(--transition-interactive), transform var(--transition-interactive);
-      animation: pulse-cta 2s ease-in-out infinite;
+      animation: heartbeat 1.8s ease-in-out infinite;
     }
-    .connect__open:hover .connect__open-action { background: var(--color-primary-hover); transform: translateY(-1px); animation: none; }
-    @keyframes pulse-cta {
-      0%, 100% { box-shadow: 0 0 0 0 oklch(from var(--color-primary) l c h / 0.45); }
-      50% { box-shadow: 0 0 0 7px oklch(from var(--color-primary) l c h / 0); }
+    .connect__open:hover .connect__open-action { background: var(--color-primary-hover); animation-play-state: paused; }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
     }
 
     /* FOOTER */
@@ -670,6 +671,7 @@
       .services__grid { gap: var(--space-4); }
       .hero__bg-text { display: none; }
       .hero__meta { gap: var(--space-8); }
+      .connect__visual { margin-top: 0; }
     }
     @media (max-width: 480px) {
       .hero__actions { flex-direction: column; align-items: flex-start; }
@@ -1261,6 +1263,18 @@
                 </div>
                 <svg class="connect__link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
               </a>
+              <a href="https://www.youtube.com/@sunnyinTKY" class="connect__link" target="_blank" rel="noopener noreferrer">
+                <div class="connect__link-left">
+                  <div class="connect__link-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a2.966 2.966 0 0 0-2.088-2.088C19.692 3.5 12 3.5 12 3.5s-7.692 0-9.41.598A2.966 2.966 0 0 0 .502 6.186 30.07 30.07 0 0 0 0 12a30.07 30.07 0 0 0 .502 5.814 2.966 2.966 0 0 0 2.088 2.088C4.308 20.5 12 20.5 12 20.5s7.692 0 9.41-.598a2.966 2.966 0 0 0 2.088-2.088A30.07 30.07 0 0 0 24 12a30.07 30.07 0 0 0-.502-5.814zM9.75 15.568V8.432L15.818 12 9.75 15.568z"/></svg>
+                  </div>
+                  <div>
+                    <div class="connect__link-name">YouTube</div>
+                    <div class="connect__link-handle">@sunnyinTKY</div>
+                  </div>
+                </div>
+                <svg class="connect__link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+              </a>
             </div>
           </div>
           <div class="connect__visual reveal">
@@ -1271,7 +1285,6 @@
             </div>
             <a class="connect__open" href="https://calendar.app.google/Z7Dx2r3WQDApGX5eA" target="_blank" rel="noopener noreferrer" aria-label="Book a meeting with SunVeda">
               <span class="connect__open-status">
-                <span class="connect__open-dot" aria-hidden="true"></span>
                 <span class="connect__open-text" data-i18n="connect.openText">Open to new projects & collaborations</span>
               </span>
               <span class="connect__open-action"><span data-i18n="connect.bookMeeting">Book a meeting</span> ↗</span>
