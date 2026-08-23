@@ -2,24 +2,222 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>RSVP — Sanya's 2nd Birthday</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sanya's 2nd Birthday</title>
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=https://script.google.com/macros/s/AKfycbzCe1ewId_RMFDw_3KGm7hvRVDb1dmkMaC0pHt8UlIr6PYSeRm4w6GKrusVjhIV83-TrQ/exec">
-<link rel="canonical" href="https://script.google.com/macros/s/AKfycbzCe1ewId_RMFDw_3KGm7hvRVDb1dmkMaC0pHt8UlIr6PYSeRm4w6GKrusVjhIV83-TrQ/exec">
+<meta name="description" content="Sanya turns two — Saturday 12 September 2026, Ojima, Tokyo. Please let us know if you can come.">
+
+<!-- Open Graph: this link gets shared into LINE and WhatsApp groups, where the
+     preview card is the first thing most guests will actually see. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanya turns 2 🎂">
+<meta property="og:description" content="Saturday 12 September 2026 · 16:00–20:00 · Ojima, Tokyo">
+<meta property="og:url" content="https://sunveda.tech/rsvp">
+
 <style>
-  body{font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;
-    background:#fdfaff;color:#3b2f4a;text-align:center;padding:24px}
-  a{color:#7345e8}
+  /* A single warm identity, deliberately not theme-switching: this is an
+     invitation, and it should look the same to everyone who opens it. */
+  :root {
+    --plum:       #6d3bd4;
+    --plum-deep:  #4a2496;
+    --plum-soft:  #f3ecfe;
+    --ink:        #2f2540;
+    --ink-soft:   #6b5f7a;
+    --ground:     #fdfaff;
+    --card:       #ffffff;
+    --line:       #e8ddf9;
+    --icing:      #ef9fc4;
+    --radius:     18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 0 20px calc(40px + env(safe-area-inset-bottom));
+  }
+
+  .wrap { width: 100%; max-width: 480px; }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(160deg, #8b5cf6 0%, #6d3bd4 55%, #b06ab3 100%);
+    color: #fff;
+    border-radius: 0 0 28px 28px;
+    margin: 0 -20px 28px;
+    padding: 48px 28px 40px;
+    text-align: center;
+  }
+  .cake { font-size: 52px; line-height: 1; margin-bottom: 14px; }
+  .hero h1 {
+    margin: 0 0 6px;
+    font-size: clamp(30px, 8vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .hero p { margin: 0; font-size: 15px; color: rgba(255,255,255,.85); }
+
+  /* ── Details ──────────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 4px 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 3px rgba(74,36,150,.05);
+  }
+  .row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .row:last-child { border-bottom: 0; }
+  .row .ico { font-size: 19px; line-height: 1.4; flex: 0 0 24px; text-align: center; }
+  .row .lab {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+  }
+  .row .val { font-size: 16px; font-weight: 600; }
+  .row .sub { font-size: 14px; color: var(--ink-soft); font-weight: 400; }
+  .row a { color: var(--plum); font-weight: 600; text-decoration: none; }
+  .row a:hover, .row a:focus-visible { text-decoration: underline; }
+
+  /* ── Actions ──────────────────────────────────────────── */
+  .cta {
+    display: block;
+    background: var(--plum);
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 17px 20px;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(109,59,212,.28);
+    transition: background .15s ease, transform .15s ease;
+  }
+  .cta:hover { background: var(--plum-deep); }
+  .cta:active { transform: translateY(1px); }
+
+  .deadline {
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 12px 0 26px;
+  }
+  .deadline strong { color: var(--ink); }
+
+  /* ── Group links ──────────────────────────────────────── */
+  .groups { display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
+  .grp {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border-radius: 13px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+  .grp svg { width: 21px; height: 21px; fill: currentColor; flex: 0 0 auto; }
+  .grp .arw { margin-left: auto; opacity: .8; }
+  .grp.line { background: #06C755; }
+  .grp.line:hover { background: #05a548; }
+  .grp.wa   { background: #25D366; }
+  .grp.wa:hover { background: #1da851; }
+  .grp small { display: block; font-weight: 400; opacity: .9; font-size: 12.5px; }
+
+  footer {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  footer a { color: var(--plum); font-weight: 600; text-decoration: none; }
+
+  :focus-visible { outline: 3px solid var(--icing); outline-offset: 2px; border-radius: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
 </style>
 </head>
 <body>
-  <div>
-    <p>Redirecting to the RSVP form…</p>
-    <p><a href="https://script.google.com/macros/s/AKfycbzCe1ewId_RMFDw_3KGm7hvRVDb1dmkMaC0pHt8UlIr6PYSeRm4w6GKrusVjhIV83-TrQ/exec">Click here if you are not redirected</a></p>
+
+  <div class="wrap">
+
+    <header class="hero">
+      <div class="cake" aria-hidden="true">🎂</div>
+      <h1>Sanya turns 2!</h1>
+      <p>You're invited to celebrate with us</p>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="row">
+          <span class="ico" aria-hidden="true">📅</span>
+          <div>
+            <div class="lab">When</div>
+            <div class="val">Saturday, 12 September 2026</div>
+            <div class="sub">16:00 – 20:00 JST</div>
+          </div>
+        </div>
+        <div class="row">
+          <span class="ico" aria-hidden="true">📍</span>
+          <div>
+            <div class="lab">Where</div>
+            <div class="val">6 Chome-1-1 Ojima</div>
+            <div class="sub">Koto City, Tokyo 136-0072</div>
+            <a href="https://maps.app.goo.gl/FRMHpM1s8TxQbNXT8" target="_blank" rel="noopener">Open in Maps →</a>
+          </div>
+        </div>
+      </div>
+
+      <a class="cta" href="https://script.google.com/macros/s/AKfycbzCe1ewId_RMFDw_3KGm7hvRVDb1dmkMaC0pHt8UlIr6PYSeRm4w6GKrusVjhIV83-TrQ/exec">
+        RSVP now →
+      </a>
+      <p class="deadline">Please reply by <strong>7 September 2026</strong></p>
+
+      <!-- Shown to everyone, not just attendees: guests who can't make it still
+           want the photos. -->
+      <div class="groups">
+        <a class="grp line" href="https://line.me/ti/g/Thj8TEbXUm" target="_blank" rel="noopener">
+          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 2C9.163 2 2 8.19 2 15.774c0 6.876 6.103 12.635 14.376 13.726.561.121 1.325.37 1.517.85.173.437.113 1.12.055 1.562l-.245 1.466c-.075.435-.346 1.7 1.489.927 1.835-.773 9.9-5.832 13.507-9.986C34.933 21.475 36 18.74 36 15.774 36 8.19 28.837 2 18 2z"/></svg>
+          <span>Join our photo group<small>Everyone's welcome — coming or not</small></span>
+          <span class="arw" aria-hidden="true">→</span>
+        </a>
+        <a class="grp wa" href="https://chat.whatsapp.com/EoDy3s4ms5o4khtZYNbNmX?s=cl&amp;p=i&amp;mlu=4" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.003 2C6.477 2 2 6.477 2 12.003c0 1.763.463 3.468 1.34 4.969L2 22l5.183-1.312A10.003 10.003 0 0 0 12.003 22C17.524 22 22 17.524 22 12.003 22 6.477 17.524 2 12.003 2zm5.122 14.307c-.214.601-1.257 1.149-1.72 1.183-.464.034-.478.357-3.012-.71-2.535-1.068-4.044-3.8-4.165-3.977-.12-.176-.988-1.395-.933-2.626.055-1.23.69-1.814.93-2.058.24-.244.516-.306.688-.312.172-.006.345 0 .496.007.16.007.373-.06.583.498.21.556.712 1.915.773 2.054.062.14.1.305.009.487-.092.183-.14.296-.274.455-.135.16-.285.357-.406.48-.135.136-.275.285-.118.558.157.273.697 1.21 1.497 1.959 1.027.966 1.896 1.263 2.17 1.403.272.14.432.116.592-.067.16-.183.684-.8.867-1.074.183-.273.365-.228.615-.137.25.09 1.587.83 1.858.979.272.15.453.228.52.35.066.12.066.696-.148 1.297z"/></svg>
+          <span>Join our WhatsApp group<small>For those not on LINE</small></span>
+          <span class="arw" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </main>
+
+    <footer>
+      Powered by <a href="https://sunveda.tech" target="_blank" rel="noopener">SunVeda Technologies</a>
+    </footer>
+
   </div>
-  <script>
-    location.replace("https://script.google.com/macros/s/AKfycbzCe1ewId_RMFDw_3KGm7hvRVDb1dmkMaC0pHt8UlIr6PYSeRm4w6GKrusVjhIV83-TrQ/exec");
-  </script>
+
 </body>
 </html>
