@@ -69,8 +69,13 @@ v10 · da8be08
 
 **When working on a PR branch**, update the footer to reflect the *upcoming* PR number and the branch tip hash:
 
-1. Find the next PR number (look at the last merged PR number and add 1, or check GitHub)
-2. Get the current branch tip hash: `git rev-parse --short HEAD`
+1. Find the PR number. Ask GitHub — do **not** derive it from `git log --merges`, which reports the last *merged* PR and is wrong whenever an open PR or issue sits in between (and finds nothing at all under squash merges). Issues and PRs share one number sequence:
+   ```bash
+   gh pr view --json number -q .number   # branch already has an open PR — use its number
+   # otherwise, the next free number:
+   echo $(( $(gh api 'repos/sunveda/sunveda.tech/issues?state=all&per_page=1' --jq '.[0].number') + 1 ))
+   ```
+2. Get the hash of the commit the version describes: `git rev-parse --short HEAD`, run *after* committing the content change and *before* committing the footer. The footer commit cannot contain its own hash, so it points at the content commit ahead of it — don't try to chase it by amending.
 3. Update the footer in `index.html`:
    ```html
    <div class="footer__version">
@@ -81,7 +86,7 @@ v10 · da8be08
 
 The GitHub repo URL pattern is `https://github.com/sunveda/sunveda.tech/pull/{N}`.
 
-A `.kiro/hooks/update-footer-version.json` hook runs automatically after each agent task to keep this in sync. Do not remove it.
+A Claude Code skill at `.claude/skills/footer-version/SKILL.md` carries the full procedure and loads automatically when working in this repo. It replaces the former `.kiro/hooks/update-footer-version.json` hook, which patched the footer automatically but computed the PR number with the `git log --merges` method described above as unreliable.
 
 ## What NOT to do
 
