@@ -31,4 +31,7 @@ const redirect = await worker.fetch(new Request("https://sunveda.tech/analyse/?d
 assert.equal(redirect.status, 308);
 assert.equal(redirect.headers.get("Location"), "https://sunveda.tech/a/?days=7");
 
+const headRedirect = await worker.fetch(new Request("https://sunveda.tech/analyse/", { method: "HEAD" }), {});
+assert.equal(headRedirect.status, 308);
+
 console.log("worker tests passed");
