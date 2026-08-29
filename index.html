@@ -469,6 +469,9 @@
     .showcase-group__intro { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.65; margin-top: var(--space-2); }
     .showcase-card { background: var(--color-surface); border: 1px solid oklch(from var(--color-text) l c h / 0.08); border-radius: var(--radius-xl); padding: var(--space-6); transition: box-shadow var(--transition-interactive), transform var(--transition-interactive), border-color var(--transition-interactive); }
     .showcase-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: oklch(from var(--color-primary) l c h / 0.3); }
+    .showcase-card__preview { display: block; aspect-ratio: 16 / 9; overflow: hidden; margin: calc(0px - var(--space-6)) calc(0px - var(--space-6)) var(--space-5); border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08); background: var(--color-bg); }
+    .showcase-card__preview img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-interactive); }
+    .showcase-card:hover .showcase-card__preview img { transform: scale(1.02); }
     .showcase-card__top { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-5); }
     .showcase-card__icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: var(--radius-md); color: var(--color-primary); background: var(--color-primary-highlight); overflow: hidden; }
     .showcase-card__icon img { width: 100%; height: 100%; object-fit: cover; }
@@ -985,6 +988,9 @@
             </div>
 
             <article class="showcase-card">
+              <a class="showcase-card__preview" href="/app/aedoko/" target="_blank" rel="noopener noreferrer" aria-label="Open AEDoko">
+                <img src="showcase-aedoko-v1.webp" alt="AEDoko interface showing the Tokyo AED finder" width="1280" height="720" loading="lazy" />
+              </a>
               <div class="showcase-card__top">
                 <div class="showcase-card__icon"><img src="app/aedoko/favicon.svg" alt="AEDoko logo" width="48" height="48" /></div>
                 <div class="showcase-card__meta" data-i18n="showcase.aedokoMeta">Civic technology · Live</div>
@@ -1006,6 +1012,9 @@
             </div>
 
             <article class="showcase-card">
+              <a class="showcase-card__preview" href="https://sunveda-codex-meetup-tokyo.sarveshwar1986.chatgpt.site" target="_blank" rel="noopener noreferrer" aria-label="Open the Codex for Everyone event website">
+                <img src="showcase-codex-meetup-v1.webp" alt="Codex for Everyone event website overview" width="1280" height="720" loading="lazy" />
+              </a>
               <div class="showcase-card__top">
                 <div class="showcase-card__icon"><i data-lucide="sparkles" aria-hidden="true"></i></div>
                 <div class="showcase-card__meta" data-i18n="showcase.codexMeta">Codex Meetup Tokyo #2 · 7 Aug 2026</div>
@@ -1020,6 +1029,9 @@
             </article>
 
             <article class="showcase-card">
+              <a class="showcase-card__preview" href="https://nostr-atlas-guide.sarveshwar1986.chatgpt.site/" target="_blank" rel="noopener noreferrer" aria-label="Open Nostr Atlas">
+                <img src="showcase-nostr-atlas-v1.webp" alt="Nostr Atlas website overview showing the open-protocol diagram" width="1280" height="720" loading="lazy" />
+              </a>
               <div class="showcase-card__top">
                 <div class="showcase-card__icon"><i data-lucide="radio-tower" aria-hidden="true"></i></div>
                 <div class="showcase-card__meta" data-i18n="showcase.nostrMeta">Live stage build · 15 Aug 2026</div>
