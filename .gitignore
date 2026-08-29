@@ -8,3 +8,6 @@
 # Local analytics credentials
 *.credentials.json
 service-account*.json
+
+# Cloudflare CLI machine-local state
+.wrangler/
