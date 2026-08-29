@@ -103,6 +103,9 @@ async function ingestSnapshot(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if ((url.pathname === "/analyse" || url.pathname.startsWith("/analyse/")) && ["GET", "HEAD"].includes(request.method)) {
+      return Response.redirect(new URL(`/a/${url.search}`, url), 308);
+    }
     if (url.pathname === "/api/analytics" && request.method === "GET") {
       return listSnapshots(request, env);
     }

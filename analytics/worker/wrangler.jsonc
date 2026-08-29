@@ -7,6 +7,10 @@
     {
       "pattern": "sunveda.tech/api/analytics*",
       "zone_name": "sunveda.tech"
+    },
+    {
+      "pattern": "sunveda.tech/analyse*",
+      "zone_name": "sunveda.tech"
     }
   ],
   "d1_databases": [
