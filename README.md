@@ -2,7 +2,7 @@
 
 Source for [sunveda.tech](https://sunveda.tech), Sarveshwar Singh's multilingual technology consulting and portfolio website.
 
-**Current architecture revision: A5 · Hosted application route (2026-08-30)**
+**Current architecture revision: A6 · Community contribution review pipeline (2026-08-30)**
 
 This README is the architecture source of truth. The diagrams, deployment map,
 and architecture history must be updated in the same pull request whenever a
@@ -14,6 +14,7 @@ automation, external integrations, or security boundaries.
 ```mermaid
 flowchart TB
   visitor[Website visitor]
+  contributor[Community contributor]
 
   subgraph edge[Cloudflare edge · sunveda.tech]
     cf[DNS, CDN and route matching]
@@ -30,6 +31,12 @@ flowchart TB
   subgraph appsource[Application source]
     aedrepo[sunveda/aedoko<br/>React + static AED snapshot]
     aedbuild[Versioned static bundle]
+  end
+
+  subgraph community[GitHub community review plane]
+    forms[Structured issue forms<br/>City source + feedback]
+    issues[Public labeled issues]
+    proposal[Issue-triggered Action<br/>Unverified draft proposal PR]
   end
 
   subgraph data[Analytics data plane]
@@ -59,6 +66,11 @@ flowchart TB
 
   aedrepo --> aedbuild
   aedbuild -->|Vendored release artifact| aedoko
+  aedoko -. Add city or feedback .-> forms
+  contributor --> forms
+  forms --> issues
+  issues -->|City submissions only| proposal
+  proposal -->|Maintainer review before merge| aedrepo
 
   site -. sends browser events .-> ga
   site -. sends browser events .-> goat
@@ -76,6 +88,7 @@ flowchart TB
 | Main website | Plain HTML, inline CSS, browser JavaScript | GitHub Pages from `main` | `index.html`, `i18n.js` |
 | Analytics dashboard | Plain HTML, inline CSS, SVG and browser JavaScript | GitHub Pages from `main` | `a/index.html` |
 | AEDoko application | Static React bundle with a committed AED data snapshot | GitHub Pages route `/app/aedoko/` | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
+| AEDoko community review | GitHub Issue Forms plus issue-triggered GitHub Actions | Issues and unverified draft PRs in `sunveda/aedoko` | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
 | Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
@@ -119,6 +132,15 @@ flowchart TB
 5. The JSON snapshot is authenticated and upserted through the Worker into D1.
 6. `/a/` fetches 7, 14, 30, or 90 snapshots from `GET /api/analytics`.
 
+### AEDoko community contributions
+
+1. AEDoko links contributors to structured GitHub forms for a city source proposal or general feedback.
+2. Both forms create public, labeled issues in `sunveda/aedoko`; contributors are warned not to submit private or active-emergency information.
+3. A new city issue triggers a narrowly scoped GitHub Action that copies the issue into a new branch and opens an unverified draft source-proposal PR.
+4. The draft PR is assigned to `sunveda` for publisher, licensing, freshness, coverage, coordinate, and address review.
+5. Merging a proposal records a source lead only. Dataset-specific import, normalization, validation, and a reviewed release remain separate steps before any AED location reaches the live snapshot.
+6. Feedback submissions remain labeled issues and do not create proposal PRs.
+
 ### Security boundaries
 
 - Provider credentials and the ingestion token are GitHub Actions secrets.
@@ -128,6 +150,9 @@ flowchart TB
 - `POST /api/analytics/ingest` requires the ingestion bearer token; public requests are read-only.
 - `/a/` is marked `noindex, nofollow` and displays no visitor-level data.
 - AEDoko keeps geolocation in browser memory, calculates nearest results on-device, and does not send coordinates to SunVeda analytics or storage.
+- Community form submissions are public GitHub issues. The forms explicitly prohibit private or active-emergency information.
+- The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
+- Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
 
 ## Architecture evolution
 
@@ -140,14 +165,16 @@ flowchart LR
   A3["A3 · 2026-08-09–11<br/>Automated multi-source analytics"]
   A4["A4 · 2026-08-30<br/>Worker + D1 dashboard"]
   A5["A5 · 2026-08-30<br/>Hosted AEDoko route"]
+  A6["A6 · 2026-08-30<br/>Community contribution review"]
 
   A1 -->|Reach a broader audience<br/>without adding a backend| A2
   A2 -->|Measure traffic and retain<br/>an auditable daily record| A3
   A3 -->|Avoid reading Git files at runtime;<br/>serve normalized trends efficiently| A4
   A4 -->|Publish a focused emergency tool<br/>under the owned domain| A5
+  A5 -->|Collect new-city sources safely<br/>without auto-publishing emergency data| A6
 
   classDef current fill:#01696f,color:#fff,stroke:#83e6c2,stroke-width:2px;
-  class A5 current;
+  class A6 current;
 ```
 
 | Revision | Change | Why the architecture changed |
@@ -157,6 +184,7 @@ flowchart LR
 | **A3 · Automated analytics** | Added GA4 and GoatCounter browser measurement plus a scheduled Node.js collector for Cloudflare, GA4, and GoatCounter. Daily reports were isolated on `analytics-data`. | Compare complementary measurements and preserve a human-readable audit trail without polluting the deployment branch. |
 | **A4 · Edge analytics platform** | Added `/a/`, a Cloudflare Worker API, D1 snapshots, protected ingestion, historical backfill, and an edge redirect from `/analyse` to `/a/`. | Make range-based dashboard queries fast and consistent, keep provider secrets server-side, and retain Markdown only as an archive rather than a runtime database. |
 | **A5 · Hosted application route** | Added AEDoko as a versioned static application at `/app/aedoko/`, built from the separate `sunveda/aedoko` repository and vendored into the main Pages deployment. | Give the emergency finder a stable URL on the owned domain without widening Worker routes, adding a runtime backend, or changing the zero-build core website. |
+| **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action. | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
 
 ### Architecture decisions that remain active
 
@@ -164,6 +192,7 @@ flowchart LR
 | --- | --- | --- |
 | Keep the core public site zero-build | Active | Static-file maintenance becomes less reliable than a small build pipeline. Hosted applications may provide reviewed static bundles. |
 | Host focused applications under `/app/` | Active | Independent deployment or runtime requirements make vendored static bundles difficult to audit or update. |
+| Keep community AED submissions proposal-only | Active | A source-independent validation and normalization pipeline can safely prove submitted records before publication. |
 | Keep analytics providers separate | Active | A validated cross-provider identity and metric model exists. |
 | Use D1 as dashboard source of truth | Active | Query volume, retention, or analysis requirements exceed the current snapshot model. |
 | Retain `analytics-data` as an audit archive | Active | A replacement provides equally reviewable and recoverable history. |
