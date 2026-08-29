@@ -2,7 +2,7 @@
 
 Source for [sunveda.tech](https://sunveda.tech), Sarveshwar Singh's multilingual technology consulting and portfolio website.
 
-**Current architecture revision: A4 · Edge analytics platform (2026-08-30)**
+**Current architecture revision: A5 · Hosted application route (2026-08-30)**
 
 This README is the architecture source of truth. The diagrams, deployment map,
 and architecture history must be updated in the same pull request whenever a
@@ -23,7 +23,13 @@ flowchart TB
   subgraph static[GitHub Pages · main branch]
     site[Static website<br/>HTML + CSS + JavaScript]
     dashboard[Analytics dashboard<br/>/a/]
+    aedoko[AEDoko emergency finder<br/>/app/aedoko/]
     pages[Legal and RSVP pages]
+  end
+
+  subgraph appsource[Application source]
+    aedrepo[sunveda/aedoko<br/>React + static AED snapshot]
+    aedbuild[Versioned static bundle]
   end
 
   subgraph data[Analytics data plane]
@@ -44,11 +50,15 @@ flowchart TB
   visitor --> cf
   cf -->|Static routes| site
   cf -->|/a/| dashboard
+  cf -->|/app/aedoko/| aedoko
   cf -->|/privacy, /terms, /rsvp| pages
   cf -->|/analyse → 308 /a/| worker
   cf -->|/api/analytics*| worker
   dashboard -->|GET aggregate snapshots| worker
   worker --> d1
+
+  aedrepo --> aedbuild
+  aedbuild -->|Vendored release artifact| aedoko
 
   site -. sends browser events .-> ga
   site -. sends browser events .-> goat
@@ -65,6 +75,7 @@ flowchart TB
 | --- | --- | --- | --- |
 | Main website | Plain HTML, inline CSS, browser JavaScript | GitHub Pages from `main` | `index.html`, `i18n.js` |
 | Analytics dashboard | Plain HTML, inline CSS, SVG and browser JavaScript | GitHub Pages from `main` | `a/index.html` |
+| AEDoko application | Static React bundle with a committed AED data snapshot | GitHub Pages route `/app/aedoko/` | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
 | Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
@@ -74,7 +85,7 @@ flowchart TB
 
 ### Technology choices
 
-- **No framework or build step.** The website is intentionally deployable as static files.
+- **Zero-build core website.** The portfolio and legal pages remain plain static files. Independently maintained applications such as AEDoko may be committed as versioned static bundles under `app/`.
 - **Client-side internationalization.** `i18n.js` contains 12 locales: English,
   Japanese, Korean, Chinese, Spanish, German, French, Portuguese, Russian,
   Arabic, Hindi, and Italian.
@@ -95,8 +106,9 @@ flowchart TB
 
 1. Cloudflare receives traffic for `sunveda.tech`.
 2. Worker routes intercept only the analytics API and `/analyse` alias.
-3. All static content is served by GitHub Pages from `main`.
-4. A merge to protected `main` is the static-site deployment mechanism; there is no build artifact.
+3. GitHub Pages serves the core site, dashboard, legal pages, and `/app/aedoko/` from `main`.
+4. AEDoko runs entirely in the browser from a versioned static bundle. Its location calculations and AED snapshot reads do not require a SunVeda server API.
+5. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
 
 ### Daily analytics collection
 
@@ -115,6 +127,7 @@ flowchart TB
 - D1 and the public API contain aggregate snapshots only.
 - `POST /api/analytics/ingest` requires the ingestion bearer token; public requests are read-only.
 - `/a/` is marked `noindex, nofollow` and displays no visitor-level data.
+- AEDoko keeps geolocation in browser memory, calculates nearest results on-device, and does not send coordinates to SunVeda analytics or storage.
 
 ## Architecture evolution
 
@@ -126,13 +139,15 @@ flowchart LR
   A2["A2 · 2026-07-03<br/>Client multilingual experience"]
   A3["A3 · 2026-08-09–11<br/>Automated multi-source analytics"]
   A4["A4 · 2026-08-30<br/>Worker + D1 dashboard"]
+  A5["A5 · 2026-08-30<br/>Hosted AEDoko route"]
 
   A1 -->|Reach a broader audience<br/>without adding a backend| A2
   A2 -->|Measure traffic and retain<br/>an auditable daily record| A3
   A3 -->|Avoid reading Git files at runtime;<br/>serve normalized trends efficiently| A4
+  A4 -->|Publish a focused emergency tool<br/>under the owned domain| A5
 
   classDef current fill:#01696f,color:#fff,stroke:#83e6c2,stroke-width:2px;
-  class A4 current;
+  class A5 current;
 ```
 
 | Revision | Change | Why the architecture changed |
@@ -141,12 +156,14 @@ flowchart LR
 | **A2 · Multilingual client** | Added browser-side translations, theme handling, responsive behavior, and PWA metadata without adding a server or build pipeline. | Support international visitors while preserving zero-build hosting. |
 | **A3 · Automated analytics** | Added GA4 and GoatCounter browser measurement plus a scheduled Node.js collector for Cloudflare, GA4, and GoatCounter. Daily reports were isolated on `analytics-data`. | Compare complementary measurements and preserve a human-readable audit trail without polluting the deployment branch. |
 | **A4 · Edge analytics platform** | Added `/a/`, a Cloudflare Worker API, D1 snapshots, protected ingestion, historical backfill, and an edge redirect from `/analyse` to `/a/`. | Make range-based dashboard queries fast and consistent, keep provider secrets server-side, and retain Markdown only as an archive rather than a runtime database. |
+| **A5 · Hosted application route** | Added AEDoko as a versioned static application at `/app/aedoko/`, built from the separate `sunveda/aedoko` repository and vendored into the main Pages deployment. | Give the emergency finder a stable URL on the owned domain without widening Worker routes, adding a runtime backend, or changing the zero-build core website. |
 
 ### Architecture decisions that remain active
 
 | Decision | Status | Revisit when |
 | --- | --- | --- |
-| Keep the public site zero-build | Active | Static-file maintenance becomes less reliable than a small build pipeline. |
+| Keep the core public site zero-build | Active | Static-file maintenance becomes less reliable than a small build pipeline. Hosted applications may provide reviewed static bundles. |
+| Host focused applications under `/app/` | Active | Independent deployment or runtime requirements make vendored static bundles difficult to audit or update. |
 | Keep analytics providers separate | Active | A validated cross-provider identity and metric model exists. |
 | Use D1 as dashboard source of truth | Active | Query volume, retention, or analysis requirements exceed the current snapshot model. |
 | Retain `analytics-data` as an audit archive | Active | A replacement provides equally reviewable and recoverable history. |
@@ -159,6 +176,7 @@ flowchart LR
 ├── index.html                    # Main site markup, styles, and browser scripts
 ├── i18n.js                       # 12-locale translation dictionary and switcher
 ├── a/index.html                  # Database-backed analytics dashboard
+├── app/aedoko/                   # Vendored AEDoko static application and AED snapshot
 ├── rsvp/index.html               # RSVP page
 ├── privacy.html / terms.html     # Legal pages
 ├── analytics/
@@ -185,6 +203,8 @@ Open `http://localhost:8000/`. For the analytics dashboard with its live public 
 ```bash
 node analytics/preview.mjs
 ```
+
+The vendored AEDoko release is available locally at `http://localhost:8000/app/aedoko/`. Its source and build commands live in the [`sunveda/aedoko`](https://github.com/sunveda/aedoko) repository.
 
 Run the zero-dependency tests:
 
