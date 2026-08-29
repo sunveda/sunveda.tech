@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1020">
+  <title>Analytics — SunVeda Technologies</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090d18;
+      --surface: #111827;
+      --surface-2: #172033;
+      --line: rgba(255,255,255,.1);
+      --text: #f5f7fb;
+      --muted: #9aa7bd;
+      --accent: #83e6c2;
+      --blue: #77a7ff;
+      --amber: #f1bd67;
+      --danger: #ff8c93;
+      --radius: 18px;
+      --shadow: 0 20px 60px rgba(0,0,0,.2);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(circle at 70% 0, #132540 0, var(--bg) 35rem); color: var(--text); font-family: "DM Sans", sans-serif; }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; min-height: 76px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; gap: 11px; align-items: center; text-decoration: none; font-weight: 700; }
+    .brand img { width: 30px; height: 30px; }
+    .back { color: var(--muted); text-decoration: none; }
+    main { padding: 58px 0 80px; }
+    .eyebrow { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { max-width: 780px; margin: 12px 0 12px; font: 400 clamp(44px, 7vw, 82px)/.96 "Instrument Serif", serif; letter-spacing: -.03em; }
+    .intro { max-width: 690px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.65; }
+    .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; margin: 34px 0 22px; }
+    .ranges { display: flex; padding: 4px; gap: 2px; border: 1px solid var(--line); border-radius: 12px; background: rgba(17,24,39,.8); }
+    .ranges button { padding: 8px 13px; border: 0; border-radius: 8px; color: var(--muted); background: transparent; cursor: pointer; }
+    .ranges button.active { color: #07120e; background: var(--accent); font-weight: 700; }
+    .freshness { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(131,230,194,.12); }
+    .metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(150deg, rgba(24,34,54,.95), rgba(14,21,35,.94)); box-shadow: var(--shadow); }
+    .metric { min-height: 148px; padding: 20px; }
+    .metric-source { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+    .metric-value { margin: 18px 0 4px; font-size: clamp(28px, 4vw, 42px); font-weight: 600; letter-spacing: -.04em; }
+    .metric-label { color: var(--muted); font-size: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 14px; margin-top: 14px; }
+    .panel { padding: 24px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
+    h2 { margin: 0; font-size: 19px; }
+    .panel-note { color: var(--muted); font-size: 13px; }
+    .chart { width: 100%; min-height: 250px; overflow: visible; }
+    .chart text { fill: var(--muted); font: 11px "DM Sans", sans-serif; }
+    .chart .grid { stroke: var(--line); stroke-width: 1; }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+    .legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--legend); }
+    .source-list { display: grid; gap: 12px; }
+    .source { display: grid; grid-template-columns: 1fr auto; gap: 5px 16px; padding: 14px; border: 1px solid var(--line); border-radius: 13px; }
+    .source strong { font-size: 14px; }
+    .source small { color: var(--muted); }
+    .badge { align-self: center; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(131,230,194,.1); }
+    .badge.warn { color: var(--amber); background: rgba(241,189,103,.1); }
+    .breakdowns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+    .ranked { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
+    .ranked li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+    .rank-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #dbe2ee; font-size: 14px; }
+    .rank-value { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .bar { grid-column: 1 / -1; height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; }
+    .bar i { display: block; height: 100%; background: var(--accent); }
+    .empty { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .notes { margin-top: 14px; padding: 21px 24px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .notes strong { color: var(--text); }
+    .error { padding: 24px; border: 1px solid rgba(255,140,147,.35); color: #ffd2d5; background: rgba(255,140,147,.06); border-radius: var(--radius); }
+    footer { padding: 26px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    [hidden] { display: none !important; }
+    @media (max-width: 980px) { .metrics { grid-template-columns: repeat(3, 1fr); } .breakdowns { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 720px) { main { padding-top: 40px; } .metrics, .grid-2, .breakdowns { grid-template-columns: 1fr; } .metrics { gap: 10px; } .metric { min-height: 120px; } .toolbar { align-items: flex-start; flex-direction: column; } .panel { padding: 19px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="/"><img src="/favicon.svg" alt=""> SunVeda Technologies</a>
+      <a class="back" href="/">Back to website</a>
+    </header>
+    <main>
+      <div class="eyebrow">Website intelligence</div>
+      <h1>Three perspectives.<br>One honest view.</h1>
+      <p class="intro">Cloudflare, Google Analytics 4, and GoatCounter measure different parts of the visitor journey. This dashboard keeps them distinct, highlights gaps, and makes daily trends easier to read.</p>
+
+      <div class="toolbar">
+        <div class="ranges" aria-label="Date range">
+          <button data-days="7">7 days</button>
+          <button data-days="14">14 days</button>
+          <button class="active" data-days="30">30 days</button>
+          <button data-days="90">90 days</button>
+        </div>
+        <div class="freshness"><span class="dot"></span><span id="freshness">Loading analytics…</span></div>
+      </div>
+
+      <div id="error" class="error" hidden></div>
+      <section id="dashboard" hidden>
+        <div class="metrics" id="metrics"></div>
+        <div class="grid-2">
+          <article class="card panel">
+            <div class="panel-head"><div><h2>Traffic trend</h2><div class="panel-note">Each line is scaled within its own source</div></div></div>
+            <svg id="trend" class="chart" viewBox="0 0 720 260" role="img" aria-label="Daily analytics trends"></svg>
+            <div class="legend">
+              <span style="--legend: var(--blue)">Cloudflare requests</span>
+              <span style="--legend: var(--accent)">GA4 active users</span>
+              <span style="--legend: var(--amber)">GoatCounter visits</span>
+            </div>
+          </article>
+          <article class="card panel">
+            <div class="panel-head"><div><h2>Source health</h2><div class="panel-note">Missing data is never treated as zero</div></div></div>
+            <div id="sources" class="source-list"></div>
+          </article>
+        </div>
+        <div class="breakdowns" id="breakdowns"></div>
+        <div class="card notes"><strong>How to read this:</strong> Cloudflare requests include assets, crawlers, and CDN traffic, so they are not human visits. GA4 and GoatCounter use different privacy rules, identifiers, blockers, and processing windows. Compare trends inside each source; do not add their totals together.</div>
+      </section>
+    </main>
+    <footer>Aggregate analytics only · No visitor-level data is displayed</footer>
+  </div>
+  <script>
+    const format = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
+    const state = { days: 30, data: null };
+    const sourceNames = { cloudflare: "Cloudflare", ga4: "Google Analytics 4", goatcounter: "GoatCounter" };
+
+    function value(snapshot, source, metric) {
+      const item = snapshot?.sources?.[source];
+      return item?.status === "ok" && Number.isFinite(item.metrics?.[metric]) ? item.metrics[metric] : null;
+    }
+    function latestFor(source) {
+      return [...state.data.snapshots].reverse().find(item => item.sources?.[source]?.status === "ok");
+    }
+    function metricCard(source, label, metric) {
+      const snapshot = latestFor(source);
+      const number = value(snapshot, source, metric);
+      return `<article class="card metric"><div class="metric-source">${sourceNames[source]}</div><div class="metric-value">${number === null ? "—" : format.format(number)}</div><div class="metric-label">${label}</div></article>`;
+    }
+    function renderMetrics() {
+      document.querySelector("#metrics").innerHTML = [
+        metricCard("cloudflare", "HTTP requests", "requests"),
+        metricCard("cloudflare", "Unique clients", "uniqueClients"),
+        metricCard("ga4", "Active users", "activeUsers"),
+        metricCard("ga4", "Sessions", "sessions"),
+        metricCard("goatcounter", "Visits", "visits"),
+      ].join("");
+    }
+    function renderTrend() {
+      const svg = document.querySelector("#trend");
+      const rows = state.data.snapshots;
+      const series = [
+        { source: "cloudflare", metric: "requests", color: "#77a7ff" },
+        { source: "ga4", metric: "activeUsers", color: "#83e6c2" },
+        { source: "goatcounter", metric: "visits", color: "#f1bd67" },
+      ];
+      const left = 38, right = 704, top = 20, bottom = 220;
+      let html = [0, .25, .5, .75, 1].map(part => {
+        const y = bottom - part * (bottom - top);
+        return `<line class="grid" x1="${left}" x2="${right}" y1="${y}" y2="${y}"/>`;
+      }).join("");
+      for (const item of series) {
+        const values = rows.map(row => value(row, item.source, item.metric));
+        const max = Math.max(1, ...values.filter(Number.isFinite));
+        let path = "";
+        values.forEach((number, index) => {
+          if (number === null) { path += " "; return; }
+          const x = rows.length === 1 ? left : left + index * (right - left) / (rows.length - 1);
+          const y = bottom - number / max * (bottom - top);
+          const previousMissing = index === 0 || values[index - 1] === null;
+          path += `${previousMissing ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)} `;
+        });
+        html += `<path d="${path}" fill="none" stroke="${item.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+      }
+      if (rows.length) {
+        html += `<text x="${left}" y="248">${rows[0].date.slice(5)}</text><text x="${right}" y="248" text-anchor="end">${rows.at(-1).date.slice(5)}</text>`;
+      }
+      svg.innerHTML = html;
+    }
+    function renderSources() {
+      const total = state.data.snapshots.length;
+      document.querySelector("#sources").innerHTML = Object.keys(sourceNames).map(source => {
+        const ok = state.data.snapshots.filter(row => row.sources?.[source]?.status === "ok").length;
+        const missing = total - ok;
+        const latest = latestFor(source);
+        return `<div class="source"><strong>${sourceNames[source]}</strong><span class="badge ${missing ? "warn" : ""}">${missing ? `${missing} gap${missing === 1 ? "" : "s"}` : "Complete"}</span><small>Latest available: ${latest?.date || "none"} · ${ok}/${total} days</small></div>`;
+      }).join("");
+    }
+    function rankedCard(title, rows, note) {
+      const clean = Array.isArray(rows) ? rows : [];
+      const max = Math.max(1, ...clean.map(row => row.value));
+      const content = clean.length ? `<ol class="ranked">${clean.slice(0, 6).map(row => `<li title="${escapeHtml(row.label)}"><span class="rank-label">${escapeHtml(row.label)}</span><span class="rank-value">${format.format(row.value)}</span><span class="bar"><i style="width:${row.value / max * 100}%"></i></span></li>`).join("")}</ol>` : `<div class="empty">No data available for this breakdown.</div>`;
+      return `<article class="card panel"><div class="panel-head"><div><h2>${title}</h2><div class="panel-note">${note}</div></div></div>${content}</article>`;
+    }
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    }
+    function renderBreakdowns() {
+      const ga = latestFor("ga4");
+      const goat = latestFor("goatcounter");
+      document.querySelector("#breakdowns").innerHTML = [
+        rankedCard("Landing pages", ga?.sources.ga4.breakdowns?.landingPages, `GA4 · ${ga?.date || "unavailable"}`),
+        rankedCard("Acquisition channels", ga?.sources.ga4.breakdowns?.channels, `GA4 · ${ga?.date || "unavailable"}`),
+        rankedCard("Privacy-friendly pages", goat?.sources.goatcounter.breakdowns?.pages, `GoatCounter · ${goat?.date || "unavailable"}`),
+      ].join("");
+    }
+    function render() {
+      const latest = state.data.snapshots.at(-1);
+      document.querySelector("#freshness").textContent = latest ? `Latest snapshot ${latest.date} · Asia/Tokyo` : "No snapshots yet";
+      renderMetrics(); renderTrend(); renderSources(); renderBreakdowns();
+      document.querySelector("#dashboard").hidden = false;
+    }
+    async function load(days) {
+      state.days = days;
+      document.querySelectorAll("[data-days]").forEach(button => button.classList.toggle("active", Number(button.dataset.days) === days));
+      document.querySelector("#error").hidden = true;
+      try {
+        const response = await fetch(`/api/analytics?days=${days}`, { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error(`Analytics API returned ${response.status}`);
+        state.data = await response.json();
+        render();
+      } catch (error) {
+        document.querySelector("#dashboard").hidden = true;
+        const box = document.querySelector("#error");
+        box.textContent = `Analytics are temporarily unavailable. ${error.message}`;
+        box.hidden = false;
+        document.querySelector("#freshness").textContent = "Unable to load analytics";
+      }
+    }
+    document.querySelectorAll("[data-days]").forEach(button => button.addEventListener("click", () => load(Number(button.dataset.days))));
+    load(30);
+  </script>
+</body>
+</html>

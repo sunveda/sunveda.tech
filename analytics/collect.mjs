@@ -2,6 +2,7 @@
 
 import { execFileSync } from "node:child_process";
 import { createPrivateKey, sign } from "node:crypto";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -275,6 +276,100 @@ function listRows(rows, labelKey, valueKey) {
   return rows.slice(0, 5).map((row) => `${row[labelKey] || "(unknown)"} (${fmt(row[valueKey])})`).join(", ");
 }
 
+function finiteOrNull(value) {
+  if (value === null || value === undefined || value === "") return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function cleanPath(value) {
+  if (!value || value === "(unknown)") return "(unknown)";
+  try {
+    const url = new URL(value, "https://sunveda.tech");
+    return url.origin === "https://sunveda.tech" ? url.pathname : url.hostname;
+  } catch {
+    return String(value).split(/[?#]/, 1)[0] || "/";
+  }
+}
+
+function normalizedRows(rows, labelKey, valueKey, { path = false } = {}) {
+  if (!Array.isArray(rows)) return [];
+  const totals = new Map();
+  for (const row of rows) {
+    const rawLabel = row?.[labelKey] || "(unknown)";
+    const label = path ? cleanPath(rawLabel) : String(rawLabel);
+    const value = finiteOrNull(row?.[valueKey]);
+    if (value === null) continue;
+    totals.set(label, (totals.get(label) || 0) + value);
+  }
+  return [...totals.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 8);
+}
+
+function sourceSnapshot(source, metrics, breakdowns = {}) {
+  if (!source.ok) return { status: "unavailable", metrics, breakdowns };
+  const available = Object.values(metrics).some((value) => value !== null);
+  return { status: available ? "ok" : "missing", metrics, breakdowns };
+}
+
+function normalizeSnapshot(report) {
+  const { dates, sources } = report;
+  const cloudflareRow = sources.cloudflare.ok
+    ? sources.cloudflare.data.byDate[dates.yesterday]
+    : null;
+  const cloudflareSum = cloudflareRow?.sum || {};
+  const requests = finiteOrNull(cloudflareSum.requests);
+  const cachedRequests = finiteOrNull(cloudflareSum.cachedRequests);
+  const cloudflareMetrics = {
+    requests,
+    uniqueClients: finiteOrNull(cloudflareRow?.uniq?.uniques),
+    bandwidthBytes: finiteOrNull(cloudflareSum.bytes),
+    cachedRequests,
+    cacheHitRatio: requests && cachedRequests !== null ? cachedRequests / requests : null,
+    pageViews: finiteOrNull(cloudflareSum.pageViews),
+    threats: finiteOrNull(cloudflareSum.threats),
+  };
+
+  const gaRow = sources.ga4.ok ? sources.ga4.data.byDate[dates.yesterday] : null;
+  const gaMetrics = Object.fromEntries([
+    "activeUsers", "newUsers", "sessions", "engagedSessions", "engagementRate",
+    "userEngagementDuration", "screenPageViews", "keyEvents",
+  ].map((key) => [key, finiteOrNull(gaRow?.[key])]));
+  const gaBreakdowns = sources.ga4.ok ? {
+    landingPages: normalizedRows(sources.ga4.data.landingPages, "landingPagePlusQueryString", "sessions", { path: true }),
+    channels: normalizedRows(sources.ga4.data.channels, "sessionDefaultChannelGroup", "sessions"),
+    countries: normalizedRows(sources.ga4.data.countries, "country", "activeUsers"),
+    devices: normalizedRows(sources.ga4.data.devices, "deviceCategory", "activeUsers"),
+    pages: normalizedRows(sources.ga4.data.pages, "pagePath", "screenPageViews", { path: true }),
+  } : {};
+
+  const goatData = sources.goatcounter.ok ? sources.goatcounter.data : {};
+  const goatMetrics = { visits: finiteOrNull(goatData.totals?.yesterday?.total) };
+  const goatBreakdowns = sources.goatcounter.ok ? {
+    pages: normalizedRows(goatData.pages?.hits, "path", "count", { path: true }),
+    referrers: normalizedRows(goatData.referrers?.stats, "name", "count"),
+    campaigns: normalizedRows(goatData.campaigns?.stats, "name", "count"),
+    browsers: normalizedRows(goatData.browsers?.stats, "name", "count"),
+    systems: normalizedRows(goatData.systems?.stats, "name", "count"),
+    locations: normalizedRows(goatData.locations?.stats, "name", "count"),
+    sizes: normalizedRows(goatData.sizes?.stats, "name", "count"),
+  } : {};
+
+  return {
+    schemaVersion: 1,
+    date: dates.yesterday,
+    generatedAt: report.generatedAt,
+    timezone: report.timezone,
+    sources: {
+      cloudflare: sourceSnapshot(sources.cloudflare, cloudflareMetrics),
+      ga4: sourceSnapshot(sources.ga4, gaMetrics, gaBreakdowns),
+      goatcounter: sourceSnapshot(sources.goatcounter, goatMetrics, goatBreakdowns),
+    },
+  };
+}
+
 function renderMarkdown(report) {
   const { dates, sources } = report;
   const lines = [
@@ -355,11 +450,20 @@ async function main() {
     dates,
     sources: { cloudflare, ga4, goatcounter },
   };
-  if (process.argv.includes("--json")) process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+  const outputIndex = process.argv.indexOf("--output-dir");
+  if (outputIndex !== -1) {
+    const outputDirectory = process.argv[outputIndex + 1];
+    if (!outputDirectory) throw new Error("--output-dir requires a directory");
+    mkdirSync(outputDirectory, { recursive: true });
+    writeFileSync(resolve(outputDirectory, "report.md"), renderMarkdown(report));
+    writeFileSync(resolve(outputDirectory, "snapshot.json"), `${JSON.stringify(normalizeSnapshot(report), null, 2)}\n`);
+  } else if (process.argv.includes("--snapshot-json")) {
+    process.stdout.write(`${JSON.stringify(normalizeSnapshot(report), null, 2)}\n`);
+  } else if (process.argv.includes("--json")) process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
   else process.stdout.write(renderMarkdown(report));
   if (![cloudflare, ga4, goatcounter].some((source) => source.ok)) process.exitCode = 1;
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) await main();
 
-export { addDays, comparisonDates, renderMarkdown, utcRangeForTokyoDate };
+export { addDays, cleanPath, comparisonDates, normalizeSnapshot, renderMarkdown, utcRangeForTokyoDate };
