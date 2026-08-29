@@ -141,18 +141,24 @@
     function latestFor(source) {
       return [...state.data.snapshots].reverse().find(item => item.sources?.[source]?.status === "ok");
     }
-    function metricCard(source, label, metric) {
-      const snapshot = latestFor(source);
-      const number = value(snapshot, source, metric);
-      return `<article class="card metric"><div class="metric-source">${sourceNames[source]}</div><div class="metric-value">${number === null ? "—" : format.format(number)}</div><div class="metric-label">${label}</div></article>`;
+    function aggregate(source, metric, mode) {
+      const values = state.data.snapshots.map(snapshot => value(snapshot, source, metric)).filter(Number.isFinite);
+      if (!values.length) return { number: null, days: 0 };
+      const total = values.reduce((sum, item) => sum + item, 0);
+      return { number: mode === "average" ? total / values.length : total, days: values.length };
+    }
+    function metricCard(source, label, metric, mode) {
+      const result = aggregate(source, metric, mode);
+      const coverage = `${result.days} source day${result.days === 1 ? "" : "s"}`;
+      return `<article class="card metric"><div class="metric-source">${sourceNames[source]}</div><div class="metric-value">${result.number === null ? "—" : format.format(result.number)}</div><div class="metric-label">${label} · ${coverage}</div></article>`;
     }
     function renderMetrics() {
       document.querySelector("#metrics").innerHTML = [
-        metricCard("cloudflare", "HTTP requests", "requests"),
-        metricCard("cloudflare", "Unique clients", "uniqueClients"),
-        metricCard("ga4", "Active users", "activeUsers"),
-        metricCard("ga4", "Sessions", "sessions"),
-        metricCard("goatcounter", "Visits", "visits"),
+        metricCard("cloudflare", "Total HTTP requests", "requests", "total"),
+        metricCard("cloudflare", "Average daily unique clients", "uniqueClients", "average"),
+        metricCard("ga4", "Average daily active users", "activeUsers", "average"),
+        metricCard("ga4", "Total sessions", "sessions", "total"),
+        metricCard("goatcounter", "Total visits", "visits", "total"),
       ].join("");
     }
     function renderTrend() {
@@ -215,13 +221,20 @@
     }
     function render() {
       const latest = state.data.snapshots.at(-1);
-      document.querySelector("#freshness").textContent = latest ? `Latest snapshot ${latest.date} · Asia/Tokyo` : "No snapshots yet";
+      const first = state.data.snapshots[0];
+      document.querySelector("#freshness").textContent = latest
+        ? `Showing ${first.date}–${latest.date} · ${state.data.snapshots.length} snapshots`
+        : "No snapshots yet";
       renderMetrics(); renderTrend(); renderSources(); renderBreakdowns();
       document.querySelector("#dashboard").hidden = false;
     }
     async function load(days) {
       state.days = days;
-      document.querySelectorAll("[data-days]").forEach(button => button.classList.toggle("active", Number(button.dataset.days) === days));
+      document.querySelectorAll("[data-days]").forEach(button => {
+        const active = Number(button.dataset.days) === days;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
       document.querySelector("#error").hidden = true;
       try {
         const response = await fetch(`/api/analytics?days=${days}`, { headers: { Accept: "application/json" } });
