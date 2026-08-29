@@ -1,0 +1,622 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-27T10:07:23.307092+00:00",
+  "municipalityCount": 62,
+  "sourcedMunicipalityCount": 33,
+  "validatedMunicipalityCount": 26,
+  "municipalities": [
+    {
+      "municipalityCode": "131016",
+      "nameJa": "千代田区",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "131024",
+      "nameJa": "中央区",
+      "status": "validated",
+      "recordCount": 207,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131024-d1b6db19-0766-40ed-82b1-5c3c2d6f1645"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131032",
+      "nameJa": "港区",
+      "status": "validated",
+      "recordCount": 226,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131032-ac88bdd5-f7a4-4bfa-9c36-31c0657d5c59"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131041",
+      "nameJa": "新宿区",
+      "status": "validated",
+      "recordCount": 136,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131041-a1b7d0e4-1e35-48b1-8ee2-479746054532"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131059",
+      "nameJa": "文京区",
+      "status": "validated",
+      "recordCount": 251,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131059-af40b3f0-98b4-4cb8-89bc-6f01323e53eb",
+        "tokyo-131059-f7ffb2f3-4ec7-4159-9b1b-f210043fac95"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131067",
+      "nameJa": "台東区",
+      "status": "validated",
+      "recordCount": 477,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131067-30b23c43-0619-48e7-9ecb-a851eb2c9bbc"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131075",
+      "nameJa": "墨田区",
+      "status": "validated",
+      "recordCount": 229,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131075-79b44cfc-672b-4d71-8c29-a2ddccbed177"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131083",
+      "nameJa": "江東区",
+      "status": "validated",
+      "recordCount": 242,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131083-7e45685d-17e0-4fbe-9cc3-9a1ddbfea065"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131091",
+      "nameJa": "品川区",
+      "status": "validated",
+      "recordCount": 372,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131091-shinagawa-aed-csv"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131105",
+      "nameJa": "目黒区",
+      "status": "validated",
+      "recordCount": 154,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131105-f69cce48-3f64-4ca0-99c8-bfd22e0ece68"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131113",
+      "nameJa": "大田区",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "131121",
+      "nameJa": "世田谷区",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "131130",
+      "nameJa": "渋谷区",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "131148",
+      "nameJa": "中野区",
+      "status": "validated",
+      "recordCount": 215,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131148-4413dea5-b8a7-44d5-9fdb-8d6db14dfad4"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131156",
+      "nameJa": "杉並区",
+      "status": "validated",
+      "recordCount": 243,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131156-1e296ccb-0be5-404c-b99d-8a522c164f63"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131164",
+      "nameJa": "豊島区",
+      "status": "validated",
+      "recordCount": 286,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131164-439359e4-3e78-403d-be52-81d271dbd91f"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131172",
+      "nameJa": "北区",
+      "status": "validated",
+      "recordCount": 230,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131172-779af66a-5d2e-4ad4-9844-853206cfe0a6"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "131181",
+      "nameJa": "荒川区",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "131199",
+      "nameJa": "板橋区",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "131202",
+      "nameJa": "練馬区",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "131211",
+      "nameJa": "足立区",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "131229",
+      "nameJa": "葛飾区",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "131237",
+      "nameJa": "江戸川区",
+      "status": "validated",
+      "recordCount": 213,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-131237-edogawa-aed-24h-csv",
+        "tokyo-131237-edogawa-aed-csv"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132012",
+      "nameJa": "八王子市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132021",
+      "nameJa": "立川市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132039",
+      "nameJa": "武蔵野市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132047",
+      "nameJa": "三鷹市",
+      "status": "validated",
+      "recordCount": 85,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132047-49597f9a-ddc9-41e6-8b3c-1c9fddc8270f"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132055",
+      "nameJa": "青梅市",
+      "status": "validated",
+      "recordCount": 70,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132055-df3c9c78-6c8e-4cb9-a3fc-6e0931acbda7"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132063",
+      "nameJa": "府中市",
+      "status": "validated",
+      "recordCount": 106,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132063-fuchu-aed-csv"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132071",
+      "nameJa": "昭島市",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "132080",
+      "nameJa": "調布市",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "132098",
+      "nameJa": "町田市",
+      "status": "validated",
+      "recordCount": 202,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132098-6363c878-3475-4ab3-ad6f-e5d93471ca93"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132101",
+      "nameJa": "小金井市",
+      "status": "validated",
+      "recordCount": 90,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132101-393b7336-e8c2-4a4e-a6d8-26c6e2229c3b"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132110",
+      "nameJa": "小平市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132128",
+      "nameJa": "日野市",
+      "status": "validated",
+      "recordCount": 105,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132128-hino-aed-csv-derived"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132136",
+      "nameJa": "東村山市",
+      "status": "validated",
+      "recordCount": 76,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132136-93cb0ea6-9dd3-429a-a31d-4437fd8399b6"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132144",
+      "nameJa": "国分寺市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132152",
+      "nameJa": "国立市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132187",
+      "nameJa": "福生市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132195",
+      "nameJa": "狛江市",
+      "status": "validated",
+      "recordCount": 53,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132195-4960d022-db90-4358-81ad-10d8fe699fcb"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132209",
+      "nameJa": "東大和市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132217",
+      "nameJa": "清瀬市",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "132225",
+      "nameJa": "東久留米市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132233",
+      "nameJa": "武蔵村山市",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "132241",
+      "nameJa": "多摩市",
+      "status": "validated",
+      "recordCount": 100,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132241-tama-aed-csv",
+        "tokyo-132241-tama-aed-xlsx"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132250",
+      "nameJa": "稲城市",
+      "status": "validated",
+      "recordCount": 173,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132250-5009325a-7fed-44eb-a6b2-d4cf6ab83987"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132276",
+      "nameJa": "羽村市",
+      "status": "validated",
+      "recordCount": 126,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132276-e58b5fad-5571-427c-a95e-0e984bdd809f"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "132284",
+      "nameJa": "あきる野市",
+      "status": "partial",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "An official source was downloaded, but no coordinate-valid records were emitted."
+    },
+    {
+      "municipalityCode": "132292",
+      "nameJa": "西東京市",
+      "status": "validated",
+      "recordCount": 105,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [
+        "tokyo-132292-7d546286-2c3d-455d-b08d-2f0c460b9e03"
+      ],
+      "note": null
+    },
+    {
+      "municipalityCode": "133035",
+      "nameJa": "瑞穂町",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133051",
+      "nameJa": "日の出町",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133078",
+      "nameJa": "檜原村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133086",
+      "nameJa": "奥多摩町",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133612",
+      "nameJa": "大島町",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133621",
+      "nameJa": "利島村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133639",
+      "nameJa": "新島村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133647",
+      "nameJa": "神津島村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133817",
+      "nameJa": "三宅村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "133825",
+      "nameJa": "御蔵島村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "134015",
+      "nameJa": "八丈町",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "134023",
+      "nameJa": "青ヶ島村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    },
+    {
+      "municipalityCode": "134210",
+      "nameJa": "小笠原村",
+      "status": "missing",
+      "recordCount": 0,
+      "checkedAt": "2026-08-27T09:59:03.056Z",
+      "sourceIds": [],
+      "note": "No reviewed reusable municipal AED source is included in this pilot snapshot."
+    }
+  ]
+}

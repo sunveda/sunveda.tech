@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-27T10:07:23.307092+00:00",
+  "emittedRecordCount": 4772,
+  "rejectedRowsByMunicipality": {
+    "131024": 9,
+    "131113": 468,
+    "131156": 20,
+    "131199": 258,
+    "131202": 395,
+    "131237": 108,
+    "132071": 55,
+    "132080": 13,
+    "132217": 100,
+    "132284": 172
+  },
+  "warnings": [
+    "Availability defaults to unknown unless the source explicitly identifies 24-hour access.",
+    "Coordinates point to source-listed locations and do not verify a physical entrance."
+  ]
+}

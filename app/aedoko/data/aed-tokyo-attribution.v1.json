@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-27T10:07:23.307092+00:00",
+  "sources": [
+    {
+      "sourceId": "tokyo-131024-d1b6db19-0766-40ed-82b1-5c3c2d6f1645",
+      "municipalityCode": "131024",
+      "municipalityNameJa": "中央区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/cf0d5502-ac62-45b1-9f3b-d0872dc16b4a",
+      "resourceUrl": "https://www.city.chuo.lg.jp/documents/984/aed.csv",
+      "publisher": "中央区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131032-ac88bdd5-f7a4-4bfa-9c36-31c0657d5c59",
+      "municipalityCode": "131032",
+      "municipalityNameJa": "港区",
+      "datasetTitle": "港区AED設置場所",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/0644b8c7-9ece-4975-9664-87e15e51e08d",
+      "resourceUrl": "https://opendata.city.minato.tokyo.jp/dataset/a67952bc-b318-4ab4-a797-187607c4ecf4/resource/3ccd1270-9ea7-481b-a97a-19ca80d22d05/download/minato_aed.json",
+      "publisher": "港区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131041-a1b7d0e4-1e35-48b1-8ee2-479746054532",
+      "municipalityCode": "131041",
+      "municipalityNameJa": "新宿区",
+      "datasetTitle": "新宿区のAED設置個所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/c48fb748-5df4-4dc2-b70e-6d23878e1256",
+      "resourceUrl": "https://www.city.shinjuku.lg.jp/content/000399971.csv",
+      "publisher": "新宿区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131059-af40b3f0-98b4-4cb8-89bc-6f01323e53eb",
+      "municipalityCode": "131059",
+      "municipalityNameJa": "文京区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/3c0a4e22-e0f8-4a4b-be67-8c6019b4e83b",
+      "resourceUrl": "https://www.city.bunkyo.lg.jp/documents/6059/aedsettikasyoitiran.xlsx",
+      "publisher": "文京区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131059-f7ffb2f3-4ec7-4159-9b1b-f210043fac95",
+      "municipalityCode": "131059",
+      "municipalityNameJa": "文京区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/3c0a4e22-e0f8-4a4b-be67-8c6019b4e83b",
+      "resourceUrl": "https://www.city.bunkyo.lg.jp/documents/6059/aedsettikasyoitiran.csv",
+      "publisher": "文京区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131067-30b23c43-0619-48e7-9ecb-a851eb2c9bbc",
+      "municipalityCode": "131067",
+      "municipalityNameJa": "台東区",
+      "datasetTitle": "AED設置施設",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/1f1f6677-ea09-4f82-86ce-a58216f735a5",
+      "resourceUrl": "https://www.city.taito.lg.jp/kusei/online/opendata/seikatu/shisethutizujouhou.files/20250314_AED_settikasho.csv",
+      "publisher": "台東区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131075-79b44cfc-672b-4d71-8c29-a2ddccbed177",
+      "municipalityCode": "131075",
+      "municipalityNameJa": "墨田区",
+      "datasetTitle": "AED設置施設",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/a3ded568-a222-4ea2-b1f4-49cad39b2cc4",
+      "resourceUrl": "https://www.city.sumida.lg.jp/kuseijoho/sumida_info/opendata/opendata_ichiran/aed_data.files/shisetsu_aed_20210818.csv",
+      "publisher": "墨田区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131083-7e45685d-17e0-4fbe-9cc3-9a1ddbfea065",
+      "municipalityCode": "131083",
+      "municipalityNameJa": "江東区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/6c0f8b2f-cc08-4dd4-a6a1-25f60c8fa14a",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/koto/131083_008_aed.csv",
+      "publisher": "江東区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131091-shinagawa-aed-csv",
+      "municipalityCode": "131091",
+      "municipalityNameJa": "品川区",
+      "datasetTitle": "しながわMAP AED情報",
+      "datasetUrl": "https://www2.wagmap.jp/shinagawa/OpenDataDetail?lid=2001&mids=100",
+      "resourceUrl": "https://www2.wagmap.jp/shinagawa/shinagawa/opendatafile/map_100/CSV/opendata_2001.csv",
+      "publisher": "品川区",
+      "license": "しながわMAP オープンデータ利用条件"
+    },
+    {
+      "sourceId": "tokyo-131105-f69cce48-3f64-4ca0-99c8-bfd22e0ece68",
+      "municipalityCode": "131105",
+      "municipalityNameJa": "目黒区",
+      "datasetTitle": "AED設置場所",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/30ab0e08-0af4-44b6-8425-ca6b23039385",
+      "resourceUrl": "https://data.bodik.jp/dataset/0c1f60b9-4c8f-474d-93af-5b21f49a2521/resource/b1b763fd-71fd-436d-9cac-4262709f177c/download/131105_aed_20210401.csv",
+      "publisher": "目黒区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131148-4413dea5-b8a7-44d5-9fdb-8d6db14dfad4",
+      "municipalityCode": "131148",
+      "municipalityNameJa": "中野区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/8904a14e-89ae-44af-978f-ac51b1b26474",
+      "resourceUrl": "https://www2.wagmap.jp/nakanodatamap/nakanodatamap/opendatafile/map_38/CSV/opendata_550010.csv",
+      "publisher": "中野区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131156-1e296ccb-0be5-404c-b99d-8a522c164f63",
+      "municipalityCode": "131156",
+      "municipalityNameJa": "杉並区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/0247bef9-eb5e-455c-acd0-4b292354d219",
+      "resourceUrl": "https://www.city.suginami.tokyo.jp/documents/1474/20260305.csv",
+      "publisher": "杉並区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131164-439359e4-3e78-403d-be52-81d271dbd91f",
+      "municipalityCode": "131164",
+      "municipalityNameJa": "豊島区",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/c16c5182-2b76-4d30-aa45-8d5dfa36b1c6",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/toyoshima/R4_aed.csv",
+      "publisher": "豊島区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131172-779af66a-5d2e-4ad4-9844-853206cfe0a6",
+      "municipalityCode": "131172",
+      "municipalityNameJa": "北区",
+      "datasetTitle": "AED設置場所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/5becac37-c155-476c-9a92-4283bccb71e8",
+      "resourceUrl": "https://www.city.kita.lg.jp/_res/projects/default_project/_page_/001/014/461/open_aed-1.xlsx",
+      "publisher": "北区",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-131237-edogawa-aed-24h-csv",
+      "municipalityCode": "131237",
+      "municipalityNameJa": "江戸川区",
+      "datasetTitle": "江戸川区 地図データ AED",
+      "datasetUrl": "https://www.city.edogawa.tokyo.jp/e004/kuseijoho/opendata/map_data.html",
+      "resourceUrl": "https://www.city.edogawa.tokyo.jp/documents/4408/20250318_aed24h.csv",
+      "publisher": "江戸川区",
+      "license": "クリエイティブ・コモンズ 表示 2.1 日本"
+    },
+    {
+      "sourceId": "tokyo-131237-edogawa-aed-csv",
+      "municipalityCode": "131237",
+      "municipalityNameJa": "江戸川区",
+      "datasetTitle": "江戸川区 地図データ AED",
+      "datasetUrl": "https://www.city.edogawa.tokyo.jp/e004/kuseijoho/opendata/map_data.html",
+      "resourceUrl": "https://www.city.edogawa.tokyo.jp/documents/4408/20250318_aed.csv",
+      "publisher": "江戸川区",
+      "license": "クリエイティブ・コモンズ 表示 2.1 日本"
+    },
+    {
+      "sourceId": "tokyo-132047-49597f9a-ddc9-41e6-8b3c-1c9fddc8270f",
+      "municipalityCode": "132047",
+      "municipalityNameJa": "三鷹市",
+      "datasetTitle": "【位置情報】防災関連施設・防災資器材情報",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/ab951a34-830a-4289-8e5d-68f6fb7c43c1",
+      "resourceUrl": "https://www.city.mitaka.lg.jp/c_service/074/attached/attach_74205_5.csv",
+      "publisher": "三鷹市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132055-df3c9c78-6c8e-4cb9-a3fc-6e0931acbda7",
+      "municipalityCode": "132055",
+      "municipalityNameJa": "青梅市",
+      "datasetTitle": "東京都青梅市におけるAED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/1c103e85-a923-4721-a580-b80f8f62feeb",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/ome/132055_aed.xlsx",
+      "publisher": "青梅市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132063-fuchu-aed-csv",
+      "municipalityCode": "132063",
+      "municipalityNameJa": "府中市",
+      "datasetTitle": "府中市 AED設置場所",
+      "datasetUrl": "https://www.city.fuchu.tokyo.jp/kenko/kenko/aedsecchibasho.html",
+      "resourceUrl": "https://www.city.fuchu.tokyo.jp/kenko/kenko/aedsecchibasho.files/fuc19b02a_l01aed_location230728.csv",
+      "publisher": "府中市",
+      "license": "クリエイティブ・コモンズ 表示 4.0 国際"
+    },
+    {
+      "sourceId": "tokyo-132098-6363c878-3475-4ab3-ad6f-e5d93471ca93",
+      "municipalityCode": "132098",
+      "municipalityNameJa": "町田市",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/9d63baa2-2f5e-4a02-82ac-8b83950a49fc",
+      "resourceUrl": "https://www.city.machida.tokyo.jp/shisei/opendata/shisetsu/aed.files/132098_aed.csv",
+      "publisher": "町田市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132098-830fff0f-f6b3-442c-8a74-1f329552d43e",
+      "municipalityCode": "132098",
+      "municipalityNameJa": "町田市",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/9d63baa2-2f5e-4a02-82ac-8b83950a49fc",
+      "resourceUrl": "https://www.city.machida.tokyo.jp/shisei/opendata/shisetsu/aed.files/132098_aed.xlsx",
+      "publisher": "町田市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132101-393b7336-e8c2-4a4e-a6d8-26c6e2229c3b",
+      "municipalityCode": "132101",
+      "municipalityNameJa": "小金井市",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/79fc79b6-cfac-455e-9339-8f43f7b3e547",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/koganei/08_aed.csv",
+      "publisher": "小金井市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132128-hino-aed-csv-derived",
+      "municipalityCode": "132128",
+      "municipalityNameJa": "日野市",
+      "datasetTitle": "AED設置個所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/7967b051-7f53-4b16-9dcd-798a0eca5966",
+      "resourceUrl": "https://www.city.hino.lg.jp/_res/projects/default_project/_page_/001/026/905/132128_aed.csv",
+      "publisher": "日野市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132136-93cb0ea6-9dd3-429a-a31d-4437fd8399b6",
+      "municipalityCode": "132136",
+      "municipalityNameJa": "東村山市",
+      "datasetTitle": "東村山市AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/0a30900d-c394-40c6-b59d-a58b2768a852",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/higashimurayama/20240619_aed.csv",
+      "publisher": "東村山市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132195-4960d022-db90-4358-81ad-10d8fe699fcb",
+      "municipalityCode": "132195",
+      "municipalityNameJa": "狛江市",
+      "datasetTitle": "市内公共施設AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/53f673e8-4455-41c9-91c9-f2cc2d2da3a9",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/komae/132195_aed.csv",
+      "publisher": "狛江市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132241-tama-aed-csv",
+      "municipalityCode": "132241",
+      "municipalityNameJa": "多摩市",
+      "datasetTitle": "多摩市 市内公共施設AED設置一覧",
+      "datasetUrl": "https://www.city.tama.lg.jp/kenkofukushi/1008237/iryo/aed/1006770.html",
+      "resourceUrl": "https://www.city.tama.lg.jp/_res/projects/default_project/_page_/001/006/770/132241_aed_02.csv",
+      "publisher": "多摩市",
+      "license": "クリエイティブ・コモンズ 表示 4.0 国際"
+    },
+    {
+      "sourceId": "tokyo-132241-tama-aed-xlsx",
+      "municipalityCode": "132241",
+      "municipalityNameJa": "多摩市",
+      "datasetTitle": "多摩市 市内公共施設AED設置一覧",
+      "datasetUrl": "https://www.city.tama.lg.jp/kenkofukushi/1008237/iryo/aed/1006770.html",
+      "resourceUrl": "https://www.city.tama.lg.jp/_res/projects/default_project/_page_/001/006/770/132241_aed_02.xlsx",
+      "publisher": "多摩市",
+      "license": "クリエイティブ・コモンズ 表示 4.0 国際"
+    },
+    {
+      "sourceId": "tokyo-132250-5009325a-7fed-44eb-a6b2-d4cf6ab83987",
+      "municipalityCode": "132250",
+      "municipalityNameJa": "稲城市",
+      "datasetTitle": "標準化フォーマットデータ",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/80aeb572-63a5-43ba-bf36-91fd732a8597",
+      "resourceUrl": "https://www.city.inagi.tokyo.jp/_res/projects/default_project/_page_/001/009/446/001_hyojun.xlsx",
+      "publisher": "稲城市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132276-e58b5fad-5571-427c-a95e-0e984bdd809f",
+      "municipalityCode": "132276",
+      "municipalityNameJa": "羽村市",
+      "datasetTitle": "AED設置箇所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/68cf7508-4e5e-4774-8107-4b6b3eccb3e9",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/hamura/132276_aed.csv",
+      "publisher": "羽村市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    },
+    {
+      "sourceId": "tokyo-132292-7d546286-2c3d-455d-b08d-2f0c460b9e03",
+      "municipalityCode": "132292",
+      "municipalityNameJa": "西東京市",
+      "datasetTitle": "AED設置個所一覧",
+      "datasetUrl": "https://catalog.data.metro.tokyo.lg.jp/dataset/fc9cec93-eb83-4de7-8618-a96b1c941d46",
+      "resourceUrl": "https://www.opendata.metro.tokyo.lg.jp/nishitokyo/132292_aed.xlsx",
+      "publisher": "西東京市",
+      "license": "クリエイティブ・コモンズ 表示（CC BY）"
+    }
+  ]
+}
