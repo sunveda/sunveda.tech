@@ -63,7 +63,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="i18n.js?v=20" defer></script>
+  <script src="i18n.js?v=21" defer></script>
   <style>
     /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -459,6 +459,28 @@
     .work-card__body { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.65; }
     .work-card__badge { display: inline-block; margin-top: var(--space-4); padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); background: var(--color-primary-highlight); color: var(--color-primary); font-size: var(--text-xs); font-weight: 500; }
 
+    /* PRODUCTS & LIVE EXPERIENCES */
+    .showcase__intro { max-width: 68ch; font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.75; margin-top: var(--space-4); }
+    .showcase__categories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); margin-top: var(--space-12); align-items: start; }
+    .showcase-group { display: flex; flex-direction: column; gap: var(--space-5); }
+    .showcase-group__header { padding-bottom: var(--space-5); border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08); }
+    .showcase-group__eyebrow { display: flex; align-items: center; gap: var(--space-2); color: var(--color-primary); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .showcase-group__title { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.2; color: var(--color-text); margin-top: var(--space-2); }
+    .showcase-group__intro { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.65; margin-top: var(--space-2); }
+    .showcase-card { background: var(--color-surface); border: 1px solid oklch(from var(--color-text) l c h / 0.08); border-radius: var(--radius-xl); padding: var(--space-6); transition: box-shadow var(--transition-interactive), transform var(--transition-interactive), border-color var(--transition-interactive); }
+    .showcase-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: oklch(from var(--color-primary) l c h / 0.3); }
+    .showcase-card__top { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-5); }
+    .showcase-card__icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: var(--radius-md); color: var(--color-primary); background: var(--color-primary-highlight); overflow: hidden; }
+    .showcase-card__icon img { width: 100%; height: 100%; object-fit: cover; }
+    .showcase-card__meta { color: var(--color-primary); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.5; }
+    .showcase-card__title { color: var(--color-text); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.25; margin-bottom: var(--space-3); }
+    .showcase-card__body { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.65; }
+    .showcase-card__role { margin-top: var(--space-4); padding: var(--space-4); color: var(--color-text-muted); background: var(--color-primary-highlight); border-radius: var(--radius-md); font-size: var(--text-sm); line-height: 1.6; }
+    .showcase-card__role strong { color: var(--color-text); font-weight: 600; }
+    .showcase-card__links { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-5); }
+    .showcase-card__link { color: var(--color-primary); font-size: var(--text-sm); font-weight: 500; text-decoration: none; }
+    .showcase-card__link:hover { text-decoration: underline; }
+
     /* SERVICES */
     .services__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-top: var(--space-12); }
     .service-card {
@@ -715,7 +737,7 @@
     @media (max-width: 767px) {
       .nav__links { display: none; }
       .nav__logo-text { font-size: var(--text-base); }
-      .about__grid, .work__grid, .stack__ecosystems, .stack__shared-grid, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-4); }
+      .about__grid, .work__grid, .showcase__categories, .stack__ecosystems, .stack__shared-grid, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-4); }
       .stack-card__rows { grid-template-columns: 1fr; }
       .work__grid { gap: var(--space-4); }
       .services__grid { gap: var(--space-4); }
@@ -786,7 +808,7 @@
         </a>
         <div class="nav__links">
           <a href="#about" class="nav__link" data-i18n="nav.about">About</a>
-          <a href="#projects" class="nav__link" data-i18n="nav.notableWork">Notable work</a>
+          <a href="#showcase" class="nav__link" data-i18n="nav.productsEvents">Products &amp; events</a>
           <a href="#stack" class="nav__link" data-i18n="nav.techStack">Tech stack</a>
         </div>
         <div class="nav__actions">
@@ -809,7 +831,7 @@
     <div class="nav__mobile-menu" id="nav-mobile-menu" data-nav-mobile-menu>
       <div class="container">
         <a href="#about" class="nav__mobile-link" data-i18n="nav.about" data-nav-mobile-link>About</a>
-        <a href="#projects" class="nav__mobile-link" data-i18n="nav.notableWork" data-nav-mobile-link>Notable work</a>
+        <a href="#showcase" class="nav__mobile-link" data-i18n="nav.productsEvents" data-nav-mobile-link>Products &amp; events</a>
         <a href="#stack" class="nav__mobile-link" data-i18n="nav.techStack" data-nav-mobile-link>Tech stack</a>
         <div class="nav__mobile-actions">
           <a href="https://calendar.app.google/Z7Dx2r3WQDApGX5eA" class="nav__meeting" target="_blank" rel="noopener noreferrer" data-i18n="nav.bookMeeting" data-nav-mobile-link>Book a meeting</a>
@@ -938,6 +960,78 @@
             <h3 class="work-card__title" data-i18n="work.card3Title">Deliver and learn</h3>
             <p class="work-card__body" data-i18n="work.card3Body">Work alongside specialists to ship, document decisions, validate what is working, and adjust the roadmap as evidence replaces assumptions.</p>
             <span class="work-card__badge" data-i18n="work.card3Badge">Deliver</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- PRODUCTS & LIVE EXPERIENCES -->
+    <section id="showcase" aria-labelledby="showcase-heading">
+      <div class="container">
+        <div class="reveal">
+          <p class="section-label" data-i18n="showcase.label">Built in Practice</p>
+          <h2 class="section-heading" id="showcase-heading" data-i18n="showcase.heading">Products &amp; live experiences</h2>
+          <p class="showcase__intro" data-i18n="showcase.intro">Through SunVeda Technologies, we build useful digital products and experiences for live audiences. Each project states the team context and Sarveshwar's contribution.</p>
+        </div>
+
+        <div class="showcase__categories">
+          <div class="showcase-group reveal">
+            <div class="showcase-group__header">
+              <div class="showcase-group__eyebrow"><i data-lucide="heart-pulse" aria-hidden="true"></i><span data-i18n="showcase.societyLabel">For society</span></div>
+              <h3 class="showcase-group__title" data-i18n="showcase.societyTitle">Technology for society</h3>
+              <p class="showcase-group__intro" data-i18n="showcase.societyIntro">Practical applications designed around public value, access, and trust.</p>
+            </div>
+
+            <article class="showcase-card">
+              <div class="showcase-card__top">
+                <div class="showcase-card__icon"><img src="app/aedoko/favicon.svg" alt="AEDoko logo" width="48" height="48" /></div>
+                <div class="showcase-card__meta" data-i18n="showcase.aedokoMeta">Civic technology · Live</div>
+              </div>
+              <h4 class="showcase-card__title">AEDoko</h4>
+              <p class="showcase-card__body" data-i18n="showcase.aedokoBody">A map-based public-good application that helps people find AED locations across Tokyo, with transparent data coverage and quality notes.</p>
+              <p class="showcase-card__role"><strong data-i18n="showcase.sarveshwarContribution">Sarveshwar's contribution:</strong> <span data-i18n="showcase.aedokoRole">led product direction, data architecture, engineering, and delivery with the SunVeda Technologies team.</span></p>
+              <div class="showcase-card__links">
+                <a class="showcase-card__link" href="/app/aedoko/" target="_blank" rel="noopener noreferrer" data-i18n="showcase.aedokoLink">Open AEDoko ↗</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="showcase-group reveal">
+            <div class="showcase-group__header">
+              <div class="showcase-group__eyebrow"><i data-lucide="presentation" aria-hidden="true"></i><span data-i18n="showcase.eventsLabel">On stage</span></div>
+              <h3 class="showcase-group__title" data-i18n="showcase.eventsTitle">Live event experiences</h3>
+              <p class="showcase-group__intro" data-i18n="showcase.eventsIntro">Talks where an idea became a working digital experience in front of a live audience.</p>
+            </div>
+
+            <article class="showcase-card">
+              <div class="showcase-card__top">
+                <div class="showcase-card__icon"><i data-lucide="sparkles" aria-hidden="true"></i></div>
+                <div class="showcase-card__meta" data-i18n="showcase.codexMeta">Codex Meetup Tokyo #2 · 7 Aug 2026</div>
+              </div>
+              <h4 class="showcase-card__title" lang="ja">Codexはエンジニアだけのものじゃない</h4>
+              <p class="showcase-card__body" data-i18n="showcase.codexBody">A bilingual five-minute talk showing how non-engineers can turn natural-language instructions into useful outcomes, including an audience-driven website built live.</p>
+              <p class="showcase-card__role"><strong data-i18n="showcase.sarveshwarContribution">Sarveshwar's contribution:</strong> <span data-i18n="showcase.codexRole">prepared and delivered the bilingual talk, presentation materials, and live demonstration.</span></p>
+              <div class="showcase-card__links">
+                <a class="showcase-card__link" href="https://sunveda-codex-meetup-tokyo.sarveshwar1986.chatgpt.site" target="_blank" rel="noopener noreferrer" data-i18n="showcase.codexSiteLink">View event website ↗</a>
+                <a class="showcase-card__link" href="https://github.com/sunveda/codex-meetup-tokyo-2026-08-07-fri/tree/main/topic-1-codex-for-everyone" target="_blank" rel="noopener noreferrer" data-i18n="showcase.codexRepoLink">View presentation materials ↗</a>
+              </div>
+            </article>
+
+            <article class="showcase-card">
+              <div class="showcase-card__top">
+                <div class="showcase-card__icon"><i data-lucide="radio-tower" aria-hidden="true"></i></div>
+                <div class="showcase-card__meta" data-i18n="showcase.nostrMeta">Live stage build · 15 Aug 2026</div>
+              </div>
+              <h4 class="showcase-card__title">Nostr Atlas</h4>
+              <p class="showcase-card__body" data-i18n="showcase.nostrBody">A multilingual field guide explaining Nostr's open protocol, key safety, and 41 ecosystem applications—created as a working website during a live stage session.</p>
+              <p class="showcase-card__role"><strong data-i18n="showcase.sarveshwarContribution">Sarveshwar's contribution:</strong> <span data-i18n="showcase.nostrRole">framed the topic, directed the live build, and shaped the guide's educational structure and safety-minded content.</span></p>
+              <div class="showcase-card__links">
+                <a class="showcase-card__link" href="https://nostr-atlas-guide.sarveshwar1986.chatgpt.site/" target="_blank" rel="noopener noreferrer" data-i18n="showcase.nostrSiteLink">Explore Nostr Atlas ↗</a>
+                <a class="showcase-card__link" href="https://x.com/sunvedatech/status/2088386531656667405" target="_blank" rel="noopener noreferrer" data-i18n="showcase.nostrPostLink">View event post ↗</a>
+              </div>
+            </article>
           </div>
         </div>
       </div>
@@ -1339,7 +1433,7 @@
           <a href="terms.html">Service terms</a>
         </nav>
         <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
-        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/31" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #31">v31 · 82b181d</a></div>
+        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/32" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #32">v32 · 0277787</a></div>
       </div>
     </div>
   </footer>
