@@ -26,7 +26,8 @@ jobs:
         run: |
           DATE=$(TZ=Asia/Tokyo date '+%Y-%m-%d')
           echo "DATE=${DATE}" >> $GITHUB_ENV
-          node analytics/collect.mjs > /tmp/report-${DATE}.md
+          node analytics/collect.mjs --output-dir /tmp/analytics-output
+          mv /tmp/analytics-output/report.md /tmp/report-${DATE}.md
 
       - name: Commit report to analytics-data branch
         run: |
@@ -53,3 +54,13 @@ jobs:
           git add analytics/reports/${DATE}.md
           git diff --cached --quiet || git commit -m "analytics: daily report ${DATE}"
           git push origin analytics-data
+
+      - name: Store aggregate snapshot in analytics database
+        env:
+          ANALYTICS_INGEST_TOKEN: ${{ secrets.ANALYTICS_INGEST_TOKEN }}
+        run: |
+          curl --fail-with-body --retry 3 --retry-all-errors \
+            --header "Authorization: Bearer ${ANALYTICS_INGEST_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data-binary @/tmp/analytics-output/snapshot.json \
+            https://sunveda.tech/api/analytics/ingest
