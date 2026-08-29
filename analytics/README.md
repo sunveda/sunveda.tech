@@ -41,6 +41,7 @@ Use a Node.js 20+ runtime:
 node analytics/collect.mjs
 node analytics/collect.mjs --json
 node analytics/collect.mjs --snapshot-json
+node analytics/collect.mjs --date 2026-08-24 --snapshot-json
 node analytics/collect.mjs --output-dir /tmp/sunveda-analytics
 node analytics/test.mjs
 node analytics/preview.mjs

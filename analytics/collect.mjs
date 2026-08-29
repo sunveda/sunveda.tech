@@ -40,8 +40,21 @@ function tokyoDate(offsetDays = 0) {
   return now.toISOString().slice(0, 10);
 }
 
-function comparisonDates() {
-  const yesterday = tokyoDate(-1);
+function validIsoDate(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value)
+    && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+}
+
+function targetDateFromArgs(args = process.argv.slice(2)) {
+  const index = args.indexOf("--date");
+  if (index === -1) return tokyoDate(-1);
+  const value = args[index + 1];
+  if (!value || !validIsoDate(value)) throw new Error("--date requires a valid YYYY-MM-DD date");
+  return value;
+}
+
+function comparisonDates(yesterday = tokyoDate(-1)) {
+  if (!validIsoDate(yesterday)) throw new Error("comparison date must be YYYY-MM-DD");
   return {
     yesterday,
     previousDay: addDays(yesterday, -1),
@@ -310,8 +323,7 @@ function normalizedRows(rows, labelKey, valueKey, { path = false } = {}) {
 
 function sourceSnapshot(source, metrics, breakdowns = {}) {
   if (!source.ok) return { status: "unavailable", metrics, breakdowns };
-  const available = Object.values(metrics).some((value) => value !== null);
-  return { status: available ? "ok" : "missing", metrics, breakdowns };
+  return { status: "ok", metrics, breakdowns };
 }
 
 function normalizeSnapshot(report) {
@@ -320,23 +332,29 @@ function normalizeSnapshot(report) {
     ? sources.cloudflare.data.byDate[dates.yesterday]
     : null;
   const cloudflareSum = cloudflareRow?.sum || {};
-  const requests = finiteOrNull(cloudflareSum.requests);
-  const cachedRequests = finiteOrNull(cloudflareSum.cachedRequests);
+  const requests = finiteOrNull(cloudflareSum.requests) ?? 0;
+  const cachedRequests = finiteOrNull(cloudflareSum.cachedRequests) ?? 0;
   const cloudflareMetrics = {
     requests,
-    uniqueClients: finiteOrNull(cloudflareRow?.uniq?.uniques),
-    bandwidthBytes: finiteOrNull(cloudflareSum.bytes),
+    uniqueClients: finiteOrNull(cloudflareRow?.uniq?.uniques) ?? 0,
+    bandwidthBytes: finiteOrNull(cloudflareSum.bytes) ?? 0,
     cachedRequests,
-    cacheHitRatio: requests && cachedRequests !== null ? cachedRequests / requests : null,
-    pageViews: finiteOrNull(cloudflareSum.pageViews),
-    threats: finiteOrNull(cloudflareSum.threats),
+    cacheHitRatio: requests ? cachedRequests / requests : null,
+    pageViews: finiteOrNull(cloudflareSum.pageViews) ?? 0,
+    threats: finiteOrNull(cloudflareSum.threats) ?? 0,
   };
 
   const gaRow = sources.ga4.ok ? sources.ga4.data.byDate[dates.yesterday] : null;
-  const gaMetrics = Object.fromEntries([
-    "activeUsers", "newUsers", "sessions", "engagedSessions", "engagementRate",
-    "userEngagementDuration", "screenPageViews", "keyEvents",
-  ].map((key) => [key, finiteOrNull(gaRow?.[key])]));
+  const gaMetrics = {
+    activeUsers: finiteOrNull(gaRow?.activeUsers) ?? 0,
+    newUsers: finiteOrNull(gaRow?.newUsers) ?? 0,
+    sessions: finiteOrNull(gaRow?.sessions) ?? 0,
+    engagedSessions: finiteOrNull(gaRow?.engagedSessions) ?? 0,
+    engagementRate: finiteOrNull(gaRow?.engagementRate),
+    userEngagementDuration: finiteOrNull(gaRow?.userEngagementDuration) ?? 0,
+    screenPageViews: finiteOrNull(gaRow?.screenPageViews) ?? 0,
+    keyEvents: finiteOrNull(gaRow?.keyEvents) ?? 0,
+  };
   const gaBreakdowns = sources.ga4.ok ? {
     landingPages: normalizedRows(sources.ga4.data.landingPages, "landingPagePlusQueryString", "sessions", { path: true }),
     channels: normalizedRows(sources.ga4.data.channels, "sessionDefaultChannelGroup", "sessions"),
@@ -438,7 +456,7 @@ function renderMarkdown(report) {
 }
 
 async function main() {
-  const dates = comparisonDates();
+  const dates = comparisonDates(targetDateFromArgs());
   const [cloudflare, ga4, goatcounter] = await Promise.all([
     capture("cloudflare", () => cloudflareReport(dates)),
     capture("ga4", () => ga4Report(dates)),
@@ -466,4 +484,4 @@ async function main() {
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) await main();
 
-export { addDays, cleanPath, comparisonDates, normalizeSnapshot, renderMarkdown, utcRangeForTokyoDate };
+export { addDays, cleanPath, comparisonDates, normalizeSnapshot, renderMarkdown, targetDateFromArgs, utcRangeForTokyoDate, validIsoDate };
