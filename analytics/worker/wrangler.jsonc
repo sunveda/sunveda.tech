@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sunveda-analytics-api",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-08-29",
+  "routes": [
+    {
+      "pattern": "sunveda.tech/api/analytics*",
+      "zone_name": "sunveda.tech"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "ANALYTICS_DB",
+      "database_name": "sunveda-analytics",
+      "database_id": "c49e541e-3c4a-441e-b714-77442931948a"
+    }
+  ]
+}
