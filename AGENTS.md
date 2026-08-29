@@ -4,7 +4,9 @@ Instructions for any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) work
 
 ## What this is
 
-`sunveda.tech` — Sarveshwar Singh's personal/consulting site (SunVeda Technologies). A single-page marketing/portfolio site, statically hosted.
+`sunveda.tech` — Sarveshwar Singh's personal/consulting site (SunVeda Technologies). The public site is statically hosted, with a small Cloudflare Worker and D1 analytics data plane.
+
+- `README.md` — the architecture source of truth: current diagram, deployment map, data flows, security boundaries, and architecture revision history.
 
 - No framework, no bundler, no `package.json`. Plain HTML/CSS/JS.
 - `index.html` — the entire site: markup + all CSS in one `<style>` block + inline bootstrap scripts.
@@ -12,9 +14,30 @@ Instructions for any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) work
 - `privacy.html`, `terms.html` — small standalone legal pages.
 - `site.webmanifest`, `favicon*.png/svg`, `icon-*.png`, `apple-touch-icon.png` — PWA/icon assets.
 - `logo-*.png` — client/partner logos shown in the "Selected work" section.
-- `CNAME` — GitHub Pages custom domain (`sunveda.tech`). Deployment is GitHub Pages; there is no CI workflow in this repo.
+- `a/index.html` — the aggregate analytics dashboard at `/a/`.
+- `analytics/` — zero-dependency Node.js collector, report importer, preview server, tests, and Cloudflare Worker/D1 implementation.
+- `.github/workflows/analytics.yml` — scheduled collection into D1 plus the isolated `analytics-data` archive branch.
+- `CNAME` — GitHub Pages custom domain (`sunveda.tech`). Static deployment is GitHub Pages; Cloudflare handles CDN/DNS and selected Worker routes.
 
 There is no build step. Any change to `index.html`, `i18n.js`, or the HTML pages is live as-is once deployed.
+
+## Architecture documentation
+
+> **MANDATORY — keep `README.md` synchronized with architecture changes.**
+
+When a change adds, removes, replaces, or materially alters any hosting
+platform, runtime service, public route, API, database/storage layer, scheduled
+workflow, external integration, credential boundary, or deployment path, update
+the architecture documentation in the same PR:
+
+1. Update the current Mermaid architecture diagram and deployment map.
+2. Update request/data flows, security boundaries, repository layout, and runbooks as applicable.
+3. Add or revise the architecture evolution entry, including the date and the reason for the change.
+4. Update the evolution diagram and increment the `A{N}` architecture revision only when the system boundary or platform architecture materially changes.
+5. Keep historical revisions; do not rewrite the history to describe only the newest state.
+
+Copy, content, styling, and ordinary component changes do not require a new
+architecture revision unless they also change one of those boundaries.
 
 ## Running / previewing locally
 
@@ -28,7 +51,7 @@ Then open `http://localhost:8000/index.html`.
 
 ## Internationalization (i18n)
 
-- Supported languages are defined in `i18n.js` in the `LANGUAGES` array (currently `en`, `ja`).
+- Supported languages are defined in `i18n.js` in the `LANGUAGES` array (currently `en`, `ja`, `ko`, `zh`, `es`, `de`, `fr`, `pt`, `ru`, `ar`, `hi`, `it`).
 - Every user-facing string in `index.html` should have a matching `data-i18n="namespace.key"` attribute, and a corresponding entry for **every** supported language in the `locales` object in `i18n.js`.
 - When adding or changing copy:
   1. Add/update the key in `locales.en` (and every other locale — do not leave a language missing a key).
