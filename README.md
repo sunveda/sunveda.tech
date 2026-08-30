@@ -2,7 +2,7 @@
 
 Source for [sunveda.tech](https://sunveda.tech), Sarveshwar Singh's multilingual technology consulting and portfolio website.
 
-**Current architecture revision: A6 · Community contribution review pipeline (2026-08-30)**
+**Current architecture revision: A7 · On-demand AED map (2026-08-30)**
 
 This README is the architecture source of truth. The diagrams, deployment map,
 and architecture history must be updated in the same pull request whenever a
@@ -50,6 +50,10 @@ flowchart TB
     goat[GoatCounter]
   end
 
+  subgraph maps[Map provider]
+    openfreemap[OpenFreeMap<br/>Vector style and tiles]
+  end
+
   subgraph automation[GitHub Actions · daily 08:00 JST]
     collector[Zero-dependency Node.js collector]
   end
@@ -66,6 +70,7 @@ flowchart TB
 
   aedrepo --> aedbuild
   aedbuild -->|Vendored release artifact| aedoko
+  aedoko -. Map opened on demand .-> openfreemap
   aedoko -. Add city or feedback .-> forms
   contributor --> forms
   forms --> issues
@@ -88,6 +93,7 @@ flowchart TB
 | Main website | Plain HTML, inline CSS, browser JavaScript | GitHub Pages from `main` | `index.html`, `i18n.js` |
 | Analytics dashboard | Plain HTML, inline CSS, SVG and browser JavaScript | GitHub Pages from `main` | `a/index.html` |
 | AEDoko application | Static React bundle with a committed AED data snapshot | GitHub Pages route `/app/aedoko/` | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
+| AEDoko interactive map | Lazy MapLibre GL bundle, browser-side GeoJSON clustering, and OpenFreeMap vector tiles | Loaded only after a visitor opens the map at `/app/aedoko/` | `app/aedoko/assets/`, built from `app/map-panel.tsx` in [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
 | AEDoko community review | GitHub Issue Forms plus issue-triggered GitHub Actions | Issues and unverified draft PRs in `sunveda/aedoko` | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
@@ -106,6 +112,7 @@ flowchart TB
   radii, and colors. Instrument Serif and DM Sans are loaded from Google Fonts;
   Lucide supplies icons.
 - **Installable metadata.** `site.webmanifest` and the icon assets provide PWA-style metadata without a service worker.
+- **On-demand map payload.** AEDoko keeps MapLibre GL, its styles, the full AED snapshot, and external map tiles out of the initial emergency-finder request. A separate lazy bundle loads them only when a visitor opens the map.
 - **Three independent analytics views.** Cloudflare measures HTTP/CDN traffic;
   GA4 and GoatCounter measure visitors differently. Their totals are never added
   together, and unavailable data remains missing rather than becoming zero.
@@ -121,7 +128,16 @@ flowchart TB
 2. Worker routes intercept only the analytics API and `/analyse` alias.
 3. GitHub Pages serves the core site, dashboard, legal pages, and `/app/aedoko/` from `main`.
 4. AEDoko runs entirely in the browser from a versioned static bundle. Its location calculations and AED snapshot reads do not require a SunVeda server API.
-5. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
+5. The initial AEDoko route does not request the map bundle, AED snapshot, or map tiles. Those resources load only after the visitor selects **View all AEDs on map**.
+6. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
+
+### AEDoko interactive map
+
+1. The emergency finder renders without loading MapLibre GL, the map stylesheet, OpenFreeMap tiles, or the full Tokyo snapshot.
+2. Selecting **View all AEDs on map** dynamically loads the map component and existing versioned AED snapshot.
+3. The browser represents all 4,772 coordinate-valid records as GeoJSON and clusters nearby points on-device as the visitor pans and zooms.
+4. Cluster selection zooms into its members. Individual AED markers show the name, address, placement details, status, and a link to Google Maps walking directions.
+5. The map starts with the full Tokyo extent and does not request geolocation automatically. **Center on me** triggers the browser permission prompt and uses the position only in memory.
 
 ### Daily analytics collection
 
@@ -150,6 +166,8 @@ flowchart TB
 - `POST /api/analytics/ingest` requires the ingestion bearer token; public requests are read-only.
 - `/a/` is marked `noindex, nofollow` and displays no visitor-level data.
 - AEDoko keeps geolocation in browser memory, calculates nearest results on-device, and does not send coordinates to SunVeda analytics or storage.
+- Opening the AEDoko map makes ordinary style and tile requests to OpenFreeMap. The provider can receive standard request metadata and the requested viewport can indicate the approximate area being viewed; no AED record or exact device coordinate is uploaded by AEDoko.
+- AEDoko requests device location only after the visitor selects **Center on me**. The exact position remains in browser memory and is not stored by SunVeda.
 - Community form submissions are public GitHub issues. The forms explicitly prohibit private or active-emergency information.
 - The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
@@ -166,15 +184,17 @@ flowchart LR
   A4["A4 · 2026-08-30<br/>Worker + D1 dashboard"]
   A5["A5 · 2026-08-30<br/>Hosted AEDoko route"]
   A6["A6 · 2026-08-30<br/>Community contribution review"]
+  A7["A7 · 2026-08-30<br/>On-demand AED map"]
 
   A1 -->|Reach a broader audience<br/>without adding a backend| A2
   A2 -->|Measure traffic and retain<br/>an auditable daily record| A3
   A3 -->|Avoid reading Git files at runtime;<br/>serve normalized trends efficiently| A4
   A4 -->|Publish a focused emergency tool<br/>under the owned domain| A5
   A5 -->|Collect new-city sources safely<br/>without auto-publishing emergency data| A6
+  A6 -->|Explore every published location<br/>without taxing finder startup| A7
 
   classDef current fill:#01696f,color:#fff,stroke:#83e6c2,stroke-width:2px;
-  class A6 current;
+  class A7 current;
 ```
 
 | Revision | Change | Why the architecture changed |
@@ -185,6 +205,7 @@ flowchart LR
 | **A4 · Edge analytics platform** | Added `/a/`, a Cloudflare Worker API, D1 snapshots, protected ingestion, historical backfill, and an edge redirect from `/analyse` to `/a/`. | Make range-based dashboard queries fast and consistent, keep provider secrets server-side, and retain Markdown only as an archive rather than a runtime database. |
 | **A5 · Hosted application route** | Added AEDoko as a versioned static application at `/app/aedoko/`, built from the separate `sunveda/aedoko` repository and vendored into the main Pages deployment. | Give the emergency finder a stable URL on the owned domain without widening Worker routes, adding a runtime backend, or changing the zero-build core website. |
 | **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action. | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
+| **A7 · On-demand AED map** | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles. | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action. |
 
 ### Architecture decisions that remain active
 
@@ -193,6 +214,7 @@ flowchart LR
 | Keep the core public site zero-build | Active | Static-file maintenance becomes less reliable than a small build pipeline. Hosted applications may provide reviewed static bundles. |
 | Host focused applications under `/app/` | Active | Independent deployment or runtime requirements make vendored static bundles difficult to audit or update. |
 | Keep community AED submissions proposal-only | Active | A source-independent validation and normalization pipeline can safely prove submitted records before publication. |
+| Keep the AED map payload strictly on demand | Active | Map exploration becomes the primary emergency flow or measured usage justifies the additional initial payload and third-party tile requests. |
 | Keep analytics providers separate | Active | A validated cross-provider identity and metric model exists. |
 | Use D1 as dashboard source of truth | Active | Query volume, retention, or analysis requirements exceed the current snapshot model. |
 | Retain `analytics-data` as an audit archive | Active | A replacement provides equally reviewable and recoverable history. |
