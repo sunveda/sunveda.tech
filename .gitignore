@@ -11,3 +11,8 @@ service-account*.json
 
 # Cloudflare CLI machine-local state
 .wrangler/
+
+# Browser regression test dependencies and output
+node_modules/
+playwright-report/
+test-results/

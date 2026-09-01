@@ -1,0 +1,13 @@
+{
+  "name": "sunveda-tech",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node analytics/test.mjs && node analytics/worker/test.mjs && npm run test:layout",
+    "test:analytics": "node analytics/test.mjs && node analytics/worker/test.mjs",
+    "test:layout": "node tests/layout.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
