@@ -24,6 +24,7 @@ flowchart TB
   subgraph static[GitHub Pages · main branch]
     site[Static website<br/>HTML + CSS + JavaScript]
     dashboard[Analytics dashboard<br/>/a/]
+    apphub[Application catalogue<br/>/app/]
     aedoko[AEDoko emergency finder<br/>/app/aedoko/]
     pages[Legal and RSVP pages]
   end
@@ -61,6 +62,7 @@ flowchart TB
   visitor --> cf
   cf -->|Static routes| site
   cf -->|/a/| dashboard
+  cf -->|/app/| apphub
   cf -->|/app/aedoko/| aedoko
   cf -->|/privacy, /terms, /rsvp| pages
   cf -->|/analyse → 308 /a/| worker
@@ -70,6 +72,7 @@ flowchart TB
 
   aedrepo --> aedbuild
   aedbuild -->|Vendored release artifact| aedoko
+  apphub -->|Open application| aedoko
   aedoko -. Map opened on demand .-> openfreemap
   aedoko -. Add city or feedback .-> forms
   contributor --> forms
@@ -92,6 +95,7 @@ flowchart TB
 | --- | --- | --- | --- |
 | Main website | Plain HTML, inline CSS, browser JavaScript | GitHub Pages from `main` | `index.html`, `i18n.js` |
 | Analytics dashboard | Plain HTML, inline CSS, SVG and browser JavaScript | GitHub Pages from `main` | `a/index.html` |
+| Application catalogue | Plain HTML, inline CSS and shared client-side translations | GitHub Pages route `/app/` | `app/index.html`, `i18n.js` |
 | AEDoko application | Static React bundle with a committed AED data snapshot | GitHub Pages route `/app/aedoko/` | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
 | AEDoko interactive map | Lazy MapLibre GL bundle, browser-side GeoJSON clustering, and OpenFreeMap vector tiles | Loaded only after a visitor opens the map at `/app/aedoko/` | `app/aedoko/assets/`, built from `app/map-panel.tsx` in [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
 | AEDoko community review | GitHub Issue Forms plus issue-triggered GitHub Actions | Issues and unverified draft PRs in `sunveda/aedoko` | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
@@ -126,10 +130,11 @@ flowchart TB
 
 1. Cloudflare receives traffic for `sunveda.tech`.
 2. Worker routes intercept only the analytics API and `/analyse` alias.
-3. GitHub Pages serves the core site, dashboard, legal pages, and `/app/aedoko/` from `main`.
-4. AEDoko runs entirely in the browser from a versioned static bundle. Its location calculations and AED snapshot reads do not require a SunVeda server API.
-5. The initial AEDoko route does not request the map bundle, AED snapshot, or map tiles. Those resources load only after the visitor selects **View all AEDs on map**.
-6. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
+3. GitHub Pages serves the core site, dashboard, legal pages, the `/app/` catalogue, and `/app/aedoko/` from `main`.
+4. The application catalogue is a static discovery page that links to reviewed applications hosted beneath `/app/`.
+5. AEDoko runs entirely in the browser from a versioned static bundle. Its location calculations and AED snapshot reads do not require a SunVeda server API.
+6. The initial AEDoko route does not request the map bundle, AED snapshot, or map tiles. Those resources load only after the visitor selects **View all AEDs on map**.
+7. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
 
 ### AEDoko interactive map
 
@@ -207,6 +212,12 @@ flowchart LR
 | **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action. | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
 | **A7 · On-demand AED map** | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles. | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action. |
 
+### Non-revision architecture maintenance
+
+| Date | Change | Revision impact |
+| --- | --- | --- |
+| **2026-09-01** | Added the static `/app/` catalogue route and linked it from the main site. | No revision increment: this extends the existing GitHub Pages application-hosting pattern without changing a platform, runtime, data flow, or security boundary. |
+
 ### Architecture decisions that remain active
 
 | Decision | Status | Revisit when |
@@ -227,6 +238,7 @@ flowchart LR
 ├── index.html                    # Main site markup, styles, and browser scripts
 ├── i18n.js                       # 12-locale translation dictionary and switcher
 ├── a/index.html                  # Database-backed analytics dashboard
+├── app/index.html                # Multilingual application catalogue
 ├── app/aedoko/                   # Vendored AEDoko static application and AED snapshot
 ├── rsvp/index.html               # RSVP page
 ├── privacy.html / terms.html     # Legal pages
@@ -255,7 +267,7 @@ Open `http://localhost:8000/`. For the analytics dashboard with its live public 
 node analytics/preview.mjs
 ```
 
-The vendored AEDoko release is available locally at `http://localhost:8000/app/aedoko/`. Its source and build commands live in the [`sunveda/aedoko`](https://github.com/sunveda/aedoko) repository.
+The application catalogue is available locally at `http://localhost:8000/app/`. The vendored AEDoko release is at `http://localhost:8000/app/aedoko/`; its source and build commands live in the [`sunveda/aedoko`](https://github.com/sunveda/aedoko) repository.
 
 Run the zero-dependency tests:
 
