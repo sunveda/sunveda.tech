@@ -206,7 +206,7 @@
     }
     img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
     input, button, textarea, select { font: inherit; color: inherit; }
-    h1, h2, h3, h4 { text-wrap: balance; line-height: 1.15; }
+    h1, h2, h3, h4 { text-wrap: balance; line-height: 1.2; overflow-wrap: anywhere; }
     p, li { text-wrap: pretty; }
     ::selection { background: oklch(from var(--color-primary) l c h / 0.22); color: var(--color-text); }
     :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
@@ -310,7 +310,7 @@
     .nav__mobile-link:hover, .nav__mobile-link:focus-visible { color: var(--color-text); }
     .nav__mobile-actions { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
     .nav__mobile-actions .nav__meeting, .nav__mobile-actions .nav__cta { width: 100%; height: 44px; }
-    @media (min-width: 1101px) {
+    @media (min-width: 1601px) {
       .nav__mobile-menu { display: none !important; }
     }
 
@@ -365,7 +365,8 @@
     .hero__heading {
       font-family: var(--font-display);
       font-size: var(--text-hero);
-      line-height: 1.0;
+      line-height: 1.08;
+      overflow-wrap: anywhere;
       letter-spacing: -0.03em;
       color: var(--color-text);
       margin-bottom: var(--space-8);
@@ -415,7 +416,7 @@
     }
     .section-heading {
       font-family: var(--font-display); font-size: var(--text-2xl);
-      letter-spacing: -0.025em; line-height: 1.1;
+      letter-spacing: -0.025em; line-height: 1.18;
       color: var(--color-text); margin-bottom: var(--space-6);
     }
 
@@ -637,7 +638,7 @@
     /* CONNECT SECTION */
     .connect { border-top: 1px solid oklch(from var(--color-text) l c h / 0.06); }
     .connect__inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: start; }
-    .connect__heading { font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: var(--space-4); }
+    .connect__heading { font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: -0.025em; line-height: 1.18; margin-bottom: var(--space-4); }
     .connect__heading em { color: var(--color-primary); font-style: italic; }
     .connect__body { font-size: var(--text-base); color: var(--color-text-muted); margin-bottom: var(--space-8); }
     .connect__links { display: flex; flex-direction: column; gap: var(--space-3); }
@@ -730,8 +731,9 @@
     .reveal.visible { opacity: 1; transform: none; }
 
     /* MOBILE */
-    @media (max-width: 1280px) {
+    @media (max-width: 1600px) {
       .nav__links { display: none; }
+      .nav__toggle { display: inline-flex; }
     }
     @media (max-width: 1100px) {
       .nav__links { gap: var(--space-4); }
@@ -759,6 +761,27 @@
     }
 
     /* RTL (Arabic) */
+    html:lang(ja) .hero__heading,
+    html:lang(ko) .hero__heading,
+    html:lang(zh) .hero__heading,
+    html:lang(ar) .hero__heading,
+    html:lang(hi) .hero__heading,
+    html:lang(ja) .about__heading,
+    html:lang(ko) .about__heading,
+    html:lang(zh) .about__heading,
+    html:lang(ar) .about__heading,
+    html:lang(hi) .about__heading,
+    html:lang(ja) .connect__heading,
+    html:lang(ko) .connect__heading,
+    html:lang(zh) .connect__heading,
+    html:lang(ar) .connect__heading,
+    html:lang(hi) .connect__heading {
+      line-height: 1.24;
+      letter-spacing: 0;
+    }
+    html:lang(ar) body, html:lang(hi) body {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
     html[dir="rtl"] .connect__link-arrow { transform: scaleX(-1); }
     html[dir="rtl"] .lang-switch__icon { left: auto; right: 8px; }
     html[dir="rtl"] .lang-switch__select { padding: 7px 28px 7px 26px; }
@@ -1452,7 +1475,7 @@
           <a href="terms.html">Service terms</a>
         </nav>
         <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
-        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/42" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #42">v42 · 9d1121c</a></div>
+        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/43" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #43">v43 · 350fa92</a></div>
       </div>
     </div>
   </footer>
