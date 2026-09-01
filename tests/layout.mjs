@@ -211,6 +211,38 @@ async function checkMobileMenu(page, scenario) {
   return problems;
 }
 
+async function checkAppsNavigation(page, scenario) {
+  if (scenario.route !== "/" || scenario.language !== "en") return [];
+
+  const links = page.locator('[data-i18n="nav.apps"]');
+  const hrefs = await links.evaluateAll(elements => elements.map(element => element.getAttribute("href")));
+  const problems = hrefs.length === 2 && hrefs.every(href => href === "#showcase")
+    ? []
+    : [`Apps navigation targets are ${JSON.stringify(hrefs)}`];
+
+  const desktopLink = page.locator('.nav__link[data-i18n="nav.apps"]');
+  if (await desktopLink.isVisible()) {
+    await desktopLink.click();
+  } else {
+    await page.locator("[data-nav-toggle]").click();
+    await page.locator('.nav__mobile-link[data-i18n="nav.apps"]').click();
+  }
+
+  try {
+    await page.waitForFunction(() => {
+      const section = document.querySelector("#showcase");
+      if (!section || window.location.hash !== "#showcase") return false;
+      const sectionTop = section.getBoundingClientRect().top;
+      const scrollPadding = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      return Math.abs(sectionTop - scrollPadding) <= 2;
+    }, { timeout: 5_000 });
+  } catch {
+    problems.push("Apps navigation did not scroll to Built in Practice");
+  }
+
+  return problems;
+}
+
 async function testScenario(page, origin, scenario) {
   const query = scenario.route === "/app/aedoko/"
     ? `?lang=${encodeURIComponent(scenario.language)}&layout-test=1`
@@ -226,6 +258,7 @@ async function testScenario(page, origin, scenario) {
   return [
     ...(await auditLayout(page, scenario)),
     ...(await checkMobileMenu(page, scenario)),
+    ...(await checkAppsNavigation(page, scenario)),
   ];
 }
 
