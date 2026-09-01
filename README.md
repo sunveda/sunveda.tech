@@ -15,6 +15,7 @@ automation, external integrations, or security boundaries.
 flowchart TB
   visitor[Website visitor]
   contributor[Community contributor]
+  maintainer[Repository maintainer]
 
   subgraph edge[Cloudflare edge · sunveda.tech]
     cf[DNS, CDN and route matching]
@@ -55,8 +56,9 @@ flowchart TB
     openfreemap[OpenFreeMap<br/>Vector style and tiles]
   end
 
-  subgraph automation[GitHub Actions · daily 08:00 JST]
+  subgraph automation[GitHub Actions]
     collector[Zero-dependency Node.js collector]
+    layoutqa[Playwright multilingual layout checks<br/>PR, main and weekly]
   end
 
   visitor --> cf
@@ -87,6 +89,12 @@ flowchart TB
   collector --> goat
   collector -->|Normalized JSON + bearer token| worker
   collector -->|Daily Markdown report| archive
+  maintainer --> layoutqa
+  layoutqa -. validates 4 viewports .-> site
+  layoutqa -. validates .-> dashboard
+  layoutqa -. validates .-> apphub
+  layoutqa -. validates .-> aedoko
+  layoutqa -. validates .-> pages
 ```
 
 ### Deployment map
@@ -102,6 +110,7 @@ flowchart TB
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
 | Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
+| Multilingual layout QA | Playwright with 176 route, language, and viewport combinations | GitHub Actions on pull requests, `main`, weekly, and manual dispatch | `tests/layout.mjs`, `.github/workflows/layout-tests.yml` |
 | Human-readable archive | Markdown reports | Orphan-style `analytics-data` Git branch | `analytics/reports/YYYY-MM-DD.md` on that branch |
 | Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
 | Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
@@ -123,6 +132,10 @@ flowchart TB
 - **Database-backed dashboard.** The browser reads normalized aggregate snapshots
   from D1 through a same-origin Worker API; it never receives provider credentials
   or visitor-level records.
+- **Automated responsive QA.** Playwright serves the checkout locally and checks
+  four viewport sizes across every shared-site and AEDoko language. It fails on
+  heading-line collisions, clipped text, header collisions, broken mobile menus,
+  or horizontal overflow without changing the zero-build deployment.
 
 ## Request and data flows
 
@@ -153,6 +166,14 @@ flowchart TB
 5. The JSON snapshot is authenticated and upserted through the Worker into D1.
 6. `/a/` fetches 7, 14, 30, or 90 snapshots from `GET /api/analytics`.
 
+### Multilingual layout regression checks
+
+1. GitHub Actions runs the Playwright suite for relevant pull requests and pushes to `main`, every Monday at 09:15 JST, or by manual dispatch.
+2. The suite serves the checked-out static files on a loopback-only ephemeral port.
+3. Chromium checks 360×800, 390×844, 768×1024, and 1366×768 viewports.
+4. The homepage and `/app/` run in all 12 shared locales, AEDoko runs in all 16 available language choices, and the legal, RSVP, and analytics routes run in English.
+5. The job fails when it finds text clipping, multi-line heading collisions, header collisions, mobile-menu overflow, or document-level horizontal overflow.
+
 ### AEDoko community contributions
 
 1. AEDoko links contributors to structured GitHub forms for a city source proposal or general feedback.
@@ -176,6 +197,7 @@ flowchart TB
 - Community form submissions are public GitHub issues. The forms explicitly prohibit private or active-emergency information.
 - The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
+- Layout checks use only repository files on a loopback server, require read-only repository access, and receive no production credentials or visitor data.
 
 ## Architecture evolution
 
@@ -217,6 +239,7 @@ flowchart LR
 | Date | Change | Revision impact |
 | --- | --- | --- |
 | **2026-09-01** | Added the static `/app/` catalogue route and linked it from the main site. | No revision increment: this extends the existing GitHub Pages application-hosting pattern without changing a platform, runtime, data flow, or security boundary. |
+| **2026-09-01** | Added Playwright multilingual layout regression checks for pull requests, `main`, and weekly verification. | No revision increment: this is repository QA only and does not change the public runtime, hosting boundary, or visitor data flow. |
 
 ### Architecture decisions that remain active
 
@@ -242,13 +265,18 @@ flowchart LR
 ├── app/aedoko/                   # Vendored AEDoko static application and AED snapshot
 ├── rsvp/index.html               # RSVP page
 ├── privacy.html / terms.html     # Legal pages
+├── tests/layout.mjs              # Multilingual responsive layout regression suite
+├── package.json / package-lock.json
+│                                      # Browser-test dependency and commands
 ├── analytics/
 │   ├── collect.mjs               # Provider collection and normalization
 │   ├── import-reports.mjs        # Historical Markdown-to-snapshot converter
 │   ├── preview.mjs               # Local dashboard preview with live public API
 │   ├── test.mjs                  # Collector and importer tests
 │   └── worker/                   # Worker API, D1 schema, tests, deployment config
-├── .github/workflows/analytics.yml
+├── .github/workflows/
+│   ├── analytics.yml             # Daily analytics collection
+│   └── layout-tests.yml          # PR, main and weekly layout QA
 ├── CNAME
 └── site.webmanifest
 ```
@@ -269,7 +297,21 @@ node analytics/preview.mjs
 
 The application catalogue is available locally at `http://localhost:8000/app/`. The vendored AEDoko release is at `http://localhost:8000/app/aedoko/`; its source and build commands live in the [`sunveda/aedoko`](https://github.com/sunveda/aedoko) repository.
 
-Run the zero-dependency tests:
+Install the browser-test dependency and Chromium once:
+
+```bash
+npm ci
+npx playwright install chromium
+```
+
+Run the complete test suite or only the layout checks:
+
+```bash
+npm test
+npm run test:layout
+```
+
+The analytics tests remain directly runnable without npm dependencies:
 
 ```bash
 node analytics/test.mjs
