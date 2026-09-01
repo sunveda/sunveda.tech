@@ -365,7 +365,7 @@
     .hero__heading {
       font-family: var(--font-display);
       font-size: var(--text-hero);
-      line-height: 1.08;
+      line-height: 1.35;
       overflow-wrap: anywhere;
       letter-spacing: -0.03em;
       color: var(--color-text);
@@ -416,7 +416,7 @@
     }
     .section-heading {
       font-family: var(--font-display); font-size: var(--text-2xl);
-      letter-spacing: -0.025em; line-height: 1.18;
+      letter-spacing: -0.025em; line-height: 1.35;
       color: var(--color-text); margin-bottom: var(--space-6);
     }
 
@@ -638,7 +638,7 @@
     /* CONNECT SECTION */
     .connect { border-top: 1px solid oklch(from var(--color-text) l c h / 0.06); }
     .connect__inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: start; }
-    .connect__heading { font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: -0.025em; line-height: 1.18; margin-bottom: var(--space-4); }
+    .connect__heading { font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: -0.025em; line-height: 1.35; margin-bottom: var(--space-4); }
     .connect__heading em { color: var(--color-primary); font-style: italic; }
     .connect__body { font-size: var(--text-base); color: var(--color-text-muted); margin-bottom: var(--space-8); }
     .connect__links { display: flex; flex-direction: column; gap: var(--space-3); }
@@ -766,20 +766,32 @@
     html:lang(zh) .hero__heading,
     html:lang(ar) .hero__heading,
     html:lang(hi) .hero__heading,
-    html:lang(ja) .about__heading,
-    html:lang(ko) .about__heading,
-    html:lang(zh) .about__heading,
-    html:lang(ar) .about__heading,
-    html:lang(hi) .about__heading,
+    html:lang(ja) .section-heading,
+    html:lang(ko) .section-heading,
+    html:lang(zh) .section-heading,
+    html:lang(ar) .section-heading,
+    html:lang(hi) .section-heading,
     html:lang(ja) .connect__heading,
     html:lang(ko) .connect__heading,
     html:lang(zh) .connect__heading,
     html:lang(ar) .connect__heading,
     html:lang(hi) .connect__heading {
-      line-height: 1.24;
       letter-spacing: 0;
     }
-    html:lang(ar) body, html:lang(hi) body {
+    html:lang(ja) :is(.hero__heading, .section-heading, .connect__heading),
+    html:lang(ko) :is(.hero__heading, .section-heading, .connect__heading),
+    html:lang(zh) :is(.hero__heading, .section-heading, .connect__heading) {
+      line-height: 1.5;
+    }
+    html:lang(ar) :is(.hero__heading, .section-heading, .connect__heading) {
+      line-height: 1.8;
+    }
+    html:lang(hi) :is(.hero__heading, .section-heading, .connect__heading) {
+      line-height: 1.65;
+    }
+    html:lang(ar) body, html:lang(hi) body,
+    html:lang(ar) :is(.hero__heading, .section-heading, .connect__heading),
+    html:lang(hi) :is(.hero__heading, .section-heading, .connect__heading) {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
     html[dir="rtl"] .connect__link-arrow { transform: scaleX(-1); }
