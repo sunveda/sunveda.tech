@@ -794,6 +794,25 @@
     html:lang(hi) :is(.hero__heading, .section-heading, .connect__heading) {
       font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
+    .showcase-group__title, .showcase-card__title, .shared-stack__title {
+      line-height: 1.4;
+    }
+    html:lang(ja) :is(h3, h4),
+    html:lang(ko) :is(h3, h4),
+    html:lang(zh) :is(h3, h4) {
+      line-height: 1.6;
+      letter-spacing: 0;
+    }
+    html:lang(ar) :is(h3, h4) {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      line-height: 1.85;
+      letter-spacing: 0;
+    }
+    html:lang(hi) :is(h3, h4) {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      line-height: 1.7;
+      letter-spacing: 0;
+    }
     html[dir="rtl"] .connect__link-arrow { transform: scaleX(-1); }
     html[dir="rtl"] .lang-switch__icon { left: auto; right: 8px; }
     html[dir="rtl"] .lang-switch__select { padding: 7px 28px 7px 26px; }
