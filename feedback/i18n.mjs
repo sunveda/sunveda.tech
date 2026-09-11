@@ -1,5 +1,6 @@
 // Canonical stored answers stay in English; only presentation is translated.
 export const JA = {
+  "Choose video": "動画を選択",
   "Share your memories · SunVeda": "お祝いの感想をお聞かせください · SunVeda",
   celebrations: "お祝い",
   "Just between us": "主催者だけにお届けします",

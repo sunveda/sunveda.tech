@@ -15,6 +15,12 @@ let event = EVENTS[eventId],
   duration,
   receipt,
   controller;
+const filePicker = document.createElement("label");
+filePicker.className = "file-picker";
+const filePickerText = document.createElement("span");
+filePickerText.textContent = "Choose video";
+$("video-file").before(filePicker);
+filePicker.append(filePickerText, $("video-file"));
 const id = crypto.randomUUID();
 const storageKey = `feedback-receipt:${eventId}`;
 const message = (id, text) => {
