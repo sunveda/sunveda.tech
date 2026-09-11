@@ -131,6 +131,10 @@ flowchart TB
 | Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
 | Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
 
+### Birthday event page context
+
+The English `/rsvp/` landing page presents Sanya’s second-birthday details and the seven-item event timeline from the Apps Script invitation (16:00–20:00 JST). Its greeting is “Sanya is 2 now! Let’s celebrate together.” New RSVPs remain closed; the existing cancellation link is preserved. Keep timeline times and labels synchronized with `Index.html` in [the birthday app repository](https://github.com/sunveda/sanya-2nd-birthday-celebrations). Detailed event decisions and deployment history live in that repository’s [CONTEXT.md](https://github.com/sunveda/sanya-2nd-birthday-celebrations/blob/main/CONTEXT.md).
+
 ### Technology choices
 
 - **Zero-build core website.** The portfolio and legal pages remain plain static files. Independently maintained applications such as AEDoko may be committed as versioned static bundles under `app/`.
@@ -359,4 +363,4 @@ The reusable English feedback application is in `feedback/`. Required fields are
 
 Guest contact details live only in a dedicated D1 database; videos live in private R2 and are streamed through authenticated Worker endpoints. This data must never flow into analytics, public Pages files or GitHub context. Turnstile, same-origin checks, signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup form the new security boundary. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
 
-Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. Production resources and billing activation have not been performed. Existing RSVP cancellation hosting and the separate pending timeline PR #50 are unchanged by this implementation. Before rollout, configure real resources/secrets, select retention, verify actual phone videos, and obtain deployment approval.
+Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. Production resources and billing activation have not been performed. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged by this implementation. Before rollout, configure real resources/secrets, select retention, verify actual phone videos, and obtain deployment approval.

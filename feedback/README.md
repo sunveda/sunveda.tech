@@ -1,6 +1,6 @@
 # Reusable event feedback
 
-Status: implemented for local review; no production Worker, database, bucket or DNS change has been deployed by this change. The existing RSVP cancellation app remains separate. Timeline copy is in website PR #50 and is not included here.
+Status: implemented for local review; no production Worker, database, bucket or DNS change has been deployed by this change. The existing RSVP cancellation app remains separate. Timeline copy from website PR #50 was merged separately and verified live on 2026-09-11.
 
 Guest page: `/feedback/` (default Sanya event), or `/feedback/?event=<id>`. Host dashboard: `/feedback/admin/`. Questions and event versions live in `events.mjs`. Add another event there rather than copying the application. The first release is English. Required: name, email or phone, overall rating, and privacy acknowledgement. Other questions, comments and video are optional.
 
