@@ -230,23 +230,26 @@ export function setupLanguage() {
       : navigator.language.startsWith("ja")
         ? "ja"
         : "en";
-  const label = document.createElement("label");
-  label.className = "language-switch";
-  label.textContent = "Language / 言語 ";
-  const select = document.createElement("select");
-  select.setAttribute("aria-label", "Language / 言語");
+  const switcher = document.createElement("div");
+  switcher.className = "language-switch";
+  switcher.setAttribute("role", "group");
+  switcher.setAttribute("aria-label", "Language / 言語");
+  const buttons = [];
   for (const [value, text] of [
     ["en", "English"],
     ["ja", "日本語"],
   ]) {
-    const option = document.createElement("option");
-    option.value = value;
-    option.textContent = text;
-    select.append(option);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = text;
+    button.lang = value;
+    button.dataset.language = value;
+    button.setAttribute("aria-pressed", String(language === value));
+    button.onclick = () => changeLanguage(value);
+    buttons.push(button);
+    switcher.append(button);
   }
-  select.value = language;
-  label.append(select);
-  document.querySelector(".topbar").append(label);
+  document.querySelector(".topbar").append(switcher);
   const sources = new WeakMap();
   function update(node, attribute) {
     const value = attribute ? node.getAttribute(attribute) : node.nodeValue;
@@ -294,8 +297,15 @@ export function setupLanguage() {
     });
   }
   const observer = new MutationObserver(apply);
-  select.onchange = () => {
-    language = select.value;
+  function changeLanguage(value) {
+    if (language === value) return;
+    language = value;
+    buttons.forEach((button) =>
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.language === language),
+      ),
+    );
     try {
       localStorage.setItem("sunveda-feedback-language", language);
     } catch {}
@@ -304,6 +314,6 @@ export function setupLanguage() {
     history.replaceState(null, "", url);
     apply();
     window.dispatchEvent(new Event("feedback-language-change"));
-  };
+  }
   apply();
 }
