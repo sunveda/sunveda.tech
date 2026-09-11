@@ -276,7 +276,7 @@ async function runViewport(browser, origin, viewport) {
       { route: "/app/", language, viewport: viewport.name },
     ]),
     ...AEDOKO_LANGUAGES.map(language => ({ route: "/app/aedoko/", language, viewport: viewport.name })),
-    ...OTHER_ROUTES.map(route => ({ route, language: "en", viewport: viewport.name })),
+    ...OTHER_ROUTES.map(route => ({ route, language: route.includes("lang=ja") ? "ja" : "en", viewport: viewport.name })),
   ];
 
   const failures = [];
