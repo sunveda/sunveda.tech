@@ -1,4 +1,10 @@
+import { setupLanguage, getLanguage } from "./i18n.mjs";
+setupLanguage();
 import { DEFAULT_EVENT, EVENTS, RATINGS, VIDEO } from "./events.mjs";
+const errorText = (error) =>
+  error instanceof TypeError || error.name === "TimeoutError"
+    ? "Network error. Please check your connection and retry."
+    : error.message;
 const $ = (id) => document.getElementById(id);
 const eventId =
   new URLSearchParams(location.search).get("event") || DEFAULT_EVENT;
@@ -178,7 +184,7 @@ $("video-file").onchange = async () => {
     );
   } catch (error) {
     $("video-file").value = "";
-    message("video-status", error.message);
+    message("video-status", errorText(error));
   }
 };
 $("remove-video").onclick = () => {
@@ -262,7 +268,7 @@ async function upload() {
       "upload-message",
       controller.signal.aborted
         ? "Video upload paused. Your written feedback is saved."
-        : `${error.message} Your written feedback is saved.`,
+        : `${errorText(error)} Your written feedback is saved.`,
     );
     $("retry-video").textContent = "Retry video upload";
     $("retry-video").hidden = false;
@@ -278,6 +284,25 @@ $("feedback-form").onsubmit = async (e) => {
   e.preventDefault();
   if (!configured) return;
   const form = $("feedback-form");
+  for (const input of form.querySelectorAll("input,textarea"))
+    input.setCustomValidity("");
+  const invalid = !$("guest-name").value.trim()
+    ? [$("guest-name"), "Please enter your name."]
+    : $("guest-email").validity.typeMismatch
+      ? [$("guest-email"), "Please enter a valid email address."]
+      : !form.querySelector('input[name="overall"]:checked')
+        ? [
+            form.querySelector('input[name="overall"]'),
+            "Please answer the overall experience question.",
+          ]
+        : !$("consent").checked
+          ? [$("consent"), "Please acknowledge how your feedback will be used."]
+          : null;
+  if (invalid) {
+    message("form-error", invalid[1]);
+    invalid[0].focus();
+    return;
+  }
   if (!form.reportValidity()) return;
   if (!$("guest-email").value.trim() && !$("guest-phone").value.trim()) {
     message("form-error", "Please enter an email address or phone number.");
@@ -310,7 +335,7 @@ $("feedback-form").onsubmit = async (e) => {
     showReceipt();
     if (selected) await upload();
   } catch (error) {
-    message("form-error", error.message);
+    message("form-error", errorText(error));
     window.turnstile?.reset();
   } finally {
     $("submit-button").disabled = false;
@@ -340,10 +365,13 @@ try {
     const script = document.createElement("script");
     script.src =
       "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-    script.onload = () =>
-      window.turnstile.render("#verification", {
+    let widget;
+    const renderVerification = () => {
+      if (widget !== undefined) window.turnstile.remove(widget);
+      widget = window.turnstile.render("#verification", {
         sitekey: config.turnstileSiteKey,
         action: "feedback",
+        language: getLanguage(),
         callback: (value) => {
           verification = value;
         },
@@ -351,6 +379,12 @@ try {
           verification = "";
         },
       });
+    };
+    script.onload = renderVerification;
+    window.addEventListener("feedback-language-change", () => {
+      verification = "";
+      if (window.turnstile) renderVerification();
+    });
     script.onerror = () =>
       message(
         "service-status",
@@ -368,5 +402,5 @@ try {
     /* No saved receipt. */
   }
 } catch (error) {
-  message("service-status", error.message);
+  message("service-status", errorText(error));
 }

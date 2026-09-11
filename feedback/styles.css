@@ -668,3 +668,32 @@ footer a {
     transition: none !important;
   }
 }
+
+.language-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.language-switch select {
+  width: auto;
+  padding: 8px;
+  border: 1px solid #d8ccd8;
+  border-radius: 8px;
+  background: #fff;
+  color: #33263b;
+}
+.topbar {
+  flex-wrap: wrap;
+  gap: 16px;
+}
+html[lang="ja"] h1 {
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+html[lang="ja"] .choices {
+  gap: 8px;
+}
+html[lang="ja"] .choice span {
+  line-height: 1.6;
+}

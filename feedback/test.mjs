@@ -341,3 +341,28 @@ test("storage reservation rejects excess bytes and cleanup preserves ready video
     "ready",
   );
 });
+
+test("Japanese translation covers every event question and preserves canonical values", async () => {
+  const { translate } = await import("./i18n.mjs");
+  for (const event of Object.values(EVENTS)) {
+    for (const question of event.questions) {
+      assert.notEqual(translate(question.title, "ja"), question.title);
+      if (question.hint)
+        assert.notEqual(translate(question.hint, "ja"), question.hint);
+      for (const option of question.options || [])
+        assert.notEqual(translate(option, "ja"), option);
+    }
+  }
+  assert.equal(
+    translate(
+      "  Please provide an email address or phone number.\n You can add both.  ",
+      "ja",
+    ).trim(),
+    "メールアドレスか電話番号のどちらかをご入力ください。両方でも構いません。",
+  );
+  assert.equal(
+    translate("Uploading video part 2 of 5…", "ja"),
+    "動画をアップロードしています…（2 / 5）",
+  );
+  assert.equal(translate("Loved it", "en"), "Loved it");
+});

@@ -126,7 +126,7 @@ flowchart TB
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
 | Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
-| Multilingual layout QA | Playwright with 184 route, language, and viewport combinations | GitHub Actions on pull requests, `main`, weekly, and manual dispatch | `tests/layout.mjs`, `.github/workflows/layout-tests.yml` |
+| Multilingual layout QA | Playwright with 188 route, language, and viewport combinations | GitHub Actions on pull requests, `main`, weekly, and manual dispatch | `tests/layout.mjs`, `.github/workflows/layout-tests.yml` |
 | Human-readable archive | Markdown reports | Orphan-style `analytics-data` Git branch | `analytics/reports/YYYY-MM-DD.md` on that branch |
 | Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
 | Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
@@ -359,7 +359,7 @@ this README. At minimum:
 
 ## Event feedback — implementation context
 
-The reusable English feedback application is in `feedback/`. Required fields are name, at least one contact method, overall experience and privacy acknowledgement. Optional food, decoration, eggless cake and biryani questions include private MP4/MOV uploads up to eight minutes and 250 MB. Written responses save first. The host dashboard uses a private password session and supports paginated review and CSV export.
+The reusable English/Japanese guest feedback application is in `feedback/`. Required fields are name, at least one contact method, overall experience and privacy acknowledgement. Optional food, decoration, eggless cake and biryani questions include private MP4/MOV uploads up to eight minutes and 250 MB. Written responses save first. The host dashboard uses a private password session and supports paginated review and CSV export.
 
 Guest contact details live only in a dedicated D1 database; videos live in private R2 and are streamed through authenticated Worker endpoints. This data must never flow into analytics, public Pages files or GitHub context. Turnstile, same-origin checks, signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup form the new security boundary. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
 

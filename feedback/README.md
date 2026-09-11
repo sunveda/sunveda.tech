@@ -2,7 +2,7 @@
 
 Status: implemented for local review; no production Worker, database, bucket or DNS change has been deployed by this change. The existing RSVP cancellation app remains separate. Timeline copy from website PR #50 was merged separately and verified live on 2026-09-11.
 
-Guest page: `/feedback/` (default Sanya event), or `/feedback/?event=<id>`. Host dashboard: `/feedback/admin/`. Questions and event versions live in `events.mjs`. Add another event there rather than copying the application. The first release is English. Required: name, email or phone, overall rating, and privacy acknowledgement. Other questions, comments and video are optional.
+Guest page: `/feedback/` (default Sanya event), or `/feedback/?event=<id>`. Host dashboard: `/feedback/admin/`. Questions and event versions live in `events.mjs`. Add another event there rather than copying the application. The guest page supports English and Japanese with a language switch, browser-language default and a saved preference. Use `?lang=en` or `?lang=ja` to share a specific language. Switching keeps answers and selected files intact; stored answer values remain canonical. The private host dashboard is currently English. Required: name, email or phone, overall rating, and privacy acknowledgement. Other questions, comments and video are optional.
 
 ## Run locally
 
