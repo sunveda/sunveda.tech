@@ -4,6 +4,8 @@ Status: the production guest page, written-feedback API, private host dashboard,
 
 Guest page: `/feedback/` (default Sanya event), or `/feedback/?event=<id>`. Host dashboard: `/feedback/admin/`. Questions and event versions live in `events.mjs`. Add another event there rather than copying the application. The guest page supports English and Japanese with an English / 日本語 button switch, browser-language default and a saved preference. Use `?lang=en` or `?lang=ja` to share a specific language. Switching keeps answers and selected files intact; stored answer values remain canonical. The private host dashboard is currently English. Required: name, email or phone, overall rating, and privacy acknowledgement. Other questions, comments and video are optional.
 
+Below the feedback experience, guests can use bilingual buttons for the existing public LINE invite, celebration WhatsApp group and `@sunvedatech` Instagram account. Keep these destinations public and avoid adding a private phone number to the static page.
+
 ## Run locally
 
 Use Node.js 24 and the repository npm lockfile:
