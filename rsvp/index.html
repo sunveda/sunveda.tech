@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sanya's 2nd Birthday</title>
 <meta name="robots" content="noindex">
-<meta name="description" content="Sanya turns two — Saturday 12 September 2026, Ojima, Tokyo. RSVPs are closed. You can still cancel an existing RSVP.">
+<meta name="description" content="Sanya is 2 now! Let's celebrate together — Saturday 12 September 2026, 16:00–20:00 JST, Ojima, Tokyo. View the event timeline. RSVPs are closed; cancellations remain available.">
 
 <!-- Open Graph: this link gets shared into LINE and WhatsApp groups, where the
      preview card is the first thing most guests will actually see. -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sanya turns 2 🎂">
-<meta property="og:description" content="RSVPs are closed. Cancel an existing RSVP for Saturday 12 September 2026 · Ojima, Tokyo.">
+<meta property="og:title" content="Sanya is 2 now! 🎂">
+<meta property="og:description" content="Let's celebrate together! Saturday 12 September 2026 · 16:00–20:00 JST · Ojima, Tokyo. View the event timeline. RSVPs are closed; cancellations remain available.">
 <meta property="og:url" content="https://sunveda.tech/rsvp">
 
 <style>
@@ -100,6 +100,41 @@
   .row a { color: var(--plum); font-weight: 600; text-decoration: none; }
   .row a:hover, .row a:focus-visible { text-decoration: underline; }
 
+  /* ── Event timeline ───────────────────────────────────── */
+  .timeline-card { padding: 20px; }
+  .timeline-card h2 { margin: 0; font-size: 20px; color: var(--plum-deep); }
+  .timeline-zone { margin: 2px 0 18px; color: var(--ink-soft); font-size: 13px; }
+  .timeline { margin: 0; padding: 0; list-style: none; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 18px;
+    position: relative;
+    padding: 0 0 20px;
+  }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline time { color: var(--plum-deep); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .timeline span { position: relative; padding-left: 18px; }
+  .timeline span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--plum);
+  }
+  .timeline li:not(:last-child) span::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: calc(.55em + 8px);
+    bottom: calc(-20px - .55em);
+    width: 2px;
+    background: var(--line);
+  }
+
   /* ── Actions ──────────────────────────────────────────── */
   .cta {
     display: block;
@@ -168,8 +203,8 @@
 
     <header class="hero">
       <div class="cake" aria-hidden="true">🎂</div>
-      <h1>Sanya turns 2!</h1>
-      <p>RSVPs are closed · Cancellations only</p>
+      <h1>Sanya is 2 now!</h1>
+      <p>Let’s celebrate together.</p>
     </header>
 
     <main>
@@ -195,6 +230,20 @@
           </div>
         </div>
       </div>
+
+      <section class="card timeline-card" aria-labelledby="timeline-title">
+        <h2 id="timeline-title">Event timeline</h2>
+        <p class="timeline-zone">Saturday, 12 September · All times JST</p>
+        <ol class="timeline">
+          <li><time datetime="2026-09-12T16:00:00+09:00">16:00</time><span>Welcome &amp; Free Play</span></li>
+          <li><time datetime="2026-09-12T16:30:00+09:00">16:30</time><span>Kids' Games &amp; Activities</span></li>
+          <li><time datetime="2026-09-12T17:30:00+09:00">17:30</time><span>Family Photos</span></li>
+          <li><time datetime="2026-09-12T18:00:00+09:00">18:00</time><span>Cake Cutting 🎂</span></li>
+          <li><time datetime="2026-09-12T18:30:00+09:00">18:30</time><span>Dinner</span></li>
+          <li><time datetime="2026-09-12T19:30:00+09:00">19:30</time><span>Return Gifts &amp; Farewell</span></li>
+          <li><time datetime="2026-09-12T20:00:00+09:00">20:00</time><span>Celebration Ends</span></li>
+        </ol>
+      </section>
 
       <a class="cta" href="https://script.google.com/macros/s/AKfycbyxii9NbRx2-UtJVQV1CQdTlw7OYPxsmReMB7lXkjIwtTWnlI_OZv88MM1Y-sEN1il-eA/exec">
         Cancel your RSVP →

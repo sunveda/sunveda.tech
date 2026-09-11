@@ -115,6 +115,10 @@ flowchart TB
 | Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
 | Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
 
+### Birthday event page context
+
+The English `/rsvp/` landing page presents Sanya’s second-birthday details and the seven-item event timeline from the Apps Script invitation (16:00–20:00 JST). Its greeting is “Sanya is 2 now! Let’s celebrate together.” New RSVPs remain closed; the existing cancellation link is preserved. Keep timeline times and labels synchronized with `Index.html` in [the birthday app repository](https://github.com/sunveda/sanya-2nd-birthday-celebrations). Detailed event decisions and deployment history live in that repository’s [CONTEXT.md](https://github.com/sunveda/sanya-2nd-birthday-celebrations/blob/main/CONTEXT.md).
+
 ### Technology choices
 
 - **Zero-build core website.** The portfolio and legal pages remain plain static files. Independently maintained applications such as AEDoko may be committed as versioned static bundles under `app/`.
