@@ -364,3 +364,7 @@ The reusable English/Japanese guest feedback application is in `feedback/`. Requ
 Guest contact details live only in a dedicated D1 database; videos live in private R2 and are streamed through authenticated Worker endpoints. This data must never flow into analytics, public Pages files or GitHub context. Turnstile, same-origin checks, signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup form the new security boundary. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
 
 Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. Production resources and billing activation have not been performed. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged by this implementation. Before rollout, configure real resources/secrets, select retention, verify actual phone videos, and obtain deployment approval.
+
+### Homepage directory (2026-09-11)
+
+The homepage includes a translated `#site-directory` section linking to all public visitor pages: the app catalogue, AEDoko, birthday timeline/cancellations, feedback, aggregate analytics and legal pages, plus every named homepage section. The footer links to the directory. Private host administration and test routes are intentionally excluded. This human-readable directory does not change the XML sitemap or the existing `noindex` settings on event, feedback and analytics pages. No runtime or deployment boundary changes.
