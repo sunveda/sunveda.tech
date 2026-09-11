@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Host feedback · SunVeda</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      main {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 24px;
+      }
+      article {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        padding: 24px;
+        margin: 20px 0;
+      }
+      dt {
+        font-weight: bold;
+        margin-top: 16px;
+      }
+      dd {
+        margin: 6px 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      video {
+        max-width: 100%;
+      }
+      nav {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      input,
+      select {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a href="../">← Feedback page</a>
+      <h1>Host feedback</h1>
+      <p>Private responses and videos from your guests.</p>
+      <p id="status" role="status"></p>
+      <form id="login">
+        <label
+          >Host password
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required /></label
+        ><button>Sign in</button>
+      </form>
+      <section id="dashboard" hidden>
+        <nav>
+          <label
+            >Event
+            <select id="event"></select></label
+          ><button id="refresh">Refresh</button
+          ><button id="export">Export loaded responses</button
+          ><button id="logout">Sign out</button>
+        </nav>
+        <p id="count"></p>
+        <div id="responses"></div>
+        <button id="more" hidden>Load more</button>
+      </section>
+    </main>
+    <script type="module" src="admin.mjs"></script>
+  </body>
+</html>

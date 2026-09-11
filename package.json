@@ -3,11 +3,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node analytics/test.mjs && node analytics/worker/test.mjs && npm run test:layout",
+    "test": "node analytics/test.mjs && node analytics/worker/test.mjs && node --test feedback/test.mjs && npm run test:layout",
     "test:analytics": "node analytics/test.mjs && node analytics/worker/test.mjs",
-    "test:layout": "node tests/layout.mjs"
+    "test:layout": "node tests/layout.mjs",
+    "test:feedback": "node --test feedback/test.mjs",
+    "preview:feedback": "node feedback/dev.mjs"
   },
   "devDependencies": {
+    "miniflare": "^4.20260730.0",
     "playwright": "1.62.1"
+  },
+  "overrides": {
+    "miniflare": {
+      "sharp": "^0.35.4",
+      "undici": "^7.29.0"
+    }
   }
 }

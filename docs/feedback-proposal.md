@@ -1,3 +1,7 @@
+# Implementation update — 2026-09-11
+
+The first implementation is now in `feedback/`; see [the runbook](../feedback/README.md). It uses Worker-mediated 5 MiB multipart uploads to enforce per-part byte limits, rather than exposing a direct unrestricted storage upload URL. Source is prepared for review; production resources and deployment are pending. The following records the original proposal.
+
 # Reusable event feedback: recommendation and implementation brief
 
 Prepared 2026-09-11. Status: proposal; no feedback page, backend, database, bucket, or migration has been deployed. The existing birthday timeline PR is separate.

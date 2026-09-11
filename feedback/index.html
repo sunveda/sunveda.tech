@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      name="description"
+      content="Share a little feedback from our celebration. Your thoughts help make the next one even better."
+    />
+    <title>Share your memories · SunVeda</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.mjs"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="/" class="brand">SunVeda<span>celebrations</span></a
+      ><span class="private-note"
+        >Just between us <span aria-hidden="true">♡</span></span
+      >
+    </header>
+    <main class="page">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow" id="eyebrow">
+            A little celebration. A lot of memories.
+          </p>
+          <h1 id="page-title">The party ends.<br />The memories stay.</h1>
+          <p class="intro" id="intro">
+            Thank you for celebrating with us. Tell us what made you smile—and
+            what we can do better next time.
+          </p>
+          <p class="event-label" id="event-label">
+            Sanya’s 2nd birthday <span aria-hidden="true">·</span> 12 September
+            2026
+          </p>
+        </div>
+        <div class="birthday-art" aria-hidden="true">
+          <span class="spark spark-one">✦</span
+          ><span class="spark spark-two">✧</span>
+          <div class="candle">2</div>
+          <div class="cake-top"></div>
+          <div class="cake-body"><i></i><i></i><i></i></div>
+          <div class="cake-plate"></div>
+          <span class="art-caption">made sweeter by you</span>
+        </div>
+      </section>
+      <div class="form-layout">
+        <aside class="side-note">
+          <span class="mini-star" aria-hidden="true">✦</span>
+          <h2>A moment to reflect.</h2>
+          <p>
+            Only your details and overall experience are required. Share as much
+            or as little as you like.
+          </p>
+          <ol>
+            <li><a href="#your-details">A little about you</a></li>
+            <li><a href="#overall-section">The celebration</a></li>
+            <li><a href="#biryani-section">The biryani corner</a></li>
+          </ol>
+          <p class="privacy-aside">
+            Your answers and video are private to the host. They won’t appear on
+            this website.
+          </p>
+        </aside>
+        <div>
+          <div id="service-status" class="notice" role="status">
+            Getting your feedback form ready…
+          </div>
+          <div id="form-error" class="notice error" role="alert" hidden></div>
+          <form id="feedback-form" novalidate>
+            <section class="card" id="your-details">
+              <div class="section-heading">
+                <span class="step">01</span>
+                <div>
+                  <h2>A little about you</h2>
+                  <p>So we know who to thank.</p>
+                </div>
+              </div>
+              <label for="guest-name"
+                >Your name <span class="required">Required</span></label
+              ><input
+                id="guest-name"
+                name="name"
+                autocomplete="name"
+                maxlength="120"
+                required
+                placeholder="Your full name"
+              />
+              <div class="contact-grid">
+                <div>
+                  <label for="guest-email">Email</label
+                  ><input
+                    id="guest-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    maxlength="254"
+                    placeholder="you@example.com"
+                    aria-describedby="contact-hint"
+                  />
+                </div>
+                <div>
+                  <label for="guest-phone">Phone</label
+                  ><input
+                    id="guest-phone"
+                    name="phone"
+                    type="tel"
+                    autocomplete="tel"
+                    maxlength="40"
+                    placeholder="Include country code"
+                    aria-describedby="contact-hint"
+                  />
+                </div>
+              </div>
+              <p class="hint" id="contact-hint">
+                Please provide an email address or phone number. You can add
+                both.
+              </p>
+            </section>
+            <section class="card" id="overall-section">
+              <div class="section-heading">
+                <span class="step">02</span>
+                <div>
+                  <h2>The celebration</h2>
+                  <p>The big picture and the little details.</p>
+                </div>
+              </div>
+              <div id="questions"></div>
+            </section>
+            <section class="card biryani-card" id="biryani-section">
+              <div class="section-heading">
+                <span class="step">03</span>
+                <div>
+                  <p class="eyebrow">A little extra love for</p>
+                  <h2>The biryani corner</h2>
+                  <p>Every honest opinion is a secret ingredient.</p>
+                </div>
+              </div>
+              <div id="biryani-question"></div>
+              <div class="upload-panel">
+                <label for="video-file"
+                  >Say it in a video
+                  <span class="optional">Optional</span></label
+                >
+                <p class="hint" id="video-hint">
+                  MP4 or MOV · Up to 8 minutes · Up to 250 MB<br />A quick
+                  thought or a longer review—both are welcome.
+                </p>
+                <input
+                  id="video-file"
+                  type="file"
+                  accept="video/mp4,video/quicktime,.mp4,.mov"
+                  aria-describedby="video-hint video-status"
+                />
+                <p id="video-status" class="hint" role="status">
+                  Your video will be visible only to the host.
+                </p>
+                <video
+                  id="video-preview"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  hidden
+                  aria-label="Your selected feedback video"
+                ></video
+                ><button
+                  id="remove-video"
+                  class="text-button"
+                  type="button"
+                  hidden
+                >
+                  Remove video
+                </button>
+              </div>
+            </section>
+            <div class="submit-area">
+              <label class="consent"
+                ><input type="checkbox" id="consent" required /><span
+                  >I understand that my contact details, answers, and optional
+                  video will be shared privately with the event host to review
+                  this feedback.</span
+                ></label
+              >
+              <p class="hint">
+                To request removal, contact the event host using your existing
+                event contact.
+              </p>
+              <button class="primary" id="submit-button" type="submit" disabled>
+                Send my feedback <span aria-hidden="true">↗</span>
+              </button>
+              <div id="verification"></div>
+              <p class="smallprint">
+                Thank you for helping us make the next celebration even better.
+              </p>
+            </div>
+          </form>
+          <section id="receipt" class="card receipt" hidden tabindex="-1">
+            <span class="receipt-mark" aria-hidden="true">♡</span>
+            <p class="eyebrow">A little note. A big thank you.</p>
+            <h2>Your feedback is saved.</h2>
+            <p>We’re grateful you took the time to share it.</p>
+            <p id="receipt-reference" class="hint"></p>
+            <div id="upload-progress-wrap" hidden>
+              <label for="upload-progress">Biryani video</label
+              ><progress id="upload-progress" max="100" value="0"></progress>
+              <p id="upload-message" role="status"></p>
+              <button id="retry-video" class="secondary" type="button" hidden>
+                Upload video</button
+              ><button id="skip-video" class="text-button" type="button" hidden>
+                Keep my written feedback without this video
+              </button>
+            </div>
+            <a href="/rsvp/" class="back-link">Back to the celebration →</a>
+          </section>
+        </div>
+      </div>
+    </main>
+    <footer>Made with care by <a href="/">SunVeda Technologies</a></footer>
+  </body>
+</html>
