@@ -1,6 +1,6 @@
 # Reusable event feedback
 
-Status: implemented for local review; no production Worker, database, bucket or DNS change has been deployed by this change. The existing RSVP cancellation app remains separate. Timeline copy from website PR #50 was merged separately and verified live on 2026-09-11.
+Status: the production guest page, written-feedback API, private host dashboard, Turnstile widget, and separate APAC D1 database were deployed and verified on 2026-09-11. Video upload is visibly disabled because R2 has not been activated for the Cloudflare account. The existing RSVP cancellation app remains separate. Timeline copy from website PR #50 was merged separately and verified live on 2026-09-11.
 
 Guest page: `/feedback/` (default Sanya event), or `/feedback/?event=<id>`. Host dashboard: `/feedback/admin/`. Questions and event versions live in `events.mjs`. Add another event there rather than copying the application. The guest page supports English and Japanese with an English / 日本語 button switch, browser-language default and a saved preference. Use `?lang=en` or `?lang=ja` to share a specific language. Switching keeps answers and selected files intact; stored answer values remain canonical. The private host dashboard is currently English. Required: name, email or phone, overall rating, and privacy acknowledgement. Other questions, comments and video are optional.
 
@@ -25,13 +25,15 @@ Open http://localhost:8788/feedback/. Local D1/R2 data persists under ignored `.
 5. The private bucket has no public domain. Host sign-in creates an HttpOnly, Secure, SameSite=Strict one-hour session. Only authenticated host endpoints list responses or stream/download ready videos. Never include video URLs or contact details in analytics.
 6. Hourly cleanup aborts recorded unfinished uploads older than 24 hours and removes incomplete objects. It does not delete accepted feedback. Rejected object bytes are released from the reservation only after deletion succeeds. A storage creation failure can leave a reservation until cleanup; written feedback is unaffected.
 
-## Production provisioning — not performed
+## Production status and remaining video provisioning
 
-Keep GitHub Pages for the existing website. This adds a separate Cloudflare Worker, D1 database and private R2 bucket. It does not require Vercel or a frontend framework. R2 activation may require billing details: obtain the owner's decision before enabling it. Free allowances are finite and shared at the account level; this app's limits are not a billing cap.
+GitHub Pages continues to host the website. `sunveda-feedback` runs at `sunveda.tech/api/feedback/*`, with its own `sunveda-feedback` D1 database and a managed Turnstile widget restricted to `sunveda.tech`. Production secrets are stored only in Cloudflare. The owner-held dashboard password is also saved locally with mode `0600` at `/home/shin/.config/sunveda-feedback/admin-password`; it is not committed. Written feedback and private dashboard access are live.
 
-1. Create a dedicated D1 database (`sunveda-feedback`) and private R2 bucket (`sunveda-feedback-private`). Do not reuse the analytics database. Disable R2 public access. Configure an R2 lifecycle rule to abort incomplete multipart uploads after one day (also covers rare creation failures before an upload ID reaches D1).
-2. Copy `worker/wrangler.example.jsonc` to ignored `worker/wrangler.jsonc`. Fill the real database ID locally. Keep `PUBLIC_ORIGIN=https://sunveda.tech`; do not add `DEV_MODE`. Configure Turnstile restricted to `sunveda.tech`, set the site key, and store the secret with Wrangler.
-3. Set independent random secrets of at least 32 characters: `SESSION_SECRET`, `ADMIN_PASSWORD`, `TURNSTILE_SECRET`. For example, generate the first two with a password manager. Never commit real values or paste them into context documents. Rotate SESSION_SECRET to revoke existing host/upload sessions. Host password is an initial single-host mechanism; Google sign-in is not implemented in this release.
+R2 activation may require billing details and remains the only account-level owner step. Until it is enabled, `VIDEO_ENABLED=false`, no bucket binding is deployed, and the page explains that written feedback is still available. Free allowances are finite and shared at the account level; this app's limits are not a billing cap.
+
+1. Activate R2, create a private bucket named `sunveda-feedback-private`, and keep public access disabled. Configure an R2 lifecycle rule to abort incomplete multipart uploads after one day (also covers rare creation failures before an upload ID reaches D1).
+2. The ignored production `worker/wrangler.jsonc` already contains the live D1 ID and public Turnstile site key. Add the R2 binding from `worker/wrangler.example.jsonc`. Keep `PUBLIC_ORIGIN=https://sunveda.tech`; do not add `DEV_MODE`.
+3. `SESSION_SECRET`, `ADMIN_PASSWORD`, and `TURNSTILE_SECRET` are configured. Never commit or copy them into context documents. Rotate `SESSION_SECRET` to revoke existing host/upload sessions. Host password is an initial single-host mechanism; Google sign-in is not implemented in this release.
 4. Apply the migration and upload secrets from `feedback/worker/` using a separately installed Wrangler CLI:
 
 ```sh
@@ -42,8 +44,8 @@ wrangler secret put TURNSTILE_SECRET --config wrangler.jsonc
 wrangler deploy --config wrangler.jsonc
 ```
 
-5. Deploy only after explicit owner approval. Ensure the domain is proxied through Cloudflare and only `sunveda.tech/api/feedback/*` is routed to this Worker. Existing analytics routes must remain intact. Keep `VIDEO_ENABLED=false` until private storage and lifecycle cleanup have been verified; then set it to `true` and redeploy.
-6. Merge the static-page PR after the backend is ready. Smoke-test with clearly labeled test feedback, check private access, then remove test records/objects. No real guest submission is required to verify the public page.
+5. The domain route is deployed and existing analytics routes remain intact. Keep `VIDEO_ENABLED=false` until private storage and lifecycle cleanup have been verified; then set it to `true`, restore the hourly cron after initializing the account's `workers.dev` subdomain, and redeploy.
+6. Written feedback was smoke-tested through the live Turnstile flow. The labeled test response was removed, leaving zero production responses at verification time. Repeat with a small phone video after R2 is enabled, then remove that test record and object.
 
 Defaults: 1,000 responses per event; 10 new submissions per IP per hour; 5 host login attempts per IP per minute; 8 GB reserved video storage across this application; 250 MB per video. At 250 MB, 8 GB holds 32 videos. These limits do not bound every billable request or other applications' usage. Monitor Cloudflare usage and reduce/disable video intake before exceeding the chosen budget. An eight-minute recording may exceed 250 MB; the guest must export a smaller MP4/MOV.
 
@@ -57,15 +59,15 @@ The host chooses a retention period before inviting guests; automatic deletion o
 
 All JSON is no-store. Mutations require the configured same-origin `Origin`. Errors return `{error}` with an appropriate 4xx/5xx status.
 
-| Method and `/api/feedback` path | Access | Purpose |
-| --- | --- | --- |
-| GET `/events/:event` | Public | Event schema, availability, public Turnstile key and video limits |
-| POST `/responses` | Turnstile | Validate/save response; return receipt and signed upload token |
-| GET/POST `/responses/:id/video` | Upload bearer token | Get progress/reserve upload |
-| PUT `/responses/:id/video/parts/:number` | Upload bearer token | Exact-size binary chunk |
-| POST `/responses/:id/video/complete` | Upload bearer token | Complete and validate video |
-| POST `/admin/login`, `/admin/logout` | Host password / cookie | Start/end host session |
-| GET `/admin/responses?event=…` | Host cookie | Private response pages; use returned next cursor |
-| GET `/admin/videos/:id` | Host cookie | Private video stream; `?download` for attachment |
+| Method and `/api/feedback` path          | Access                 | Purpose                                                           |
+| ---------------------------------------- | ---------------------- | ----------------------------------------------------------------- |
+| GET `/events/:event`                     | Public                 | Event schema, availability, public Turnstile key and video limits |
+| POST `/responses`                        | Turnstile              | Validate/save response; return receipt and signed upload token    |
+| GET/POST `/responses/:id/video`          | Upload bearer token    | Get progress/reserve upload                                       |
+| PUT `/responses/:id/video/parts/:number` | Upload bearer token    | Exact-size binary chunk                                           |
+| POST `/responses/:id/video/complete`     | Upload bearer token    | Complete and validate video                                       |
+| POST `/admin/login`, `/admin/logout`     | Host password / cookie | Start/end host session                                            |
+| GET `/admin/responses?event=…`           | Host cookie            | Private response pages; use returned next cursor                  |
+| GET `/admin/videos/:id`                  | Host cookie            | Private video stream; `?download` for attachment                  |
 
-Tests run the actual Worker against local D1/R2, plus unit checks of validation and media inspection. Production bindings, provider billing configuration, and a real-device MP4/MOV compatibility sample still require deployment verification.
+Tests run the actual Worker against local D1/R2, plus unit checks of validation and media inspection. The live written-feedback and private-dashboard paths are verified. R2 billing activation, the bucket binding, hourly cleanup trigger, and a real-device MP4/MOV compatibility sample remain pending.

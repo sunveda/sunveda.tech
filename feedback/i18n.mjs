@@ -92,6 +92,8 @@ export const JA = {
     "動画も保存しました。ありがとうございます！",
   "Your written feedback is saved. You can add your video in this tab within 24 hours.":
     "回答は保存済みです。24時間以内であれば、このタブから動画を追加できます。",
+  "Your written feedback is saved. Video uploads are not available yet.":
+    "回答を保存しました。動画のアップロードはまだ利用できません。",
   "Choose an MP4 or MOV video up to 250 MB.":
     "250 MB以内のMP4またはMOV動画を選択してください。",
   "This browser could not read the video. Try an MP4 export.":
