@@ -11,6 +11,7 @@ const eventId =
 let event = EVENTS[eventId],
   configured = false,
   verification = "",
+  videoEnabled = false,
   selected,
   duration,
   receipt,
@@ -135,13 +136,21 @@ function showReceipt() {
     panel.hidden = true;
     message("upload-message", "Your video is saved too. Thank you!");
     $("upload-progress-wrap").hidden = false;
-  } else {
+  } else if (videoEnabled) {
+    panel.hidden = false;
     $("upload-progress-wrap").hidden = false;
     $("retry-video").hidden = false;
     $("retry-video").disabled = !selected;
     message(
       "video-status",
       "Your written feedback is saved. You can add your video in this tab within 24 hours.",
+    );
+  } else {
+    panel.hidden = true;
+    $("upload-progress-wrap").hidden = true;
+    message(
+      "receipt-video-status",
+      "Your written feedback is saved. Video uploads are not available yet.",
     );
   }
 }
@@ -351,6 +360,7 @@ render();
 try {
   const config = await api(`/events/${eventId}`);
   configured = config.configured && config.event.accepting;
+  videoEnabled = config.video.enabled;
   message(
     "service-status",
     configured
@@ -360,7 +370,7 @@ try {
       : "Feedback is not open yet. Please check back soon.",
   );
   $("submit-button").disabled = !configured;
-  if (!config.video.enabled) {
+  if (!videoEnabled) {
     $("video-file").disabled = true;
     message(
       "video-status",

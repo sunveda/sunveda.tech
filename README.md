@@ -4,8 +4,8 @@ Source for [sunveda.tech](https://sunveda.tech), Sarveshwar Singh's multilingual
 
 **Source architecture revision: A8 · Private event feedback (2026-09-11)**
 
-A8 feedback is prepared for review and local testing, not provisioned or deployed.
-Existing production services remain unchanged until explicit rollout approval.
+A8 written feedback is deployed and verified. Private video upload remains disabled
+until the Cloudflare account's R2 storage is activated and configured.
 
 This README is the architecture source of truth. The diagrams, deployment map,
 and architecture history must be updated in the same pull request whenever a
@@ -23,7 +23,7 @@ flowchart TB
   subgraph edge[Cloudflare edge · sunveda.tech]
     cf[DNS, CDN and route matching]
     worker[Analytics Worker<br/>sunveda-analytics-api]
-    feedbackWorker[Feedback Worker · pending deployment<br/>/api/feedback/*]
+    feedbackWorker[Feedback Worker<br/>/api/feedback/*]
   end
 
   subgraph static[GitHub Pages · main branch]
@@ -66,11 +66,11 @@ flowchart TB
     layoutqa[Playwright multilingual layout checks<br/>PR, main and weekly]
   end
 
-  feedbackDB[(Private feedback D1 · pending)]
+  feedbackDB[(Private feedback D1 · APAC)]
   feedbackVideos[(Private video R2 · pending)]
   turnstile[Cloudflare Turnstile]
   cf -->|/feedback/| feedback
-  feedback -->|Answers + multipart video chunks| feedbackWorker
+  feedback -->|Answers; video chunks after R2 activation| feedbackWorker
   feedbackWorker --> feedbackDB
   feedbackWorker --> feedbackVideos
   feedbackWorker -->|Verify guest challenge| turnstile
@@ -114,22 +114,22 @@ flowchart TB
 
 ### Deployment map
 
-| Component | Technology | Deployed to | Source |
-| --- | --- | --- | --- |
-| Event feedback (pending deployment) | Static ES modules + Worker, separate D1 and private R2 | Planned Pages `/feedback/`, `/feedback/admin/`; Worker `/api/feedback/*` | `feedback/`, [runbook](feedback/README.md) |
-| Main website | Plain HTML, inline CSS, browser JavaScript | GitHub Pages from `main` | `index.html`, `i18n.js` |
-| Analytics dashboard | Plain HTML, inline CSS, SVG and browser JavaScript | GitHub Pages from `main` | `a/index.html` |
-| Application catalogue | Plain HTML, inline CSS and shared client-side translations | GitHub Pages route `/app/` | `app/index.html`, `i18n.js` |
-| AEDoko application | Static React bundle with a committed AED data snapshot | GitHub Pages route `/app/aedoko/` | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
-| AEDoko interactive map | Lazy MapLibre GL bundle, browser-side GeoJSON clustering, and OpenFreeMap vector tiles | Loaded only after a visitor opens the map at `/app/aedoko/` | `app/aedoko/assets/`, built from `app/map-panel.tsx` in [`sunveda/aedoko`](https://github.com/sunveda/aedoko) |
-| AEDoko community review | GitHub Issue Forms plus issue-triggered GitHub Actions | Issues and unverified draft PRs in `sunveda/aedoko` | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
-| Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
-| Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
-| Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
-| Multilingual layout QA | Playwright with 188 route, language, and viewport combinations | GitHub Actions on pull requests, `main`, weekly, and manual dispatch | `tests/layout.mjs`, `.github/workflows/layout-tests.yml` |
-| Human-readable archive | Markdown reports | Orphan-style `analytics-data` Git branch | `analytics/reports/YYYY-MM-DD.md` on that branch |
-| Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
-| Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
+| Component                        | Technology                                                                                | Deployed to                                                                         | Source                                                                                                             |
+| -------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Event feedback                   | Static ES modules + Worker, separate D1, managed Turnstile; private R2 pending activation | Pages `/feedback/`, `/feedback/admin/`; Worker `/api/feedback/*`                    | `feedback/`, [runbook](feedback/README.md)                                                                         |
+| Main website                     | Plain HTML, inline CSS, browser JavaScript                                                | GitHub Pages from `main`                                                            | `index.html`, `i18n.js`                                                                                            |
+| Analytics dashboard              | Plain HTML, inline CSS, SVG and browser JavaScript                                        | GitHub Pages from `main`                                                            | `a/index.html`                                                                                                     |
+| Application catalogue            | Plain HTML, inline CSS and shared client-side translations                                | GitHub Pages route `/app/`                                                          | `app/index.html`, `i18n.js`                                                                                        |
+| AEDoko application               | Static React bundle with a committed AED data snapshot                                    | GitHub Pages route `/app/aedoko/`                                                   | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko)                                    |
+| AEDoko interactive map           | Lazy MapLibre GL bundle, browser-side GeoJSON clustering, and OpenFreeMap vector tiles    | Loaded only after a visitor opens the map at `/app/aedoko/`                         | `app/aedoko/assets/`, built from `app/map-panel.tsx` in [`sunveda/aedoko`](https://github.com/sunveda/aedoko)      |
+| AEDoko community review          | GitHub Issue Forms plus issue-triggered GitHub Actions                                    | Issues and unverified draft PRs in `sunveda/aedoko`                                 | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
+| Analytics API and alias redirect | Cloudflare Worker, ES modules                                                             | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/`                                                                                                |
+| Analytics database               | Cloudflare D1                                                                             | APAC region                                                                         | Schema in `analytics/worker/schema.sql`                                                                            |
+| Daily collector                  | Zero-dependency Node.js 24 script                                                         | GitHub Actions                                                                      | `analytics/collect.mjs`, `.github/workflows/analytics.yml`                                                         |
+| Multilingual layout QA           | Playwright with 188 route, language, and viewport combinations                            | GitHub Actions on pull requests, `main`, weekly, and manual dispatch                | `tests/layout.mjs`, `.github/workflows/layout-tests.yml`                                                           |
+| Human-readable archive           | Markdown reports                                                                          | Orphan-style `analytics-data` Git branch                                            | `analytics/reports/YYYY-MM-DD.md` on that branch                                                                   |
+| Legal and event pages            | Plain HTML                                                                                | GitHub Pages from `main`                                                            | `privacy.html`, `terms.html`, `rsvp/index.html`                                                                    |
+| Domain and CDN                   | `CNAME` plus Cloudflare DNS/CDN                                                           | Cloudflare in front of GitHub Pages                                                 | `CNAME` and Cloudflare configuration                                                                               |
 
 ### Birthday event page context
 
@@ -241,42 +241,42 @@ flowchart LR
   A6 -->|Explore every published location<br/>without taxing finder startup| A7
 
   classDef current fill:#01696f,color:#fff,stroke:#83e6c2,stroke-width:2px;
-  A8["A8 · 2026-09-11<br/>Private event feedback · not deployed"]
+  A8["A8 · 2026-09-11<br/>Private event feedback"]
   A7 -->|Reusable events and private uploads| A8
   class A8 current;
 ```
 
-| Revision | Change | Why the architecture changed |
-| --- | --- | --- |
-| **A1 · Static launch** | Plain HTML/CSS/JS on GitHub Pages with the `sunveda.tech` custom domain. | Minimize operational cost and complexity while keeping every deployment inspectable. |
-| **A2 · Multilingual client** | Added browser-side translations, theme handling, responsive behavior, and PWA metadata without adding a server or build pipeline. | Support international visitors while preserving zero-build hosting. |
-| **A3 · Automated analytics** | Added GA4 and GoatCounter browser measurement plus a scheduled Node.js collector for Cloudflare, GA4, and GoatCounter. Daily reports were isolated on `analytics-data`. | Compare complementary measurements and preserve a human-readable audit trail without polluting the deployment branch. |
-| **A4 · Edge analytics platform** | Added `/a/`, a Cloudflare Worker API, D1 snapshots, protected ingestion, historical backfill, and an edge redirect from `/analyse` to `/a/`. | Make range-based dashboard queries fast and consistent, keep provider secrets server-side, and retain Markdown only as an archive rather than a runtime database. |
-| **A5 · Hosted application route** | Added AEDoko as a versioned static application at `/app/aedoko/`, built from the separate `sunveda/aedoko` repository and vendored into the main Pages deployment. | Give the emergency finder a stable URL on the owned domain without widening Worker routes, adding a runtime backend, or changing the zero-build core website. |
-| **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action. | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
-| **A7 · On-demand AED map** | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles. | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action. |
+| Revision                                        | Change                                                                                                                                                                  | Why the architecture changed                                                                                                                                                        |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A1 · Static launch**                          | Plain HTML/CSS/JS on GitHub Pages with the `sunveda.tech` custom domain.                                                                                                | Minimize operational cost and complexity while keeping every deployment inspectable.                                                                                                |
+| **A2 · Multilingual client**                    | Added browser-side translations, theme handling, responsive behavior, and PWA metadata without adding a server or build pipeline.                                       | Support international visitors while preserving zero-build hosting.                                                                                                                 |
+| **A3 · Automated analytics**                    | Added GA4 and GoatCounter browser measurement plus a scheduled Node.js collector for Cloudflare, GA4, and GoatCounter. Daily reports were isolated on `analytics-data`. | Compare complementary measurements and preserve a human-readable audit trail without polluting the deployment branch.                                                               |
+| **A4 · Edge analytics platform**                | Added `/a/`, a Cloudflare Worker API, D1 snapshots, protected ingestion, historical backfill, and an edge redirect from `/analyse` to `/a/`.                            | Make range-based dashboard queries fast and consistent, keep provider secrets server-side, and retain Markdown only as an archive rather than a runtime database.                   |
+| **A5 · Hosted application route**               | Added AEDoko as a versioned static application at `/app/aedoko/`, built from the separate `sunveda/aedoko` repository and vendored into the main Pages deployment.      | Give the emergency finder a stable URL on the owned domain without widening Worker routes, adding a runtime backend, or changing the zero-build core website.                       |
+| **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action.       | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
+| **A7 · On-demand AED map**                      | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles.                              | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action.                               |
 
-| **A8 · Private event feedback (source only)** | Adds a reusable guest form, authenticated host dashboard, dedicated Worker/D1 and private multipart R2 video storage. | Store private contact details and optional videos independently of public analytics, without migrating the static site. Provisioning/deployment remains pending. |
+| **A8 · Private event feedback** | Adds a reusable guest form, authenticated host dashboard, dedicated Worker/D1 and managed Turnstile. Private multipart R2 video storage remains disabled until account activation. | Store private contact details independently of public analytics, without migrating the static site; add videos only after the private storage boundary is provisioned. |
 
 ### Non-revision architecture maintenance
 
-| Date | Change | Revision impact |
-| --- | --- | --- |
-| **2026-09-01** | Added the static `/app/` catalogue route and linked it from the main site. | No revision increment: this extends the existing GitHub Pages application-hosting pattern without changing a platform, runtime, data flow, or security boundary. |
-| **2026-09-01** | Added Playwright multilingual layout regression checks for pull requests, `main`, and weekly verification. | No revision increment: this is repository QA only and does not change the public runtime, hosting boundary, or visitor data flow. |
+| Date           | Change                                                                                                     | Revision impact                                                                                                                                                  |
+| -------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2026-09-01** | Added the static `/app/` catalogue route and linked it from the main site.                                 | No revision increment: this extends the existing GitHub Pages application-hosting pattern without changing a platform, runtime, data flow, or security boundary. |
+| **2026-09-01** | Added Playwright multilingual layout regression checks for pull requests, `main`, and weekly verification. | No revision increment: this is repository QA only and does not change the public runtime, hosting boundary, or visitor data flow.                                |
 
 ### Architecture decisions that remain active
 
-| Decision | Status | Revisit when |
-| --- | --- | --- |
-| Keep the core public site zero-build | Active | Static-file maintenance becomes less reliable than a small build pipeline. Hosted applications may provide reviewed static bundles. |
-| Host focused applications under `/app/` | Active | Independent deployment or runtime requirements make vendored static bundles difficult to audit or update. |
-| Keep community AED submissions proposal-only | Active | A source-independent validation and normalization pipeline can safely prove submitted records before publication. |
-| Keep the AED map payload strictly on demand | Active | Map exploration becomes the primary emergency flow or measured usage justifies the additional initial payload and third-party tile requests. |
-| Keep analytics providers separate | Active | A validated cross-provider identity and metric model exists. |
-| Use D1 as dashboard source of truth | Active | Query volume, retention, or analysis requirements exceed the current snapshot model. |
-| Retain `analytics-data` as an audit archive | Active | A replacement provides equally reviewable and recoverable history. |
-| Serve `/analyse` as an edge redirect to `/a/` | Active | The canonical dashboard route changes. |
+| Decision                                      | Status | Revisit when                                                                                                                                 |
+| --------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Keep the core public site zero-build          | Active | Static-file maintenance becomes less reliable than a small build pipeline. Hosted applications may provide reviewed static bundles.          |
+| Host focused applications under `/app/`       | Active | Independent deployment or runtime requirements make vendored static bundles difficult to audit or update.                                    |
+| Keep community AED submissions proposal-only  | Active | A source-independent validation and normalization pipeline can safely prove submitted records before publication.                            |
+| Keep the AED map payload strictly on demand   | Active | Map exploration becomes the primary emergency flow or measured usage justifies the additional initial payload and third-party tile requests. |
+| Keep analytics providers separate             | Active | A validated cross-provider identity and metric model exists.                                                                                 |
+| Use D1 as dashboard source of truth           | Active | Query volume, retention, or analysis requirements exceed the current snapshot model.                                                         |
+| Retain `analytics-data` as an audit archive   | Active | A replacement provides equally reviewable and recoverable history.                                                                           |
+| Serve `/analyse` as an edge redirect to `/a/` | Active | The canonical dashboard route changes.                                                                                                       |
 
 ## Repository layout
 
@@ -361,9 +361,9 @@ this README. At minimum:
 
 The reusable English/Japanese guest feedback application is in `feedback/`. Required fields are name, at least one contact method, overall experience and privacy acknowledgement. Optional food, decoration, eggless cake and biryani questions include private MP4/MOV uploads up to eight minutes and 250 MB. Written responses save first. The host dashboard uses a private password session and supports paginated review and CSV export.
 
-Guest contact details live only in a dedicated D1 database; videos live in private R2 and are streamed through authenticated Worker endpoints. This data must never flow into analytics, public Pages files or GitHub context. Turnstile, same-origin checks, signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup form the new security boundary. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
+Guest contact details live only in a dedicated D1 database. Turnstile and same-origin checks protect the live written-feedback path. Videos will live in private R2 and stream through authenticated Worker endpoints after R2 is activated; signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup are implemented but not enabled in production yet. Feedback data must never flow into analytics, public Pages files or GitHub context. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
 
-Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. Production resources and billing activation have not been performed. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged by this implementation. Before rollout, configure real resources/secrets, select retention, verify actual phone videos, and obtain deployment approval.
+Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. The production Worker, route, Turnstile, secrets and APAC D1 database were deployed and verified on 2026-09-11; a labeled test response was deleted and the database returned to zero responses. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged. R2 account activation, the private bucket, cleanup trigger, retention choice and an actual phone-video test remain pending.
 
 ### Homepage directory (2026-09-11)
 
