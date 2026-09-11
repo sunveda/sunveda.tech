@@ -10,6 +10,10 @@
   --soft: #f6f0f8;
   --error: #972f3c;
   --radius: 22px;
+  --brand-line: #06c755;
+  --brand-whatsapp: #128c4a;
+  --brand-instagram-start: #833ab4;
+  --brand-instagram-end: #e1306c;
 }
 * {
   box-sizing: border-box;
@@ -583,6 +587,98 @@ video {
 .receipt-reference {
   overflow-wrap: anywhere;
 }
+.stay-connected {
+  margin: 70px 0 0;
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: 0 5px 22px #49395108;
+}
+.stay-connected__copy {
+  text-align: center;
+  max-width: 540px;
+  margin: 0 auto 25px;
+}
+.stay-connected__copy h2 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 400;
+  letter-spacing: -0.8px;
+}
+.stay-connected__copy > p:last-child {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.connect-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.connect-button {
+  min-width: 0;
+  min-height: 78px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border-radius: 15px;
+  color: var(--white);
+  text-decoration: none;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.connect-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px #34293c24;
+}
+.connect-button--line {
+  background: var(--brand-line);
+}
+.connect-button--whatsapp {
+  background: var(--brand-whatsapp);
+}
+.connect-button--instagram {
+  background: linear-gradient(
+    135deg,
+    var(--brand-instagram-start),
+    var(--brand-instagram-end)
+  );
+}
+.connect-button__monogram {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff80;
+  border-radius: 12px;
+  background: #ffffff20;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+}
+.connect-button strong,
+.connect-button small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.connect-button strong {
+  font-size: 13px;
+  line-height: 1.3;
+}
+.connect-button small {
+  margin-top: 4px;
+  color: #ffffffd9;
+  font-size: 10px;
+  line-height: 1.35;
+}
+.connect-button__arrow {
+  font-size: 19px;
+}
 footer {
   text-align: center;
   color: var(--muted);
@@ -655,6 +751,16 @@ footer a {
   }
   .upload-panel {
     padding: 17px;
+  }
+  .stay-connected {
+    margin-top: 48px;
+    padding: 26px 20px;
+  }
+  .connect-buttons {
+    grid-template-columns: 1fr;
+  }
+  .connect-button {
+    min-height: 72px;
   }
   .hero .intro {
     font-size: 14px;

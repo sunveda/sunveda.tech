@@ -1,4 +1,4 @@
-import { setupLanguage, getLanguage } from "./i18n.mjs";
+import { setupLanguage, getLanguage } from "./i18n.mjs?v=2";
 setupLanguage();
 import { DEFAULT_EVENT, EVENTS, RATINGS, VIDEO } from "./events.mjs";
 const errorText = (error) =>

@@ -84,6 +84,19 @@ export const JA = {
   "Keep my written feedback without this video":
     "動画を一時停止し、回答だけを保存する",
   "Back to the celebration →": "お祝いのページに戻る →",
+  "Keep in touch": "これからもご一緒に",
+  "Let’s stay connected.": "またつながりましょう。",
+  "Questions or another memory? Reach me here.":
+    "ご質問や、ほかにも伝えたい思い出があれば、こちらからご連絡ください。",
+  "Connect on LINE": "LINEでつながる",
+  "Message me": "メッセージを送る",
+  "Join on WhatsApp": "WhatsAppで参加する",
+  "Celebration group": "お祝いのグループ",
+  "Follow on Instagram": "Instagramをフォロー",
+  "Connect with me on LINE": "LINEでつながる",
+  "Join the celebration group on WhatsApp":
+    "WhatsAppのお祝いグループに参加する",
+  "Follow SunVeda on Instagram": "InstagramでSunVedaをフォロー",
   "Made with care by": "制作：",
   "This event was not found.": "このイベントが見つかりません。",
   "Feedback is temporarily unavailable. Please try again later.":
