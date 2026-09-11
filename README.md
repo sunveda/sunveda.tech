@@ -4,8 +4,8 @@ Source for [sunveda.tech](https://sunveda.tech), Sarveshwar Singh's multilingual
 
 **Source architecture revision: A8 · Private event feedback (2026-09-11)**
 
-A8 written feedback is deployed and verified. Private video upload remains disabled
-until the Cloudflare account's R2 storage is activated and configured.
+A8 written feedback and private video upload are deployed and verified. The
+remaining operational choice is how long accepted feedback should be retained.
 
 This README is the architecture source of truth. The diagrams, deployment map,
 and architecture history must be updated in the same pull request whenever a
@@ -67,10 +67,10 @@ flowchart TB
   end
 
   feedbackDB[(Private feedback D1 · APAC)]
-  feedbackVideos[(Private video R2 · pending)]
+  feedbackVideos[(Private video R2 · APAC)]
   turnstile[Cloudflare Turnstile]
   cf -->|/feedback/| feedback
-  feedback -->|Answers; video chunks after R2 activation| feedbackWorker
+  feedback -->|Answers and video chunks| feedbackWorker
   feedbackWorker --> feedbackDB
   feedbackWorker --> feedbackVideos
   feedbackWorker -->|Verify guest challenge| turnstile
@@ -116,7 +116,7 @@ flowchart TB
 
 | Component                        | Technology                                                                                | Deployed to                                                                         | Source                                                                                                             |
 | -------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Event feedback                   | Static ES modules + Worker, separate D1, managed Turnstile; private R2 pending activation | Pages `/feedback/`, `/feedback/admin/`; Worker `/api/feedback/*`                    | `feedback/`, [runbook](feedback/README.md)                                                                         |
+| Event feedback                   | Static ES modules + Worker, separate APAC D1, managed Turnstile and private APAC R2     | Pages `/feedback/`, `/feedback/admin/`; Worker `/api/feedback/*`                    | `feedback/`, [runbook](feedback/README.md)                                                                         |
 | Main website                     | Plain HTML, inline CSS, browser JavaScript                                                | GitHub Pages from `main`                                                            | `index.html`, `i18n.js`                                                                                            |
 | Analytics dashboard              | Plain HTML, inline CSS, SVG and browser JavaScript                                        | GitHub Pages from `main`                                                            | `a/index.html`                                                                                                     |
 | Application catalogue            | Plain HTML, inline CSS and shared client-side translations                                | GitHub Pages route `/app/`                                                          | `app/index.html`, `i18n.js`                                                                                        |
@@ -256,7 +256,7 @@ flowchart LR
 | **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action.       | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
 | **A7 · On-demand AED map**                      | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles.                              | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action.                               |
 
-| **A8 · Private event feedback** | Adds a reusable guest form, authenticated host dashboard, dedicated Worker/D1 and managed Turnstile. Private multipart R2 video storage remains disabled until account activation. | Store private contact details independently of public analytics, without migrating the static site; add videos only after the private storage boundary is provisioned. |
+| **A8 · Private event feedback** | Adds a reusable guest form, authenticated host dashboard, dedicated Worker/D1, managed Turnstile and private multipart R2 video storage. | Store private contact details and videos independently of public analytics without migrating the static site. |
 
 ### Non-revision architecture maintenance
 
@@ -361,9 +361,9 @@ this README. At minimum:
 
 The reusable English/Japanese guest feedback application is in `feedback/`. Required fields are name, at least one contact method, overall experience and privacy acknowledgement. Optional food, decoration, eggless cake and biryani questions include private MP4/MOV uploads up to eight minutes and 250 MB. Written responses save first. The host dashboard uses a private password session and supports paginated review and CSV export.
 
-Guest contact details live only in a dedicated D1 database. Turnstile and same-origin checks protect the live written-feedback path. Videos will live in private R2 and stream through authenticated Worker endpoints after R2 is activated; signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup are implemented but not enabled in production yet. Feedback data must never flow into analytics, public Pages files or GitHub context. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
+Guest contact details live only in a dedicated D1 database. Turnstile and same-origin checks protect the live feedback path. Videos live in private R2 and stream through authenticated Worker endpoints; signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup are active. Feedback data must never flow into analytics, public Pages files or GitHub context. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
 
-Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. The production Worker, route, Turnstile, secrets and APAC D1 database were deployed and verified on 2026-09-11; a labeled test response was deleted and the database returned to zero responses. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged. R2 account activation, the private bucket, cleanup trigger, retention choice and an actual phone-video test remain pending.
+Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. The production Worker, route, Turnstile, secrets, APAC D1 database and private APAC R2 bucket were deployed and verified on 2026-09-11. The live API advertises video as enabled, the hourly cleanup trigger is active, and a generated MP4 completed a byte-identical R2 upload/download round trip before deletion. The bucket and database returned to zero test data. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged. The retention choice and an actual phone-video compatibility sample remain pending.
 
 ### Homepage directory (2026-09-11)
 
