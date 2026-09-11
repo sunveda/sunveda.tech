@@ -16,7 +16,7 @@ const VIEWPORTS = [
 
 const SHARED_LANGUAGES = ["en", "ja", "ko", "zh", "es", "de", "fr", "pt", "ru", "ar", "hi", "it"];
 const AEDOKO_LANGUAGES = ["ja", "ja-x-easy", "en", "zh-Hans", "zh-Hant", "ko", "pt", "es", "vi", "tl", "ne", "id", "th", "hi", "fr", "ru"];
-const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/"];
+const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/", "/feedback/?lang=en", "/feedback/?lang=ja", "/feedback/admin/"];
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -247,7 +247,7 @@ async function testScenario(page, origin, scenario) {
   const query = scenario.route === "/app/aedoko/"
     ? `?lang=${encodeURIComponent(scenario.language)}&layout-test=1`
     : "?layout-test=1";
-  await page.goto(`${origin}${scenario.route}${query}`, { waitUntil: "load", timeout: 30_000 });
+  await page.goto(`${origin}${scenario.route}${scenario.route.includes("?") ? query.replace("?", "&") : query}`, { waitUntil: "load", timeout: 30_000 });
 
   if (scenario.route === "/" || scenario.route === "/app/") {
     const selector = scenario.route === "/" ? ".lang-switch__select" : ".language select";
@@ -276,7 +276,7 @@ async function runViewport(browser, origin, viewport) {
       { route: "/app/", language, viewport: viewport.name },
     ]),
     ...AEDOKO_LANGUAGES.map(language => ({ route: "/app/aedoko/", language, viewport: viewport.name })),
-    ...OTHER_ROUTES.map(route => ({ route, language: "en", viewport: viewport.name })),
+    ...OTHER_ROUTES.map(route => ({ route, language: route.includes("lang=ja") ? "ja" : "en", viewport: viewport.name })),
   ];
 
   const failures = [];

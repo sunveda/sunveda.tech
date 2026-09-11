@@ -132,3 +132,11 @@ A Claude Code skill at `.claude/skills/footer-version/SKILL.md` carries the full
 - Don't forget to bump `i18n.js`'s cache-busting version query param when editing it.
 - Don't merge a PR without updating the `.footer__version` link in `index.html` to the new PR number and commit hash.
 - Don't create a PR without assigning it to `sunveda` (`--assignee sunveda` in `gh pr create`).
+
+## Feedback application
+
+- `feedback/README.md` is the local preview, security, deployment and retention runbook. Read it before changing this application.
+- `feedback/events.mjs` contains versioned reusable event questions; snapshots are stored with each response.
+- `feedback/worker/` is separate from the analytics Worker and database. Never mix guest PII or videos with analytics or public files.
+- Run `npm run test:feedback` for backend changes. Use Node 24. Keep production credentials/configuration untracked.
+- Production provisioning and deployment require explicit authorization. Source implementation does not imply deployed status.

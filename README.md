@@ -2,7 +2,10 @@
 
 Source for [sunveda.tech](https://sunveda.tech), Sarveshwar Singh's multilingual technology consulting and portfolio website.
 
-**Current architecture revision: A7 · On-demand AED map (2026-08-30)**
+**Source architecture revision: A8 · Private event feedback (2026-09-11)**
+
+A8 feedback is prepared for review and local testing, not provisioned or deployed.
+Existing production services remain unchanged until explicit rollout approval.
 
 This README is the architecture source of truth. The diagrams, deployment map,
 and architecture history must be updated in the same pull request whenever a
@@ -20,6 +23,7 @@ flowchart TB
   subgraph edge[Cloudflare edge · sunveda.tech]
     cf[DNS, CDN and route matching]
     worker[Analytics Worker<br/>sunveda-analytics-api]
+    feedbackWorker[Feedback Worker · pending deployment<br/>/api/feedback/*]
   end
 
   subgraph static[GitHub Pages · main branch]
@@ -28,6 +32,7 @@ flowchart TB
     apphub[Application catalogue<br/>/app/]
     aedoko[AEDoko emergency finder<br/>/app/aedoko/]
     pages[Legal and RSVP pages]
+    feedback[Guest form + private host dashboard<br/>/feedback/ · /feedback/admin/]
   end
 
   subgraph appsource[Application source]
@@ -60,6 +65,16 @@ flowchart TB
     collector[Zero-dependency Node.js collector]
     layoutqa[Playwright multilingual layout checks<br/>PR, main and weekly]
   end
+
+  feedbackDB[(Private feedback D1 · pending)]
+  feedbackVideos[(Private video R2 · pending)]
+  turnstile[Cloudflare Turnstile]
+  cf -->|/feedback/| feedback
+  feedback -->|Answers + multipart video chunks| feedbackWorker
+  feedbackWorker --> feedbackDB
+  feedbackWorker --> feedbackVideos
+  feedbackWorker -->|Verify guest challenge| turnstile
+  maintainer -->|Host session| feedback
 
   visitor --> cf
   cf -->|Static routes| site
@@ -101,6 +116,7 @@ flowchart TB
 
 | Component | Technology | Deployed to | Source |
 | --- | --- | --- | --- |
+| Event feedback (pending deployment) | Static ES modules + Worker, separate D1 and private R2 | Planned Pages `/feedback/`, `/feedback/admin/`; Worker `/api/feedback/*` | `feedback/`, [runbook](feedback/README.md) |
 | Main website | Plain HTML, inline CSS, browser JavaScript | GitHub Pages from `main` | `index.html`, `i18n.js` |
 | Analytics dashboard | Plain HTML, inline CSS, SVG and browser JavaScript | GitHub Pages from `main` | `a/index.html` |
 | Application catalogue | Plain HTML, inline CSS and shared client-side translations | GitHub Pages route `/app/` | `app/index.html`, `i18n.js` |
@@ -110,7 +126,7 @@ flowchart TB
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
 | Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
-| Multilingual layout QA | Playwright with 176 route, language, and viewport combinations | GitHub Actions on pull requests, `main`, weekly, and manual dispatch | `tests/layout.mjs`, `.github/workflows/layout-tests.yml` |
+| Multilingual layout QA | Playwright with 188 route, language, and viewport combinations | GitHub Actions on pull requests, `main`, weekly, and manual dispatch | `tests/layout.mjs`, `.github/workflows/layout-tests.yml` |
 | Human-readable archive | Markdown reports | Orphan-style `analytics-data` Git branch | `analytics/reports/YYYY-MM-DD.md` on that branch |
 | Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
 | Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
@@ -225,7 +241,9 @@ flowchart LR
   A6 -->|Explore every published location<br/>without taxing finder startup| A7
 
   classDef current fill:#01696f,color:#fff,stroke:#83e6c2,stroke-width:2px;
-  class A7 current;
+  A8["A8 · 2026-09-11<br/>Private event feedback · not deployed"]
+  A7 -->|Reusable events and private uploads| A8
+  class A8 current;
 ```
 
 | Revision | Change | Why the architecture changed |
@@ -237,6 +255,8 @@ flowchart LR
 | **A5 · Hosted application route** | Added AEDoko as a versioned static application at `/app/aedoko/`, built from the separate `sunveda/aedoko` repository and vendored into the main Pages deployment. | Give the emergency finder a stable URL on the owned domain without widening Worker routes, adding a runtime backend, or changing the zero-build core website. |
 | **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action. | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
 | **A7 · On-demand AED map** | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles. | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action. |
+
+| **A8 · Private event feedback (source only)** | Adds a reusable guest form, authenticated host dashboard, dedicated Worker/D1 and private multipart R2 video storage. | Store private contact details and optional videos independently of public analytics, without migrating the static site. Provisioning/deployment remains pending. |
 
 ### Non-revision architecture maintenance
 
@@ -336,3 +356,11 @@ this README. At minimum:
 5. Increment the current architecture revision only for a material boundary or platform change—not ordinary copy or styling changes.
 
 `AGENTS.md` makes this rule mandatory for future coding agents.
+
+## Event feedback — implementation context
+
+The reusable English/Japanese guest feedback application is in `feedback/`. Required fields are name, at least one contact method, overall experience and privacy acknowledgement. Optional food, decoration, eggless cake and biryani questions include private MP4/MOV uploads up to eight minutes and 250 MB. Written responses save first. The host dashboard uses a private password session and supports paginated review and CSV export.
+
+Guest contact details live only in a dedicated D1 database; videos live in private R2 and are streamed through authenticated Worker endpoints. This data must never flow into analytics, public Pages files or GitHub context. Turnstile, same-origin checks, signed upload capabilities, byte reservations and scheduled unfinished-upload cleanup form the new security boundary. See [feedback setup, data flows, API and retention runbook](feedback/README.md).
+
+Run `npm run test:feedback` and `npm run preview:feedback` with Node 24. Production resources and billing activation have not been performed. Existing RSVP cancellation hosting and the separately merged timeline PR #50 are unchanged by this implementation. Before rollout, configure real resources/secrets, select retention, verify actual phone videos, and obtain deployment approval.
