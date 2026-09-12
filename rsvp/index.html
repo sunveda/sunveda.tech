@@ -100,6 +100,43 @@
   .row a { color: var(--plum); font-weight: 600; text-decoration: none; }
   .row a:hover, .row a:focus-visible { text-decoration: underline; }
 
+  /* ── Arrival guide ────────────────────────────────────── */
+  .arrival-card { padding: 22px 20px; }
+  .arrival-heading { display: flex; align-items: flex-start; gap: 12px; }
+  .arrival-heading .ico { font-size: 22px; line-height: 1.35; }
+  .arrival-heading h2 { margin: 0; font-size: 20px; color: var(--plum-deep); }
+  .arrival-route { margin: 2px 0 0; color: var(--ink-soft); font-size: 13px; }
+  .arrival-steps { list-style: none; margin: 20px 0; padding: 0; display: grid; gap: 12px; }
+  .arrival-steps li { display: grid; grid-template-columns: 28px 1fr; gap: 11px; align-items: start; }
+  .arrival-step {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--plum-soft);
+    color: var(--plum-deep);
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .arrival-steps strong { display: block; font-size: 14px; }
+  .arrival-steps small { display: block; color: var(--ink-soft); font-size: 12.5px; line-height: 1.5; }
+  .guide-map {
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    background: var(--ground);
+  }
+  .guide-map a { display: block; color: inherit; text-decoration: none; }
+  .guide-map__frame { height: 360px; overflow: hidden; background: var(--plum-soft); }
+  .guide-map img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 43%; }
+  .guide-map figcaption { padding: 11px 13px; font-size: 12px; line-height: 1.5; }
+  .guide-map:hover figcaption, .guide-map:focus-visible figcaption { color: var(--plum-deep); text-decoration: underline; }
+
   /* ── Event timeline ───────────────────────────────────── */
   .timeline-card { padding: 20px; }
   .timeline-card h2 { margin: 0; font-size: 20px; color: var(--plum-deep); }
@@ -221,15 +258,46 @@
           <span class="ico" aria-hidden="true">📍</span>
           <div>
             <div class="lab">Where</div>
-            <div class="val">6 Chome-1-1 Ojima</div>
-            <div class="sub">Koto City, Tokyo 136-0072</div>
+            <div class="val">UR Ojima 6-chome Danchi · Building 6</div>
+            <div class="sub">6 Chome-1-1 Ojima, Koto City, Tokyo 136-0072</div>
             <div class="map-links">
-              <a href="https://maps.app.goo.gl/FRMHpM1s8TxQbNXT8" target="_blank" rel="noopener">Open in Maps →</a>
+              <a href="https://maps.app.goo.gl/fJcbegY4xaCk5rcy6?g_st=ic" target="_blank" rel="noopener">Open Building 6 in Maps →</a>
+              <a href="https://www.kotsu.metro.tokyo.jp/eng/subway_stations/ojima.html" target="_blank" rel="noopener">Ojima Station map →</a>
               <a href="https://maps.app.goo.gl/gbTQQipGxL2PaaTQ8?g_st=i" target="_blank" rel="noopener">Parking map →</a>
             </div>
           </div>
         </div>
       </div>
+
+      <section class="card arrival-card" aria-labelledby="arrival-title">
+        <div class="arrival-heading">
+          <span class="ico" aria-hidden="true">🚇</span>
+          <div>
+            <h2 id="arrival-title">Arriving by train</h2>
+            <p class="arrival-route">Toei Shinjuku Line · Ojima Station (S15) · Exit A2 · About 5 minutes</p>
+          </div>
+        </div>
+        <ol class="arrival-steps">
+          <li>
+            <span class="arrival-step">1</span>
+            <div><strong>Leave Ojima Station through Exit A2.</strong><small>Exit A2 is the exit for Ojima 6-chome Danchi and Koto Hospital.</small></div>
+          </li>
+          <li>
+            <span class="arrival-step">2</span>
+            <div><strong>Walk north into the UR complex.</strong><small>Continue through the central open space, keeping Koto Hospital on your right.</small></div>
+          </li>
+          <li>
+            <span class="arrival-step">3</span>
+            <div><strong>Look for Building 6 on the right.</strong><small>It is the long building marked by the red pin in the guide below.</small></div>
+          </li>
+        </ol>
+        <figure class="guide-map">
+          <a href="building-6-map-guide.jpg" target="_blank" rel="noopener">
+            <span class="guide-map__frame"><img src="building-6-map-guide.jpg" width="590" height="1280" loading="lazy" alt="Satellite guide from Ojima Station Exit A2 to UR Ojima 6-chome Danchi Building 6, marked with a red pin"></span>
+            <figcaption>Follow the map north from Ojima Station to Building 6. Tap the image to enlarge.</figcaption>
+          </a>
+        </figure>
+      </section>
 
       <section class="card timeline-card" aria-labelledby="timeline-title">
         <h2 id="timeline-title">Event timeline</h2>
