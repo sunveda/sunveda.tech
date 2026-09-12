@@ -48,6 +48,29 @@
   }
 
   .wrap { width: 100%; max-width: 480px; }
+  html[data-lang="en"] [lang="ja"],
+  html[data-lang="ja"] [lang="en"] { display: none !important; }
+  .language-toggle { display: flex; justify-content: flex-end; padding: 14px 0 0; }
+  .language-toggle__group {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    box-shadow: 0 3px 12px rgba(74,36,150,.08);
+  }
+  .language-toggle button {
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 7px 13px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .language-toggle button[aria-pressed="true"] { background: var(--plum); color: #fff; }
 
   /* ── Hero ─────────────────────────────────────────────── */
   .hero {
@@ -244,11 +267,18 @@
 
   <div class="wrap">
 
+    <nav class="language-toggle" aria-label="Language / 言語">
+      <div class="language-toggle__group">
+        <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-set-lang="ja" aria-pressed="false">日本語</button>
+      </div>
+    </nav>
+
     <header class="hero">
       <div class="cake" aria-hidden="true">🎂</div>
-      <h1>Sanya is 2 now!</h1>
+      <h1 lang="en">Sanya is 2 now!</h1>
       <p class="hero-ja-title" lang="ja">サーニャは2歳になりました！</p>
-      <p>Let’s celebrate together.<span class="ja" lang="ja">一緒にお祝いしましょう。</span></p>
+      <p><span lang="en">Let’s celebrate together.</span><span class="ja" lang="ja">一緒にお祝いしましょう。</span></p>
     </header>
 
     <main>
@@ -268,9 +298,9 @@
             <div class="val">UR Ojima 6-chome Danchi · Building 6<span class="ja" lang="ja">UR大島六丁目団地 · 6号棟</span></div>
             <div class="sub">6 Chome-1-1 Ojima, Koto City, Tokyo 136-0072<span class="ja" lang="ja">〒136-0072 東京都江東区大島6丁目1-1</span></div>
             <div class="map-links">
-              <a href="https://maps.app.goo.gl/fJcbegY4xaCk5rcy6?g_st=ic" target="_blank" rel="noopener">Open Building 6 in Maps / 6号棟を地図で開く →</a>
-              <a href="https://www.kotsu.metro.tokyo.jp/eng/subway_stations/ojima.html" target="_blank" rel="noopener">Ojima Station map / 大島駅の構内図 →</a>
-              <a href="https://maps.app.goo.gl/gbTQQipGxL2PaaTQ8?g_st=i" target="_blank" rel="noopener">Parking map / 駐車場の地図 →</a>
+              <a href="https://maps.app.goo.gl/fJcbegY4xaCk5rcy6?g_st=ic" target="_blank" rel="noopener"><span lang="en">Open Building 6 in Maps →</span><span lang="ja">6号棟を地図で開く →</span></a>
+              <a href="https://www.kotsu.metro.tokyo.jp/eng/subway_stations/ojima.html" target="_blank" rel="noopener"><span lang="en">Ojima Station map →</span><span lang="ja">大島駅の構内図 →</span></a>
+              <a href="https://maps.app.goo.gl/gbTQQipGxL2PaaTQ8?g_st=i" target="_blank" rel="noopener"><span lang="en">Parking map →</span><span lang="ja">駐車場の地図 →</span></a>
             </div>
           </div>
         </div>
@@ -280,7 +310,7 @@
         <div class="arrival-heading">
           <span class="ico" aria-hidden="true">🚇</span>
           <div>
-            <h2 id="arrival-title">Arriving by train</h2>
+            <h2 id="arrival-title" lang="en">Arriving by train</h2>
             <p class="section-ja-title" lang="ja">電車でお越しの方</p>
             <p class="arrival-route">Toei Shinjuku Line · Ojima Station (S15) · Exit A2 · About 5 minutes<span class="ja" lang="ja">都営新宿線 · 大島駅（S15）· A2出口 · 徒歩約5分</span></p>
           </div>
@@ -308,7 +338,7 @@
       </section>
 
       <section class="card timeline-card" aria-labelledby="timeline-title">
-        <h2 id="timeline-title">Event timeline</h2>
+        <h2 id="timeline-title" lang="en">Event timeline</h2>
         <p class="section-ja-title" lang="ja">パーティの流れ</p>
         <p class="timeline-zone">Saturday, 12 September · All times JST<span class="ja" lang="ja">9月12日（土）· 時刻はすべて日本時間</span></p>
         <ol class="timeline">
@@ -323,7 +353,7 @@
       </section>
 
       <a class="cta" href="https://script.google.com/macros/s/AKfycbyxii9NbRx2-UtJVQV1CQdTlw7OYPxsmReMB7lXkjIwtTWnlI_OZv88MM1Y-sEN1il-eA/exec">
-        Cancel your RSVP / 参加予約をキャンセル →
+        <span lang="en">Cancel your RSVP →</span><span lang="ja">参加予約をキャンセル →</span>
       </a>
       <p class="deadline">New RSVPs are closed. To cancel an existing RSVP, use the phone number you registered with.<span class="ja" lang="ja">新規の参加受付は終了しました。予約時に使用した電話番号で、既存の参加予約をキャンセルできます。</span></p>
 
@@ -348,6 +378,43 @@
     </footer>
 
   </div>
+
+  <script>
+    (function () {
+      document.querySelectorAll('[lang="ja"]').forEach(function (japanese) {
+        Array.from(japanese.parentNode.childNodes).forEach(function (node) {
+          if (node.nodeType !== 3 || !node.nodeValue.trim()) return;
+          var english = document.createElement("span");
+          english.lang = "en";
+          japanese.parentNode.insertBefore(english, node);
+          english.appendChild(node);
+        });
+      });
+
+      var requested = new URLSearchParams(location.search).get("lang");
+      var saved = "";
+      try { saved = localStorage.getItem("rsvp_landing_lang") || ""; } catch (e) {}
+      var initial = requested === "ja" || requested === "en"
+        ? requested
+        : saved === "ja" || saved === "en"
+          ? saved
+          : navigator.language.toLowerCase().startsWith("ja") ? "ja" : "en";
+
+      function setLanguage(lang) {
+        document.documentElement.lang = lang;
+        document.documentElement.dataset.lang = lang;
+        document.querySelectorAll("[data-set-lang]").forEach(function (button) {
+          button.setAttribute("aria-pressed", String(button.dataset.setLang === lang));
+        });
+        try { localStorage.setItem("rsvp_landing_lang", lang); } catch (e) {}
+      }
+
+      document.querySelectorAll("[data-set-lang]").forEach(function (button) {
+        button.addEventListener("click", function () { setLanguage(button.dataset.setLang); });
+      });
+      setLanguage(initial);
+    })();
+  </script>
 
 </body>
 </html>
