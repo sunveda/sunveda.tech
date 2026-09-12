@@ -595,7 +595,7 @@ video {
   border: 1px solid #e4d3e8;
   border-radius: 26px;
   background:
-    radial-gradient(circle at 92% 12%, #f1d6dc 0 70px, transparent 71px),
+    radial-gradient(circle at 100% 0%, #f1d6dc 0, #f1d6dc00 230px),
     linear-gradient(135deg, #fff 0%, #faf1f8 52%, #f7efe7 100%);
   box-shadow: 0 16px 44px #49395112;
 }
@@ -698,6 +698,16 @@ html[lang="ja"] .stay-connected__copy h2 {
   background: color-mix(in srgb, var(--connect-accent) 10%, white);
   color: var(--connect-accent);
   font-size: 16px;
+}
+/* Between the mobile stack and full desktop the three cards are too narrow for
+   their labels, so keep them stacked until there is room for a comfortable row. */
+@media (min-width: 761px) and (max-width: 900px) {
+  .connect-buttons {
+    grid-template-columns: 1fr;
+  }
+  .connect-button {
+    min-height: 72px;
+  }
 }
 footer {
   text-align: center;
