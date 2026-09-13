@@ -133,7 +133,7 @@ flowchart TB
 
 ### Birthday event page context
 
-The English/Japanese `/rsvp/` landing page presents Sanya’s second-birthday details and the seven-item event timeline from the Apps Script invitation (16:00–20:00 JST). A compact English/日本語 toggle switches immediately and remembers the selected language. Its greeting is “Sanya is 2 now! Let’s celebrate together.” The venue is UR Ojima 6-chome Danchi, Building 6, with the corrected Google Maps destination and a photographed walking guide from Toei Shinjuku Line Ojima Station (S15), Exit A2. New RSVPs remain closed; the existing cancellation link is preserved. Keep venue directions, timeline times and labels synchronized with `Index.html` in [the birthday app repository](https://github.com/sunveda/sanya-2nd-birthday-celebrations). Detailed event decisions and deployment history live in that repository’s [CONTEXT.md](https://github.com/sunveda/sanya-2nd-birthday-celebrations/blob/main/CONTEXT.md).
+After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone who celebrated on 12 September 2026, a note that RSVPs and cancellations are closed, and a 20-second counter that then redirects to the homepage (a `<noscript>` meta refresh covers the same thing without JavaScript). It keeps the invitation's warm identity because the link still sits in LINE and WhatsApp group history, so its Open Graph card has to make sense to someone opening it months later. It no longer links to the Apps Script RSVP web app, which is closed in [the birthday app repository](https://github.com/sunveda/sanya-2nd-birthday-celebrations); the event details, venue directions and timeline it used to carry are archived verbatim at [`docs/archive/rsvp-invitation-2026-09-12.html`](docs/archive/rsvp-invitation-2026-09-12.html) and summarised in [`docs/archive/README.md`](docs/archive/README.md), alongside that repository's [CONTEXT.md](https://github.com/sunveda/sanya-2nd-birthday-celebrations/blob/main/CONTEXT.md).
 
 ### Technology choices
 
@@ -210,7 +210,7 @@ The English/Japanese `/rsvp/` landing page presents Sanya’s second-birthday de
 - The Worker stores only `INGEST_TOKEN` as an encrypted Worker secret.
 - D1 and the public API contain aggregate snapshots only.
 - `POST /api/analytics/ingest` requires the ingestion bearer token; public requests are read-only.
-- `/a/` is marked `noindex, nofollow` and displays no visitor-level data.
+- `/a/` is marked `noindex, nofollow`, is no longer listed in the homepage site directory, and displays no visitor-level data.
 - AEDoko keeps geolocation in browser memory, calculates nearest results on-device, and does not send coordinates to SunVeda analytics or storage.
 - Opening the AEDoko map makes ordinary style and tile requests to OpenFreeMap. The provider can receive standard request metadata and the requested viewport can indicate the approximate area being viewed; no AED record or exact device coordinate is uploaded by AEDoko.
 - AEDoko requests device location only after the visitor selects **Center on me**. The exact position remains in browser memory and is not stored by SunVeda.
@@ -287,7 +287,7 @@ flowchart LR
 ├── a/index.html                  # Database-backed analytics dashboard
 ├── app/index.html                # Multilingual application catalogue
 ├── app/aedoko/                   # Vendored AEDoko static application and AED snapshot
-├── rsvp/index.html               # RSVP page
+├── rsvp/index.html               # Post-event parking page (redirects home)
 ├── privacy.html / terms.html     # Legal pages
 ├── tests/layout.mjs              # Multilingual responsive layout regression suite
 ├── package.json / package-lock.json
