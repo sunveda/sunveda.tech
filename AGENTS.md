@@ -2,6 +2,11 @@
 
 Instructions for any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) working in this repository.
 
+## Read first
+
+1. **[docs/CONTEXT.md](docs/CONTEXT.md)** — living product/site status, blockers, who owns what. **Update it** on every active workday and on every major direction change (SunVeda house rule for all projects).
+2. **[README.md](README.md)** — architecture source of truth (diagrams, deployment map, flows, security boundaries, revision history).
+
 ## What this is
 
 `sunveda.tech` — Sarveshwar Singh's personal/consulting site (SunVeda Technologies). The public site is statically hosted, with a small Cloudflare Worker and D1 analytics data plane.
@@ -41,6 +46,16 @@ the architecture documentation in the same PR:
 
 Copy, content, styling, and ordinary component changes do not require a new
 architecture revision unless they also change one of those boundaries.
+
+## Context hygiene (required)
+
+After meaningful work (feature merge, blocker change, deploy URL change, architecture revision, scope pivot):
+
+1. Update the dated **Current status** section in `docs/CONTEXT.md`
+2. Keep bullets short; link PRs by number
+3. If you only ship code and skip CONTEXT, the next agent starts blind — treat that as a bug
+
+As of 2026-09-15: feature eng for this repo is paused while **jkk-watch** is sole eng focus — prefer CONTEXT/docs unless the owner reopens site work.
 
 ## Running / previewing locally
 
