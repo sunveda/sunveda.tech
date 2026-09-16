@@ -73,20 +73,34 @@ function delay(milliseconds) {
   return new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
 }
 
-async function fetchJson(url, options = {}) {
-  const response = await fetch(url, options);
-  const body = await response.text();
-  let data;
-  try {
-    data = body ? JSON.parse(body) : null;
-  } catch {
-    data = body;
+async function fetchJson(url, options = {}, retry = {}) {
+  const attempts = Math.max(1, retry.attempts || 1);
+  const retryStatuses = new Set(retry.statuses || []);
+  const baseDelay = retry.delayMs ?? 750;
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      const body = await response.text();
+      let data;
+      try {
+        data = body ? JSON.parse(body) : null;
+      } catch {
+        data = body;
+      }
+      if (response.ok) return data;
+      const detail = typeof data === "string" ? data.slice(0, 300) : JSON.stringify(data).slice(0, 300);
+      const error = new Error(`${response.status} ${response.statusText}: ${detail}`);
+      error.retryable = retryStatuses.has(response.status);
+      if (!error.retryable || attempt === attempts) throw error;
+      lastError = error;
+    } catch (error) {
+      if (attempt === attempts || (error.retryable === false) || (error.retryable === undefined && !retry.networkErrors)) throw error;
+      lastError = error;
+    }
+    await delay(baseDelay * (2 ** (attempt - 1)));
   }
-  if (!response.ok) {
-    const detail = typeof data === "string" ? data.slice(0, 300) : JSON.stringify(data).slice(0, 300);
-    throw new Error(`${response.status} ${response.statusText}: ${detail}`);
-  }
-  return data;
+  throw lastError;
 }
 
 async function cloudflareReport(dates) {
@@ -228,6 +242,13 @@ async function goatcounterGet(token, path, params) {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
+  }, {
+    attempts: 5,
+    delayMs: 750,
+    networkErrors: true,
+    // GoatCounter occasionally returns a short-lived 404 for a valid stats
+    // range. Retrying protects the daily total without treating the gap as 0.
+    statuses: [404, 408, 425, 429, 500, 502, 503, 504],
   });
 }
 
@@ -457,31 +478,40 @@ function renderMarkdown(report) {
 
 async function main() {
   const dates = comparisonDates(targetDateFromArgs());
+  const report = await collectReport(dates.yesterday);
+  const outputIndex = process.argv.indexOf("--output-dir");
+  if (outputIndex !== -1) {
+    const outputDirectory = process.argv[outputIndex + 1];
+    if (!outputDirectory) throw new Error("--output-dir requires a directory");
+    writeReportOutputs(report, outputDirectory);
+  } else if (process.argv.includes("--snapshot-json")) {
+    process.stdout.write(`${JSON.stringify(normalizeSnapshot(report), null, 2)}\n`);
+  } else if (process.argv.includes("--json")) process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+  else process.stdout.write(renderMarkdown(report));
+  if (!Object.values(report.sources).some((source) => source.ok)) process.exitCode = 1;
+}
+
+async function collectReport(targetDate = tokyoDate(-1)) {
+  const dates = comparisonDates(targetDate);
   const [cloudflare, ga4, goatcounter] = await Promise.all([
     capture("cloudflare", () => cloudflareReport(dates)),
     capture("ga4", () => ga4Report(dates)),
     capture("goatcounter", () => goatcounterReport(dates)),
   ]);
-  const report = {
+  return {
     generatedAt: new Date().toISOString(),
     timezone: "Asia/Tokyo",
     dates,
     sources: { cloudflare, ga4, goatcounter },
   };
-  const outputIndex = process.argv.indexOf("--output-dir");
-  if (outputIndex !== -1) {
-    const outputDirectory = process.argv[outputIndex + 1];
-    if (!outputDirectory) throw new Error("--output-dir requires a directory");
-    mkdirSync(outputDirectory, { recursive: true });
-    writeFileSync(resolve(outputDirectory, "report.md"), renderMarkdown(report));
-    writeFileSync(resolve(outputDirectory, "snapshot.json"), `${JSON.stringify(normalizeSnapshot(report), null, 2)}\n`);
-  } else if (process.argv.includes("--snapshot-json")) {
-    process.stdout.write(`${JSON.stringify(normalizeSnapshot(report), null, 2)}\n`);
-  } else if (process.argv.includes("--json")) process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
-  else process.stdout.write(renderMarkdown(report));
-  if (![cloudflare, ga4, goatcounter].some((source) => source.ok)) process.exitCode = 1;
+}
+
+function writeReportOutputs(report, outputDirectory, snapshot = normalizeSnapshot(report)) {
+  mkdirSync(outputDirectory, { recursive: true });
+  writeFileSync(resolve(outputDirectory, "report.md"), renderMarkdown(report));
+  writeFileSync(resolve(outputDirectory, "snapshot.json"), `${JSON.stringify(snapshot, null, 2)}\n`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) await main();
 
-export { addDays, cleanPath, comparisonDates, normalizeSnapshot, renderMarkdown, targetDateFromArgs, utcRangeForTokyoDate, validIsoDate };
+export { addDays, cleanPath, collectReport, comparisonDates, fetchJson, normalizeSnapshot, renderMarkdown, targetDateFromArgs, tokyoDate, utcRangeForTokyoDate, validIsoDate, writeReportOutputs };
