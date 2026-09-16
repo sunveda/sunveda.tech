@@ -13,6 +13,9 @@ Environment variables with the same names are supported for CI or testing.
 
 The daily workflow stores two outputs: a human-readable Markdown archive on the
 `analytics-data` branch and a normalized aggregate snapshot in Cloudflare D1.
+Before writing them, it reconciles the latest 30 calendar days and recollects
+any missing or incomplete date. Provider responses already marked complete are
+retained if a repair attempt has a temporary failure.
 The public `/a/` dashboard reads only the D1-backed API. Provider credentials
 and visitor-level data are never sent to the browser.
 
@@ -43,12 +46,19 @@ node analytics/collect.mjs --json
 node analytics/collect.mjs --snapshot-json
 node analytics/collect.mjs --date 2026-08-24 --snapshot-json
 node analytics/collect.mjs --output-dir /tmp/sunveda-analytics
+node analytics/reconcile.mjs --output-dir /tmp/sunveda-reconciliation
 node analytics/test.mjs
 node analytics/preview.mjs
 ```
 
 The Markdown report keeps Cloudflare HTTP traffic separate from human analytics
 and compares each provider within its own measurement model.
+
+GoatCounter requests retry transient `404`, timeout, rate-limit, and server
+responses with exponential backoff. The workflow's final completeness check
+fails the run if any collected date still lacks a provider, while successful
+snapshots have already been ingested so the next run can repair only what
+remains.
 
 ## Dashboard API
 

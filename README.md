@@ -55,7 +55,7 @@ flowchart TB
   end
 
   subgraph automation[GitHub Actions · daily 08:00 JST]
-    collector[Zero-dependency Node.js collector]
+    collector[Zero-dependency Node.js collector<br/>30-day gap reconciliation + retries]
   end
 
   visitor --> cf
@@ -97,7 +97,7 @@ flowchart TB
 | AEDoko community review | GitHub Issue Forms plus issue-triggered GitHub Actions | Issues and unverified draft PRs in `sunveda/aedoko` | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
 | Analytics API and alias redirect | Cloudflare Worker, ES modules | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/` |
 | Analytics database | Cloudflare D1 | APAC region | Schema in `analytics/worker/schema.sql` |
-| Daily collector | Zero-dependency Node.js 24 script | GitHub Actions | `analytics/collect.mjs`, `.github/workflows/analytics.yml` |
+| Daily collector | Zero-dependency Node.js 24 scripts with transient retry and 30-day gap reconciliation | GitHub Actions | `analytics/collect.mjs`, `analytics/reconcile.mjs`, `.github/workflows/analytics.yml` |
 | Human-readable archive | Markdown reports | Orphan-style `analytics-data` Git branch | `analytics/reports/YYYY-MM-DD.md` on that branch |
 | Legal and event pages | Plain HTML | GitHub Pages from `main` | `privacy.html`, `terms.html`, `rsvp/index.html` |
 | Domain and CDN | `CNAME` plus Cloudflare DNS/CDN | Cloudflare in front of GitHub Pages | `CNAME` and Cloudflare configuration |
@@ -142,11 +142,13 @@ flowchart TB
 ### Daily analytics collection
 
 1. GitHub Actions runs at 23:00 UTC (08:00 JST) or by manual dispatch.
-2. `analytics/collect.mjs` reads Cloudflare, GA4, and GoatCounter independently.
-3. It generates a Markdown report and a normalized versioned JSON snapshot.
-4. The Markdown report is committed only to `analytics-data` using an isolated Git worktree.
-5. The JSON snapshot is authenticated and upserted through the Worker into D1.
-6. `/a/` fetches 7, 14, 30, or 90 snapshots from `GET /api/analytics`.
+2. `analytics/reconcile.mjs` compares the latest 30 calendar days with the public D1-backed API and selects yesterday plus every missing or incomplete date.
+3. `analytics/collect.mjs` reads Cloudflare, GA4, and GoatCounter independently for each selected date. GoatCounter retries transient API responses with exponential backoff.
+4. A repair preserves any previously complete provider result if another provider is temporarily unavailable, rather than regressing a good snapshot.
+5. Each selected date generates a Markdown report and normalized versioned JSON snapshot named from the snapshot date, not the workflow start date.
+6. Markdown reports are committed only to `analytics-data` using an isolated Git worktree.
+7. JSON snapshots are authenticated and upserted through the Worker into D1; a final completeness check makes unresolved provider gaps visible as a failed workflow run.
+8. `/a/` fetches 7, 14, 30, or 90 snapshots from `GET /api/analytics` and links directly to each provider dashboard.
 
 ### AEDoko community contributions
 
@@ -207,6 +209,12 @@ flowchart LR
 | **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action. | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
 | **A7 · On-demand AED map** | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles. | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action. |
 
+Operational hardening on 2026-09-16 kept A7 unchanged: the existing analytics
+pipeline now retries transient provider responses, reconciles incomplete dates
+across a rolling 30-day window, preserves previously valid provider results,
+and fails visibly when a collected snapshot remains incomplete. This changed
+recovery behavior, not the system boundary or deployment platform.
+
 ### Architecture decisions that remain active
 
 | Decision | Status | Revisit when |
@@ -232,6 +240,7 @@ flowchart LR
 ├── privacy.html / terms.html     # Legal pages
 ├── analytics/
 │   ├── collect.mjs               # Provider collection and normalization
+│   ├── reconcile.mjs             # Rolling gap detection and repair orchestration
 │   ├── import-reports.mjs        # Historical Markdown-to-snapshot converter
 │   ├── preview.mjs               # Local dashboard preview with live public API
 │   ├── test.mjs                  # Collector and importer tests

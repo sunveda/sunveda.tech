@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { addDays, cleanPath, comparisonDates, normalizeSnapshot, renderMarkdown, targetDateFromArgs, utcRangeForTokyoDate, validIsoDate } from "./collect.mjs";
+import { addDays, cleanPath, comparisonDates, fetchJson, normalizeSnapshot, renderMarkdown, targetDateFromArgs, utcRangeForTokyoDate, validIsoDate } from "./collect.mjs";
 import { parseMarkdownReport } from "./import-reports.mjs";
+import { expectedDates, mergeSnapshot, needsRepair } from "./reconcile.mjs";
 
 assert.equal(addDays("2026-01-01", -1), "2025-12-31");
 assert.deepEqual(utcRangeForTokyoDate("2026-08-09"), {
@@ -16,6 +17,19 @@ assert.deepEqual(comparisonDates("2026-08-24"), {
   previousWeek: "2026-08-17",
 });
 assert.equal(cleanPath("/?fbclid=secret#part"), "/");
+assert.deepEqual(expectedDates("2026-09-15", 3), ["2026-09-13", "2026-09-14", "2026-09-15"]);
+
+const originalFetch = globalThis.fetch;
+let fetchAttempts = 0;
+globalThis.fetch = async () => {
+  fetchAttempts += 1;
+  return fetchAttempts === 1
+    ? new Response('{"error":"not found"}', { status: 404, statusText: "Not Found" })
+    : Response.json({ total: 2 });
+};
+assert.deepEqual(await fetchJson("https://example.test", {}, { attempts: 2, delayMs: 0, statuses: [404] }), { total: 2 });
+assert.equal(fetchAttempts, 2);
+globalThis.fetch = originalFetch;
 
 const markdown = renderMarkdown({
   dates: { yesterday: "2026-08-08", previousDay: "2026-08-07", previousWeek: "2026-08-01" },
@@ -43,6 +57,7 @@ const snapshot = normalizeSnapshot({
 assert.equal(snapshot.sources.cloudflare.metrics.cacheHitRatio, 0.2);
 assert.deepEqual(snapshot.sources.ga4.breakdowns.landingPages, [{ label: "/", value: 3 }]);
 assert.equal(snapshot.sources.goatcounter.status, "unavailable");
+assert.equal(needsRepair(snapshot), true);
 
 const zeroDay = normalizeSnapshot({
   generatedAt: "2026-08-26T00:00:00.000Z",
@@ -58,6 +73,14 @@ assert.equal(zeroDay.sources.cloudflare.status, "ok");
 assert.equal(zeroDay.sources.cloudflare.metrics.requests, 0);
 assert.equal(zeroDay.sources.ga4.status, "ok");
 assert.equal(zeroDay.sources.ga4.metrics.sessions, 0);
+
+const merged = mergeSnapshot(snapshot, {
+  ...zeroDay,
+  date: snapshot.date,
+  sources: { ...zeroDay.sources, cloudflare: { status: "unavailable", metrics: {} } },
+});
+assert.equal(merged.sources.cloudflare.status, "ok");
+assert.equal(merged.sources.ga4.status, "ok");
 
 const imported = parseMarkdownReport(`# SunVeda Daily Website Analytics — 2026-08-10
 

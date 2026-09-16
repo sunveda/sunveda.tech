@@ -64,6 +64,10 @@
     .source-list { display: grid; gap: 12px; }
     .source { display: grid; grid-template-columns: 1fr auto; gap: 5px 16px; padding: 14px; border: 1px solid var(--line); border-radius: 13px; }
     .source strong { font-size: 14px; }
+    .source-link { display: inline-flex; align-items: center; gap: 6px; width: fit-content; color: var(--text); text-decoration: none; }
+    .source-link::after { content: "↗"; color: var(--muted); font-size: 12px; transition: transform .16s ease, color .16s ease; }
+    .source-link:hover::after, .source-link:focus-visible::after { color: var(--accent); transform: translate(2px, -2px); }
+    .source-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 3px; }
     .source small { color: var(--muted); }
     .badge { align-self: center; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(131,230,194,.1); }
     .badge.warn { color: var(--amber); background: rgba(241,189,103,.1); }
@@ -133,6 +137,11 @@
     const format = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
     const state = { days: 30, data: null };
     const sourceNames = { cloudflare: "Cloudflare", ga4: "Google Analytics 4", goatcounter: "GoatCounter" };
+    const sourceLinks = {
+      cloudflare: "https://dash.cloudflare.com/",
+      ga4: "https://analytics.google.com/analytics/web/#/p549196538/reports/intelligenthome",
+      goatcounter: "https://sunveda.goatcounter.com/",
+    };
 
     function value(snapshot, source, metric) {
       const item = snapshot?.sources?.[source];
@@ -198,7 +207,7 @@
         const ok = state.data.snapshots.filter(row => row.sources?.[source]?.status === "ok").length;
         const missing = total - ok;
         const latest = latestFor(source);
-        return `<div class="source"><strong>${sourceNames[source]}</strong><span class="badge ${missing ? "warn" : ""}">${missing ? `${missing} gap${missing === 1 ? "" : "s"}` : "Complete"}</span><small>Latest available: ${latest?.date || "none"} · ${ok}/${total} days</small></div>`;
+        return `<div class="source"><strong><a class="source-link" href="${sourceLinks[source]}" target="_blank" rel="noopener noreferrer" aria-label="Open ${sourceNames[source]} analytics in a new tab">${sourceNames[source]}</a></strong><span class="badge ${missing ? "warn" : ""}">${missing ? `${missing} gap${missing === 1 ? "" : "s"}` : "Complete"}</span><small>Latest available: ${latest?.date || "none"} · ${ok}/${total} days</small></div>`;
       }).join("");
     }
     function rankedCard(title, rows, note) {
