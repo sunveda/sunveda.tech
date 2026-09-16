@@ -1,0 +1,45 @@
+name: Multilingual Layout Tests
+
+on:
+  pull_request:
+    paths:
+      - "**/*.html"
+      - "**/*.css"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "tests/layout.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/layout-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "**/*.css"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "tests/layout.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/layout-tests.yml"
+  schedule:
+    # Monday 09:15 JST
+    - cron: "15 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:layout

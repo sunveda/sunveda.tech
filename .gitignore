@@ -11,3 +11,14 @@ service-account*.json
 
 # Cloudflare CLI machine-local state
 .wrangler/
+
+# Browser regression test dependencies and output
+node_modules/
+playwright-report/
+test-results/
+
+# Feedback runtime configuration and local personal data
+feedback/worker/wrangler.jsonc
+.dev.vars
+.dev.vars.*
+.feedback-local/

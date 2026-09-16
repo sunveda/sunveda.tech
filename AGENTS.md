@@ -8,7 +8,8 @@ Instructions for any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) work
 
 - `README.md` — the architecture source of truth: current diagram, deployment map, data flows, security boundaries, and architecture revision history.
 
-- No framework, no bundler, no `package.json`. Plain HTML/CSS/JS.
+- No framework or bundler. The public site is plain HTML/CSS/JS; `package.json`
+  exists only for the Playwright layout regression suite and Node-based tests.
 - `index.html` — the entire site: markup + all CSS in one `<style>` block + inline bootstrap scripts.
 - `i18n.js` — client-side translation dictionary and language-switching logic (loaded via `<script src="i18n.js?v=N" defer>`).
 - `privacy.html`, `terms.html` — small standalone legal pages.
@@ -17,6 +18,8 @@ Instructions for any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) work
 - `a/index.html` — the aggregate analytics dashboard at `/a/`.
 - `analytics/` — zero-dependency Node.js collector, report importer, preview server, tests, and Cloudflare Worker/D1 implementation.
 - `.github/workflows/analytics.yml` — scheduled collection into D1 plus the isolated `analytics-data` archive branch.
+- `.github/workflows/layout-tests.yml` — multilingual responsive layout checks on pull requests, `main`, and a weekly schedule.
+- `tests/layout.mjs` — Playwright checks for clipping, overlap, horizontal overflow, header collisions, and mobile navigation across supported languages and viewports.
 - `CNAME` — GitHub Pages custom domain (`sunveda.tech`). Static deployment is GitHub Pages; Cloudflare handles CDN/DNS and selected Worker routes.
 
 There is no build step. Any change to `index.html`, `i18n.js`, or the HTML pages is live as-is once deployed.
@@ -41,13 +44,23 @@ architecture revision unless they also change one of those boundaries.
 
 ## Running / previewing locally
 
-No dev server or build tooling is configured. Serve the directory with any static file server, e.g.:
+No application build step is configured. Serve the directory with any static file server, e.g.:
 
 ```bash
 python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000/index.html`.
+
+Install and run the automated test suite with:
+
+```bash
+npm ci
+npx playwright install chromium
+npm test
+```
+
+Run only the responsive multilingual checks with `npm run test:layout`.
 
 ## Internationalization (i18n)
 
@@ -119,3 +132,11 @@ A Claude Code skill at `.claude/skills/footer-version/SKILL.md` carries the full
 - Don't forget to bump `i18n.js`'s cache-busting version query param when editing it.
 - Don't merge a PR without updating the `.footer__version` link in `index.html` to the new PR number and commit hash.
 - Don't create a PR without assigning it to `sunveda` (`--assignee sunveda` in `gh pr create`).
+
+## Feedback application
+
+- `feedback/README.md` is the local preview, security, deployment and retention runbook. Read it before changing this application.
+- `feedback/events.mjs` contains versioned reusable event questions; snapshots are stored with each response.
+- `feedback/worker/` is separate from the analytics Worker and database. Never mix guest PII or videos with analytics or public files.
+- Run `npm run test:feedback` for backend changes. Use Node 24. Keep production credentials/configuration untracked.
+- Production provisioning and deployment require explicit authorization. Source implementation does not imply deployed status.

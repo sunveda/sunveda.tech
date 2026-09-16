@@ -1,6 +1,16 @@
 /* Sunveda i18n — client-side translations */
 const locales = {
   "en": {
+    "directory.title": "Site directory",
+    "directory.pages": "Pages & tools",
+    "directory.sections": "On this page",
+    "directory.apps": "All apps",
+    "directory.feedback": "Event feedback",
+    "directory.privacy": "Privacy",
+    "directory.terms": "Service terms",
+    "directory.work": "How I work",
+    "directory.projects": "Projects",
+    "directory.services": "Services",
     "meta.title": "Sarveshwar Singh — Technology & Transformation",
     "meta.description": "Tokyo-based technology consultant and hands-on engineer connecting business goals, customer needs, and technical delivery.",
     "meta.ogTitle": "Sarveshwar Singh — Technology & Transformation",
@@ -167,6 +177,16 @@ const locales = {
     "projects.p4Link": "Visit Samurai Masterpieces ↗"
   },
   "ja": {
+    "directory.title": "サイト案内",
+    "directory.pages": "ページとツール",
+    "directory.sections": "このページのセクション",
+    "directory.apps": "すべてのアプリ",
+    "directory.feedback": "イベントの感想",
+    "directory.privacy": "プライバシー",
+    "directory.terms": "利用規約",
+    "directory.work": "仕事の進め方",
+    "directory.projects": "プロジェクト",
+    "directory.services": "サービス",
     "meta.title": "Sarveshwar Singh — テクノロジー & トランスフォーメーション",
     "meta.description": "東京を拠点に、事業目標、顧客ニーズ、技術デリバリーをつなぐテクノロジーコンサルタント兼エンジニア。",
     "meta.ogTitle": "Sarveshwar Singh — テクノロジー & トランスフォーメーション",
@@ -333,6 +353,16 @@ const locales = {
     "projects.p4Link": "Samurai Masterpiecesを見る ↗"
   },
   "ko": {
+    "directory.title": "사이트 안내",
+    "directory.pages": "페이지 및 도구",
+    "directory.sections": "이 페이지의 섹션",
+    "directory.apps": "모든 앱",
+    "directory.feedback": "행사 후기",
+    "directory.privacy": "개인정보 보호",
+    "directory.terms": "서비스 약관",
+    "directory.work": "업무 방식",
+    "directory.projects": "프로젝트",
+    "directory.services": "서비스",
     "projects.p4Link": "Samurai Masterpieces 방문하기 ↗",
     "projects.p4Contribution": "진출 목표와 기술 우선순위를 연결하고, 팀 내 협업을 조율하며, 실무 기술 지원을 제공했습니다.",
     "projects.myContribution": "제 기여:",
@@ -499,6 +529,16 @@ const locales = {
     "projects.p3Link": "GitHub에서 기여 내역 보기 ↗"
   },
   "zh": {
+    "directory.title": "网站导航",
+    "directory.pages": "页面与工具",
+    "directory.sections": "本页章节",
+    "directory.apps": "所有应用",
+    "directory.feedback": "活动反馈",
+    "directory.privacy": "隐私政策",
+    "directory.terms": "服务条款",
+    "directory.work": "工作方式",
+    "directory.projects": "项目",
+    "directory.services": "服务",
     "projects.p4Link": "访问 Samurai Masterpieces ↗",
     "projects.p4Contribution": "将拓展目标与技术优先事项相连接，协调团队内部工作，并提供实际的技术支持。",
     "projects.myContribution": "我的贡献：",
@@ -665,6 +705,16 @@ const locales = {
     "projects.p3Link": "在 GitHub 上查看贡献 ↗"
   },
   "es": {
+    "directory.title": "Directorio del sitio",
+    "directory.pages": "Páginas y herramientas",
+    "directory.sections": "En esta página",
+    "directory.apps": "Todas las aplicaciones",
+    "directory.feedback": "Opiniones del evento",
+    "directory.privacy": "Privacidad",
+    "directory.terms": "Condiciones del servicio",
+    "directory.work": "Cómo trabajo",
+    "directory.projects": "Proyectos",
+    "directory.services": "Servicios",
     "projects.p4Link": "Visitar Samurai Masterpieces ↗",
     "projects.p4Contribution": "conectando los objetivos de expansión con las prioridades técnicas, coordinando dentro del equipo y aportando soporte técnico práctico.",
     "projects.myContribution": "Mi contribución:",
@@ -831,6 +881,16 @@ const locales = {
     "projects.p3Link": "Ver contribución en GitHub ↗"
   },
   "de": {
+    "directory.title": "Seitenübersicht",
+    "directory.pages": "Seiten und Werkzeuge",
+    "directory.sections": "Auf dieser Seite",
+    "directory.apps": "Alle Apps",
+    "directory.feedback": "Veranstaltungsfeedback",
+    "directory.privacy": "Datenschutz",
+    "directory.terms": "Nutzungsbedingungen",
+    "directory.work": "Meine Arbeitsweise",
+    "directory.projects": "Projekte",
+    "directory.services": "Leistungen",
     "projects.p4Link": "Samurai Masterpieces besuchen ↗",
     "projects.p4Contribution": "Expansionsziele mit technischen Prioritäten verbunden, die Zusammenarbeit im Team koordiniert und praktische technische Unterstützung geleistet.",
     "projects.myContribution": "Mein Beitrag:",
@@ -997,6 +1057,16 @@ const locales = {
     "projects.p3Link": "Beitrag auf GitHub ansehen ↗"
   },
   "fr": {
+    "directory.title": "Plan du site",
+    "directory.pages": "Pages et outils",
+    "directory.sections": "Sur cette page",
+    "directory.apps": "Toutes les applications",
+    "directory.feedback": "Avis sur l’événement",
+    "directory.privacy": "Confidentialité",
+    "directory.terms": "Conditions de service",
+    "directory.work": "Ma façon de travailler",
+    "directory.projects": "Projets",
+    "directory.services": "Services",
     "projects.p4Link": "Visiter Samurai Masterpieces ↗",
     "projects.p4Contribution": "en reliant les objectifs d'expansion aux priorités techniques, en coordonnant au sein de l'équipe et en apportant un soutien technique pratique.",
     "projects.myContribution": "Ma contribution :",
@@ -1163,6 +1233,16 @@ const locales = {
     "projects.p3Link": "Voir la contribution sur GitHub ↗"
   },
   "pt": {
+    "directory.title": "Mapa do site",
+    "directory.pages": "Páginas e ferramentas",
+    "directory.sections": "Nesta página",
+    "directory.apps": "Todos os aplicativos",
+    "directory.feedback": "Avaliação do evento",
+    "directory.privacy": "Privacidade",
+    "directory.terms": "Termos de serviço",
+    "directory.work": "Como trabalho",
+    "directory.projects": "Projetos",
+    "directory.services": "Serviços",
     "projects.p4Link": "Visitar Samurai Masterpieces ↗",
     "projects.p4Contribution": "conectando objetivos de expansão com prioridades técnicas, coordenando dentro da equipe e fornecendo suporte técnico prático.",
     "projects.myContribution": "Minha contribuição:",
@@ -1329,6 +1409,16 @@ const locales = {
     "projects.p3Link": "Ver contribuição no GitHub ↗"
   },
   "ru": {
+    "directory.title": "Карта сайта",
+    "directory.pages": "Страницы и инструменты",
+    "directory.sections": "На этой странице",
+    "directory.apps": "Все приложения",
+    "directory.feedback": "Отзывы о мероприятии",
+    "directory.privacy": "Конфиденциальность",
+    "directory.terms": "Условия обслуживания",
+    "directory.work": "Как я работаю",
+    "directory.projects": "Проекты",
+    "directory.services": "Услуги",
     "projects.p4Link": "Посетить Samurai Masterpieces ↗",
     "projects.p4Contribution": "связывал цели экспансии с техническими приоритетами, координировал работу внутри команды и оказывал практическую техническую поддержку.",
     "projects.myContribution": "Мой вклад:",
@@ -1495,6 +1585,16 @@ const locales = {
     "projects.p3Link": "Посмотреть вклад на GitHub ↗"
   },
   "ar": {
+    "directory.title": "دليل الموقع",
+    "directory.pages": "الصفحات والأدوات",
+    "directory.sections": "في هذه الصفحة",
+    "directory.apps": "جميع التطبيقات",
+    "directory.feedback": "آراء حول الفعالية",
+    "directory.privacy": "الخصوصية",
+    "directory.terms": "شروط الخدمة",
+    "directory.work": "أسلوب عملي",
+    "directory.projects": "المشاريع",
+    "directory.services": "الخدمات",
     "projects.p4Link": "زيارة Samurai Masterpieces ↗",
     "projects.p4Contribution": "ربط أهداف التوسع بالأولويات التقنية، والتنسيق داخل الفريق، وتقديم الدعم التقني العملي.",
     "projects.myContribution": "مساهمتي:",
@@ -1661,6 +1761,16 @@ const locales = {
     "projects.p3Link": "عرض المساهمة على GitHub ↗"
   },
   "hi": {
+    "directory.title": "साइट निर्देशिका",
+    "directory.pages": "पृष्ठ और उपकरण",
+    "directory.sections": "इस पृष्ठ पर",
+    "directory.apps": "सभी ऐप",
+    "directory.feedback": "कार्यक्रम पर प्रतिक्रिया",
+    "directory.privacy": "गोपनीयता",
+    "directory.terms": "सेवा की शर्तें",
+    "directory.work": "मेरे काम करने का तरीका",
+    "directory.projects": "परियोजनाएँ",
+    "directory.services": "सेवाएँ",
     "projects.p4Link": "Samurai Masterpieces पर जाएँ ↗",
     "projects.p4Contribution": "विस्तार लक्ष्यों को तकनीकी प्राथमिकताओं से जोड़ना, टीम के भीतर समन्वय करना, और व्यावहारिक तकनीकी सहयोग प्रदान करना।",
     "projects.myContribution": "मेरा योगदान:",
@@ -1827,6 +1937,16 @@ const locales = {
     "projects.p3Link": "GitHub पर योगदान देखें ↗"
   },
   "it": {
+    "directory.title": "Mappa del sito",
+    "directory.pages": "Pagine e strumenti",
+    "directory.sections": "In questa pagina",
+    "directory.apps": "Tutte le app",
+    "directory.feedback": "Feedback sull’evento",
+    "directory.privacy": "Privacy",
+    "directory.terms": "Termini di servizio",
+    "directory.work": "Come lavoro",
+    "directory.projects": "Progetti",
+    "directory.services": "Servizi",
     "projects.p4Link": "Visita Samurai Masterpieces ↗",
     "projects.p4Contribution": "collegando gli obiettivi di espansione alle priorità tecniche, coordinando all'interno del team e fornendo supporto tecnico pratico.",
     "projects.myContribution": "Il mio contributo:",
@@ -2217,6 +2337,191 @@ Object.entries(askQuestionTranslations).forEach(([lang, value]) => {
   locales[lang]["connect.askQuestion"] = value;
 });
 
+const appsKeys = [
+  "nav.apps",
+  "apps.meta.title", "apps.meta.description", "apps.meta.ogTitle", "apps.meta.ogDescription",
+  "apps.home", "apps.eyebrow", "apps.heading", "apps.intro", "apps.count", "apps.featured",
+  "apps.aedokoMeta", "apps.aedokoBody", "apps.aedokoData", "apps.aedokoPrivacy", "apps.aedokoMap",
+  "apps.open", "apps.source", "apps.principleTitle", "apps.principleBody"
+];
+
+const appsTranslations = {
+  en: [
+    "Apps",
+    "SunVeda Apps — Useful technology for real-world needs",
+    "Explore focused applications built by SunVeda Technologies, starting with AEDoko, a public-good AED finder for Tokyo.",
+    "SunVeda Apps",
+    "Focused applications built for practical, real-world needs.",
+    "Home", "SunVeda Apps", "Useful technology for <em>real-world needs.</em>",
+    "Focused applications built with clear purpose, transparent limits, and practical value. AEDoko is the first public SunVeda app.",
+    "1 app · Live", "Featured application", "Civic technology · Tokyo",
+    "Find nearby AED locations across Tokyo using published municipal data, with coverage and quality notes shown clearly.",
+    "4,700+ published AED locations across Tokyo", "Location calculations stay in your browser",
+    "The full map loads only when you choose to open it", "Open AEDoko", "View source and data notes ↗",
+    "Built for practical use.",
+    "This page will grow as new SunVeda applications become ready for public use. Each app will explain what it does, where its data comes from, and the limits people should understand before relying on it."
+  ],
+  ja: [
+    "アプリ",
+    "SunVeda Apps — 現実の課題に役立つテクノロジー",
+    "東京の公共AED検索アプリ「AEDoko」をはじめ、SunVeda Technologiesが開発する目的に特化したアプリをご紹介します。",
+    "SunVeda Apps",
+    "現実のニーズに応える、実用性を重視したアプリケーション。",
+    "ホーム", "SunVeda Apps", "現実の課題に役立つ<em>テクノロジー。</em>",
+    "明確な目的、透明性のある制約、実用的な価値を大切にしたアプリケーション。AEDokoはSunVeda初の公開アプリです。",
+    "公開中 · 1アプリ", "注目のアプリ", "シビックテック · 東京",
+    "自治体が公開するデータを利用して、東京周辺のAED設置場所を検索できます。カバー範囲と品質情報も明示しています。",
+    "東京の公開AED設置情報 4,700件以上", "位置情報の計算はブラウザ内で完結",
+    "全体マップは利用者が開いたときだけ読み込み", "AEDokoを開く", "ソースとデータ情報を見る ↗",
+    "実用性を第一に。",
+    "このページには、一般公開できる段階になったSunVedaアプリを追加していきます。各アプリについて、機能、データの出典、利用前に理解すべき制約を明確に説明します。"
+  ],
+  ko: [
+    "앱",
+    "SunVeda Apps — 현실의 필요를 위한 유용한 기술",
+    "도쿄의 공익 AED 검색기 AEDoko를 시작으로 SunVeda Technologies가 만든 목적 중심 앱을 살펴보세요.",
+    "SunVeda Apps", "실제 필요에 맞춰 만든 실용적인 애플리케이션.",
+    "홈", "SunVeda Apps", "<em>현실의 필요</em>를 위한 유용한 기술.",
+    "명확한 목적, 투명한 한계, 실용적 가치를 바탕으로 만든 앱입니다. AEDoko는 SunVeda의 첫 공개 앱입니다.",
+    "앱 1개 · 운영 중", "주요 애플리케이션", "시민 기술 · 도쿄",
+    "공개된 지자체 데이터를 사용해 도쿄 전역의 가까운 AED 위치를 찾고 데이터 범위와 품질 안내를 확인하세요.",
+    "도쿄 전역의 공개 AED 위치 4,700곳 이상", "위치 계산은 브라우저 안에서만 처리",
+    "전체 지도는 사용자가 열 때만 로드", "AEDoko 열기", "소스와 데이터 안내 보기 ↗",
+    "실제 사용을 위해 만듭니다.",
+    "공개 사용 준비가 된 새로운 SunVeda 앱이 생기면 이 페이지에 추가합니다. 각 앱의 기능, 데이터 출처, 사용 전에 알아야 할 한계를 명확히 설명합니다."
+  ],
+  zh: [
+    "应用",
+    "SunVeda Apps — 服务现实需求的实用技术",
+    "探索 SunVeda Technologies 打造的专注型应用，首个应用是面向东京公共服务的 AEDoko AED 查找器。",
+    "SunVeda Apps", "为现实需求打造的实用型应用。",
+    "首页", "SunVeda Apps", "服务<em>现实需求</em>的实用技术。",
+    "以明确目标、透明限制和实用价值打造的应用。AEDoko 是 SunVeda 首个公开应用。",
+    "1 个应用 · 已上线", "精选应用", "公民科技 · 东京",
+    "使用政府公开数据查找东京附近的 AED 位置，并清楚查看覆盖范围和数据质量说明。",
+    "东京 4,700 多个已公开 AED 位置", "位置计算仅在浏览器内进行",
+    "完整地图仅在你主动打开时加载", "打开 AEDoko", "查看源码和数据说明 ↗",
+    "为实际使用而构建。",
+    "当新的 SunVeda 应用达到公开使用标准后，我们会把它们加入此页面。每个应用都会说明功能、数据来源以及使用前应了解的限制。"
+  ],
+  es: [
+    "Aplicaciones",
+    "SunVeda Apps — Tecnología útil para necesidades reales",
+    "Descubre aplicaciones específicas creadas por SunVeda Technologies, empezando por AEDoko, un buscador de DEA de utilidad pública para Tokio.",
+    "SunVeda Apps", "Aplicaciones enfocadas en necesidades prácticas del mundo real.",
+    "Inicio", "SunVeda Apps", "Tecnología útil para <em>necesidades reales.</em>",
+    "Aplicaciones creadas con un propósito claro, límites transparentes y valor práctico. AEDoko es la primera aplicación pública de SunVeda.",
+    "1 aplicación · Activa", "Aplicación destacada", "Tecnología cívica · Tokio",
+    "Encuentra DEA cercanos en Tokio mediante datos municipales publicados, con información clara sobre cobertura y calidad.",
+    "Más de 4.700 ubicaciones de DEA publicadas en Tokio", "Los cálculos de ubicación permanecen en tu navegador",
+    "El mapa completo solo se carga cuando decides abrirlo", "Abrir AEDoko", "Ver código y notas de datos ↗",
+    "Creado para un uso práctico.",
+    "Esta página crecerá a medida que nuevas aplicaciones de SunVeda estén listas para uso público. Cada aplicación explicará qué hace, de dónde proceden sus datos y qué límites debes conocer antes de utilizarla."
+  ],
+  de: [
+    "Apps",
+    "SunVeda Apps — Nützliche Technologie für reale Bedürfnisse",
+    "Entdecken Sie fokussierte Anwendungen von SunVeda Technologies, beginnend mit AEDoko, einem gemeinnützigen AED-Finder für Tokio.",
+    "SunVeda Apps", "Fokussierte Anwendungen für praktische Anforderungen im Alltag.",
+    "Startseite", "SunVeda Apps", "Nützliche Technologie für <em>reale Bedürfnisse.</em>",
+    "Anwendungen mit klarem Zweck, transparenten Grenzen und praktischem Nutzen. AEDoko ist die erste öffentliche SunVeda-App.",
+    "1 App · Live", "Ausgewählte Anwendung", "Civic Tech · Tokio",
+    "Finden Sie AED-Standorte in Tokio anhand veröffentlichter kommunaler Daten mit klaren Angaben zu Abdeckung und Datenqualität.",
+    "Über 4.700 veröffentlichte AED-Standorte in Tokio", "Standortberechnungen bleiben in Ihrem Browser",
+    "Die vollständige Karte lädt nur auf Ihren Wunsch", "AEDoko öffnen", "Quellcode und Datenhinweise ansehen ↗",
+    "Für den praktischen Einsatz gebaut.",
+    "Diese Seite wächst, sobald weitere SunVeda-Anwendungen für die öffentliche Nutzung bereit sind. Jede App erklärt ihre Funktion, ihre Datenquellen und die Grenzen, die vor der Nutzung zu beachten sind."
+  ],
+  fr: [
+    "Applications",
+    "SunVeda Apps — Une technologie utile pour des besoins réels",
+    "Découvrez les applications ciblées de SunVeda Technologies, à commencer par AEDoko, un outil d'intérêt public pour trouver des DAE à Tokyo.",
+    "SunVeda Apps", "Des applications ciblées pour des besoins pratiques et concrets.",
+    "Accueil", "SunVeda Apps", "Une technologie utile pour des <em>besoins réels.</em>",
+    "Des applications conçues avec un objectif clair, des limites transparentes et une valeur pratique. AEDoko est la première application publique de SunVeda.",
+    "1 application · En ligne", "Application à la une", "Technologie civique · Tokyo",
+    "Trouvez les DAE à proximité dans Tokyo grâce aux données municipales publiées, avec des informations claires sur la couverture et la qualité.",
+    "Plus de 4 700 emplacements de DAE publiés à Tokyo", "Les calculs de localisation restent dans votre navigateur",
+    "La carte complète se charge uniquement à votre demande", "Ouvrir AEDoko", "Voir le code source et les notes sur les données ↗",
+    "Conçu pour un usage concret.",
+    "Cette page s'enrichira à mesure que de nouvelles applications SunVeda seront prêtes pour le public. Chacune expliquera son rôle, la provenance de ses données et les limites à comprendre avant de l'utiliser."
+  ],
+  pt: [
+    "Aplicações",
+    "SunVeda Apps — Tecnologia útil para necessidades reais",
+    "Explore aplicações focadas criadas pela SunVeda Technologies, começando pelo AEDoko, um localizador de DEA de utilidade pública para Tóquio.",
+    "SunVeda Apps", "Aplicações focadas em necessidades práticas do mundo real.",
+    "Início", "SunVeda Apps", "Tecnologia útil para <em>necessidades reais.</em>",
+    "Aplicações criadas com propósito claro, limites transparentes e valor prático. O AEDoko é a primeira aplicação pública da SunVeda.",
+    "1 aplicação · No ar", "Aplicação em destaque", "Tecnologia cívica · Tóquio",
+    "Encontre DEAs próximos em Tóquio usando dados municipais publicados, com informações claras sobre cobertura e qualidade.",
+    "Mais de 4.700 locais de DEA publicados em Tóquio", "Os cálculos de localização permanecem no seu navegador",
+    "O mapa completo só carrega quando você decide abri-lo", "Abrir AEDoko", "Ver código-fonte e notas dos dados ↗",
+    "Criado para uso prático.",
+    "Esta página crescerá quando novas aplicações SunVeda estiverem prontas para uso público. Cada aplicação explicará o que faz, a origem dos dados e os limites que devem ser compreendidos antes do uso."
+  ],
+  ru: [
+    "Приложения",
+    "SunVeda Apps — Полезные технологии для реальных задач",
+    "Изучите специализированные приложения SunVeda Technologies, начиная с AEDoko — общественно полезного сервиса поиска AED в Токио.",
+    "SunVeda Apps", "Специализированные приложения для практических задач реального мира.",
+    "Главная", "SunVeda Apps", "Полезные технологии для <em>реальных задач.</em>",
+    "Приложения с ясной целью, прозрачными ограничениями и практической ценностью. AEDoko — первое публичное приложение SunVeda.",
+    "1 приложение · Работает", "Главное приложение", "Гражданские технологии · Токио",
+    "Находите ближайшие AED в Токио по опубликованным муниципальным данным с понятными сведениями об охвате и качестве.",
+    "Более 4 700 опубликованных точек AED в Токио", "Расчёты местоположения выполняются в вашем браузере",
+    "Полная карта загружается только по вашему выбору", "Открыть AEDoko", "Исходный код и сведения о данных ↗",
+    "Создано для практического использования.",
+    "Эта страница будет пополняться по мере готовности новых приложений SunVeda к публичному использованию. Для каждого приложения будут указаны назначение, источники данных и ограничения, которые важно понимать до начала работы."
+  ],
+  ar: [
+    "التطبيقات",
+    "تطبيقات SunVeda — تقنية مفيدة لاحتياجات واقعية",
+    "استكشف تطبيقات مركزة طورتها SunVeda Technologies، بدءًا من AEDoko، أداة ذات منفعة عامة للعثور على أجهزة AED في طوكيو.",
+    "تطبيقات SunVeda", "تطبيقات مركزة صُممت لتلبية احتياجات عملية في العالم الحقيقي.",
+    "الرئيسية", "تطبيقات SunVeda", "تقنية مفيدة <em>لاحتياجات واقعية.</em>",
+    "تطبيقات ذات هدف واضح وحدود شفافة وقيمة عملية. AEDoko هو أول تطبيق عام من SunVeda.",
+    "تطبيق واحد · متاح", "التطبيق المميز", "تقنية مدنية · طوكيو",
+    "اعثر على مواقع AED القريبة في طوكيو باستخدام بيانات بلدية منشورة، مع توضيح التغطية وجودة البيانات.",
+    "أكثر من 4,700 موقع AED منشور في طوكيو", "تبقى حسابات الموقع داخل متصفحك",
+    "لا تُحمّل الخريطة الكاملة إلا عندما تختار فتحها", "افتح AEDoko", "عرض المصدر وملاحظات البيانات ↗",
+    "مصمم للاستخدام العملي.",
+    "ستنمو هذه الصفحة عندما تصبح تطبيقات SunVeda الجديدة جاهزة للاستخدام العام. سيشرح كل تطبيق وظيفته ومصادر بياناته والحدود التي ينبغي فهمها قبل الاعتماد عليه."
+  ],
+  hi: [
+    "ऐप्स",
+    "SunVeda Apps — वास्तविक जरूरतों के लिए उपयोगी तकनीक",
+    "SunVeda Technologies द्वारा बनाए गए केंद्रित ऐप्स देखें, जिसकी शुरुआत टोक्यो के जनहित AED खोजक AEDoko से होती है।",
+    "SunVeda Apps", "वास्तविक और व्यावहारिक जरूरतों के लिए बनाए गए केंद्रित अनुप्रयोग।",
+    "होम", "SunVeda Apps", "<em>वास्तविक जरूरतों</em> के लिए उपयोगी तकनीक।",
+    "स्पष्ट उद्देश्य, पारदर्शी सीमाओं और व्यावहारिक मूल्य के साथ बनाए गए ऐप्स। AEDoko SunVeda का पहला सार्वजनिक ऐप है।",
+    "1 ऐप · लाइव", "विशेष ऐप", "नागरिक तकनीक · टोक्यो",
+    "प्रकाशित नगरपालिका डेटा का उपयोग करके टोक्यो में नजदीकी AED स्थान खोजें, साथ में कवरेज और गुणवत्ता की स्पष्ट जानकारी देखें।",
+    "टोक्यो में 4,700 से अधिक प्रकाशित AED स्थान", "स्थान की गणना आपके ब्राउज़र में ही रहती है",
+    "पूरा मानचित्र तभी लोड होता है जब आप उसे खोलते हैं", "AEDoko खोलें", "स्रोत और डेटा नोट्स देखें ↗",
+    "व्यावहारिक उपयोग के लिए निर्मित।",
+    "जब नए SunVeda ऐप सार्वजनिक उपयोग के लिए तैयार होंगे, यह पेज बढ़ता जाएगा। हर ऐप बताएगा कि वह क्या करता है, उसका डेटा कहाँ से आता है और उपयोग से पहले किन सीमाओं को समझना जरूरी है।"
+  ],
+  it: [
+    "Applicazioni",
+    "SunVeda Apps — Tecnologia utile per esigenze reali",
+    "Scopri le applicazioni mirate create da SunVeda Technologies, a partire da AEDoko, un servizio di pubblica utilità per trovare DAE a Tokyo.",
+    "SunVeda Apps", "Applicazioni mirate per esigenze pratiche del mondo reale.",
+    "Home", "SunVeda Apps", "Tecnologia utile per <em>esigenze reali.</em>",
+    "Applicazioni create con uno scopo chiaro, limiti trasparenti e valore pratico. AEDoko è la prima applicazione pubblica di SunVeda.",
+    "1 applicazione · Online", "Applicazione in evidenza", "Tecnologia civica · Tokyo",
+    "Trova i DAE nelle vicinanze a Tokyo usando dati comunali pubblicati, con informazioni chiare su copertura e qualità.",
+    "Oltre 4.700 posizioni DAE pubblicate a Tokyo", "I calcoli della posizione restano nel tuo browser",
+    "La mappa completa viene caricata solo quando scegli di aprirla", "Apri AEDoko", "Vedi sorgente e note sui dati ↗",
+    "Creato per un uso pratico.",
+    "Questa pagina crescerà quando nuove applicazioni SunVeda saranno pronte per l'uso pubblico. Ogni applicazione spiegherà cosa fa, da dove provengono i dati e quali limiti comprendere prima di utilizzarla."
+  ]
+};
+
+Object.entries(appsTranslations).forEach(([lang, values]) => {
+  appsKeys.forEach((key, index) => { locales[lang][key] = values[index]; });
+});
+
 const menuTranslations = {
   en: "Menu", ja: "メニュー", ko: "메뉴", zh: "菜单",
   es: "Menú", de: "Menü", fr: "Menu",
@@ -2274,15 +2579,18 @@ function applyLang(lang) {
     if (dict[key] != null) el.innerHTML = dict[key];
   });
 
-  // Metadata
-  if (dict["meta.title"]) document.title = dict["meta.title"];
+  // Metadata (individual pages can set a translated metadata prefix on <html>)
+  const metaPrefix = document.documentElement.dataset.i18nMetaPrefix || "meta";
+  if (dict[metaPrefix + ".title"]) document.title = dict[metaPrefix + ".title"];
   const setMeta = (sel, attr, key) => {
     const el = document.querySelector(sel);
     if (el && dict[key] != null) el.setAttribute(attr, dict[key]);
   };
-  setMeta('meta[name="description"]', "content", "meta.description");
-  setMeta('meta[property="og:title"]', "content", "meta.ogTitle");
-  setMeta('meta[property="og:description"]', "content", "meta.ogDescription");
+  setMeta('meta[name="description"]', "content", metaPrefix + ".description");
+  setMeta('meta[property="og:title"]', "content", metaPrefix + ".ogTitle");
+  setMeta('meta[property="og:description"]', "content", metaPrefix + ".ogDescription");
+  setMeta('meta[name="twitter:title"]', "content", metaPrefix + ".ogTitle");
+  setMeta('meta[name="twitter:description"]', "content", metaPrefix + ".ogDescription");
 
   // Update theme toggle aria-label for current language
   const themeBtn = document.querySelector("[data-theme-toggle]");

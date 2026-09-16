@@ -1,0 +1,62 @@
+/* Multilingual layout safety for the deployed AEDoko bundle. */
+.emergency-strip h1,
+.finder h2,
+.community-copy h2,
+.map-panel__header h2,
+.state-panel h2,
+.result-heading h2,
+.coverage-head h2,
+.safety-notice h2 {
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.primary-card h3,
+.candidate-card h4,
+.aed-map-popup h3 {
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  flex-wrap: wrap;
+}
+
+footer > p {
+  flex: 1 1 24rem;
+  min-width: 0;
+}
+
+.footer-actions {
+  flex-wrap: wrap;
+}
+
+html:lang(ja) :is(.emergency-strip h1, .finder h2, .community-copy h2, .state-panel h2, .result-heading h2, .safety-notice h2),
+html:lang(zh) :is(.emergency-strip h1, .finder h2, .community-copy h2, .state-panel h2, .result-heading h2, .safety-notice h2),
+html:lang(ko) :is(.emergency-strip h1, .finder h2, .community-copy h2, .state-panel h2, .result-heading h2, .safety-notice h2),
+html:lang(ne) :is(.emergency-strip h1, .finder h2, .community-copy h2, .state-panel h2, .result-heading h2, .safety-notice h2),
+html:lang(th) :is(.emergency-strip h1, .finder h2, .community-copy h2, .state-panel h2, .result-heading h2, .safety-notice h2),
+html:lang(hi) :is(.emergency-strip h1, .finder h2, .community-copy h2, .state-panel h2, .result-heading h2, .safety-notice h2) {
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+@media (max-width: 620px) {
+  .emergency-strip h1,
+  .finder h2,
+  .community-copy h2,
+  .result-heading h2,
+  .safety-notice h2 {
+    line-height: 1.18;
+  }
+
+  .emergency-strip {
+    align-items: start;
+  }
+
+  .call-button {
+    align-self: center;
+  }
+}

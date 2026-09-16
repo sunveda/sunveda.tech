@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../node_modules/wrangler/config-schema.json",
+  "name": "sunveda-feedback",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-07-30",
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "sunveda.tech/api/feedback/*", "zone_name": "sunveda.tech" },
+  ],
+  "vars": {
+    "PUBLIC_ORIGIN": "https://sunveda.tech",
+    "VIDEO_ENABLED": "false",
+    "MAX_VIDEO_STORAGE_BYTES": "8000000000",
+    "MAX_RESPONSES": "1000",
+    "TURNSTILE_SITE_KEY": "REPLACE_WITH_SITE_KEY",
+  },
+  "d1_databases": [
+    {
+      "binding": "FEEDBACK_DB",
+      "database_name": "sunveda-feedback",
+      "database_id": "REPLACE_WITH_DATABASE_ID",
+      "migrations_dir": "migrations",
+    },
+  ],
+  "r2_buckets": [
+    { "binding": "FEEDBACK_VIDEOS", "bucket_name": "sunveda-feedback-private" },
+  ],
+  "triggers": { "crons": ["15 * * * *"] },
+}
