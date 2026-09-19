@@ -6,7 +6,12 @@ Instructions for any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) work
 
 `sunveda.tech` — Sarveshwar Singh's personal/consulting site (SunVeda Technologies). The public site is statically hosted, with a small Cloudflare Worker and D1 analytics data plane.
 
-- `README.md` — the architecture source of truth: current diagram, deployment map, data flows, security boundaries, and architecture revision history.
+## Read first
+
+1. [`docs/CONTEXT.md`](docs/CONTEXT.md) — agent handoff, read before anything else
+2. [`docs/SPEC.md`](docs/SPEC.md) — living requirements, shipped/in-flight/planned status
+3. [`docs/architecture.md`](docs/architecture.md) — the architecture source of truth: current diagram, deployment map, data flows, security boundaries, and architecture revision history
+4. [House docs strategy](https://github.com/sunveda/data/blob/main/house/DOCS_STRATEGY.md) — rules shared by every SunVeda repo
 
 - No framework or bundler. The public site is plain HTML/CSS/JS; `package.json`
   exists only for the Playwright layout regression suite and Node-based tests.
@@ -26,7 +31,7 @@ There is no build step. Any change to `index.html`, `i18n.js`, or the HTML pages
 
 ## Architecture documentation
 
-> **MANDATORY — keep `README.md` synchronized with architecture changes.**
+> **MANDATORY — keep `docs/architecture.md` synchronized with architecture changes.**
 
 When a change adds, removes, replaces, or materially alters any hosting
 platform, runtime service, public route, API, database/storage layer, scheduled
@@ -83,6 +88,16 @@ Run only the responsive multilingual checks with `npm run test:layout`.
 
 - Icons: [Lucide](https://lucide.dev) via `<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js">`, rendered as `<i data-lucide="...">` and initialized in JS. Don't introduce a second icon library.
 - Logos in the "Selected work" / stack sections are pre-cropped PNGs sized/cropped to match each other (see git history — logos have been re-cropped multiple times for visual consistency). Match existing crop/aspect ratio when adding a new one, and bust the cache by renaming (e.g. `-v2`, `-v3`) if replacing an existing file, since this site is likely fronted by a CDN cache.
+
+## AI agents used on this project
+
+| Agent/tool | Used for | Notes |
+| --- | --- | --- |
+| Claude Code | Feature PRs, docs/architecture sync, PR CI/review babysitting | Branch pattern `agent/<short-description>` or `claude/<session-id>`; PRs assigned to `sunveda`; runs the `footer-version` skill on every PR |
+
+Other SunVeda repos also show `codex/*`-style branch names; any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) is welcome here under the same conventions — add a row above once one has actually worked on this repo.
+
+Keep this table in sync with the "AI agents in use" row in `docs/CONTEXT.md`'s Must-not-lose table.
 
 ## Conventions from git history worth knowing
 
