@@ -39,6 +39,11 @@ flowchart TB
     feedback[Guest form + private host dashboard<br/>/feedback/ · /feedback/admin/]
   end
 
+  repo[sunveda/sunveda.tech<br/>main branch]
+  vercelPreview[Vercel static deployment<br/>sunvedatech.vercel.app<br/>not the live domain]
+  repo -->|Production static files| static
+  repo -->|Git-connected static preview| vercelPreview
+
   subgraph appsource[Application source]
     aedrepo[sunveda/aedoko<br/>React + static AED snapshot]
     aedbuild[Versioned static bundle]
@@ -134,6 +139,7 @@ flowchart TB
 | Human-readable archive           | Markdown reports                                                                          | Orphan-style `analytics-data` Git branch                                            | `analytics/reports/YYYY-MM-DD.md` on that branch                                                                   |
 | Legal and event pages            | Plain HTML                                                                                | GitHub Pages from `main`                                                            | `privacy.html`, `terms.html`, `rsvp/index.html`                                                                    |
 | Domain and CDN                   | `CNAME` plus Cloudflare DNS/CDN                                                           | Cloudflare in front of GitHub Pages                                                 | `CNAME` and Cloudflare configuration                                                                               |
+| Vercel migration preview         | Zero-build static deployment, Git-connected to `main`                                     | [sunvedatech.vercel.app](https://sunvedatech.vercel.app/) (not the live domain)      | [`sunveda.tech` Vercel project](https://vercel.com/sun-veda-technologies/sunveda.tech), `vercel.json`               |
 
 ### Birthday event page context
 
@@ -172,6 +178,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 5. AEDoko runs entirely in the browser from a versioned static bundle. Its location calculations and AED snapshot reads do not require a SunVeda server API.
 6. The initial AEDoko route does not request the map bundle, AED snapshot, or map tiles. Those resources load only after the visitor selects **View all AEDs on map**.
 7. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
+8. Vercel also deploys `main` to a separate static hostname during migration. Cloudflare does not front this hostname, so Worker-backed `/api/analytics*`, `/api/feedback/*`, and `/analyse` are unavailable there. The live domain and Worker paths stay on the GitHub Pages/Cloudflare route until the DNS cutover is verified.
 
 ### AEDoko interactive map
 
@@ -224,6 +231,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 - The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
 - Layout checks use only repository files on a loopback server, require read-only repository access, and receive no production credentials or visitor data.
+- The Vercel migration hostname serves public static files only. It has no Cloudflare Worker routing, D1/R2 binding, or analytics/feedback secret; do not use it to test Worker-backed flows or submit private feedback.
 - Guest contact details live only in a dedicated feedback D1 database; videos live in private R2 and stream through authenticated Worker endpoints. Feedback data must never flow into analytics, public Pages files, or GitHub context. See [feedback setup, data flows, API and retention runbook](../feedback/README.md).
 
 ## Architecture evolution
@@ -273,6 +281,7 @@ flowchart LR
 | **2026-09-11** | Added the translated `#site-directory` homepage section linking to every public visitor page.               | No revision increment: a human-readable navigation aid; no change to the XML sitemap, existing `noindex` settings, or a runtime/deployment boundary.             |
 | **2026-09-11** | Production verification of A8: the feedback Worker, route, Turnstile, secrets, APAC D1 database, and private APAC R2 bucket were deployed and verified live. The API advertised video as enabled, the hourly cleanup trigger was active, and a generated MP4 completed a byte-identical R2 upload/download round trip before deletion; the bucket and database were returned to zero test data. Existing RSVP cancellation hosting and the separately merged timeline PR #50 were unaffected. | No revision increment: confirms A8 as deployed, does not change the boundary. |
 | **2026-09-19** | Moved this architecture documentation from `README.md` into `docs/architecture.md` per the house docs strategy in [`sunveda/data`](https://github.com/sunveda/data/blob/main/house/DOCS_STRATEGY.md); added `docs/CONTEXT.md` and `docs/SPEC.md`. | No revision increment: documentation reorganization only — no hosting, runtime, route, API, storage, or security boundary changed. |
+| **2026-10-01** | Added a Git-connected Vercel static deployment of `main` at `sunvedatech.vercel.app` to validate the planned migration without changing production DNS. | No revision increment yet: `sunveda.tech` and its Cloudflare Worker routes remain on the A8 GitHub Pages path. Record A9 after the production cutover is verified. |
 
 Operational hardening on 2026-09-16 kept A8 unchanged: the existing analytics
 pipeline now retries transient provider responses, reconciles incomplete dates
