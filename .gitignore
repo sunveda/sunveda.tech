@@ -12,6 +12,9 @@ service-account*.json
 # Cloudflare CLI machine-local state
 .wrangler/
 
+# Vercel CLI machine-local project link (org/project IDs)
+.vercel/
+
 # Browser regression test dependencies and output
 node_modules/
 playwright-report/

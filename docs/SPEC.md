@@ -39,6 +39,7 @@ shipped/in-flight/planned status changes.
 | Event feedback video upload | shipped | Up to 8 minutes / 250 MB, Worker-mediated multipart upload to private APAC R2, signed capabilities, byte reservations, hourly cleanup of unfinished uploads |
 | Feedback video retention period | in-flight | Decision pending — see acceptance criteria below |
 | Feedback video phone-compatibility validation | in-flight | Only a generated MP4 round-trip has been verified; no real phone-recorded MP4/MOV sample tested yet |
+| Migrate main-site hosting from GitHub Pages to Vercel | in-flight | Repo prepped (`vercel.json`, `.gitignore`); Vercel project/domain/DNS cutover is a manual dashboard step outside agent access — see acceptance criteria below and `CONTEXT.md` blockers |
 
 ## Acceptance criteria (current milestone)
 
@@ -47,6 +48,15 @@ Closing out A8 (private event feedback):
 - [ ] Decide and document the feedback video retention period.
 - [ ] Run a real phone-recorded MP4/MOV sample through the upload pipeline and confirm it plays back correctly.
 
+Vercel hosting migration (see `CONTEXT.md` blockers for the full runbook):
+
+- [ ] Import `sunveda/sunveda.tech` as a Vercel project (Framework preset "Other", no build/install command — `vercel.json` already sets this).
+- [ ] Add `sunveda.tech` (and `www.sunveda.tech` if used) as a domain on the Vercel project.
+- [ ] Update the Cloudflare DNS record for `sunveda.tech` to point at Vercel instead of GitHub Pages, keeping it **proxied** (orange-cloud) so the existing `sunveda-analytics-api` and feedback Worker routes keep intercepting `/api/analytics*`, `/analyse*`, and `/api/feedback/*` unchanged.
+- [ ] Verify every route (site, `/a/`, `/app/`, `/app/aedoko/`, `/feedback/`, `/privacy.html`, `/terms.html`, `/rsvp/`) on the live domain once cut over.
+- [ ] Only once Vercel is confirmed serving production traffic: disable GitHub Pages in repo Settings → Pages and remove the now-vestigial `CNAME` file, then record this as architecture revision A9 in `architecture.md`.
+
 ## Spec changelog
 
 - **2026-09-19** — Initial SPEC created from the existing `README.md`/`AGENTS.md` content as part of applying the house docs strategy from [`sunveda/data`](https://github.com/sunveda/data). No requirements changed — this captures what was already shipped/in-flight.
+- **2026-09-30** — Added the Vercel hosting migration as an in-flight requirement, now that the Pro plan is available. GitHub Pages remains the live host until the manual Vercel/DNS cutover is completed and verified.
