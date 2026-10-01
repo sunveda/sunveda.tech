@@ -163,11 +163,22 @@ async function auditLayout(page, scenario) {
     if (route === "/app/aedoko/") addHeaderPair(".brand", ".language-button");
     if (route === "/a/") addHeaderPair(".brand", ".back");
 
+    const homepagePaint = route === "/" ? {
+      experienceSummary: document.querySelector('[data-i18n="hero.sub"]')?.textContent ?? "",
+      experienceValue: document.querySelector('[data-i18n="hero.statExpValue"]')?.textContent ?? "",
+      hiddenReveals: [...document.querySelectorAll(".reveal")]
+        .filter(element => Number.parseFloat(getComputedStyle(element).opacity) < 1).length,
+      galleryMinHeight: Number.parseFloat(getComputedStyle(document.querySelector(".gallery__frame")).minHeight),
+      perpetualAnimations: [".nav__meeting", ".hero__eyebrow-dot", ".connect__open-action"]
+        .filter(selector => getComputedStyle(document.querySelector(selector)).animationName !== "none"),
+    } : null;
+
     return {
       actualLanguage: document.documentElement.lang,
       clipped,
       documentOverflow: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
       headerPairs,
+      homepagePaint,
       language,
       lineCollisions,
       route,
@@ -182,6 +193,15 @@ async function auditLayout(page, scenario) {
   if (result.headerPairs.length) problems.push(`header collisions: ${JSON.stringify(result.headerPairs)}`);
   if (result.actualLanguage !== expectedDocumentLanguage(scenario.language)) {
     problems.push(`document language is ${result.actualLanguage || "missing"}`);
+  }
+  if (result.homepagePaint) {
+    const paint = result.homepagePaint;
+    if (!paint.experienceSummary.includes("16") || !paint.experienceValue.includes("16")) {
+      problems.push("experience copy does not say 16+ years");
+    }
+    if (paint.hiddenReveals) problems.push(`${paint.hiddenReveals} sections are hidden until scroll`);
+    if (paint.galleryMinHeight < 768) problems.push(`gallery reserves only ${paint.galleryMinHeight}px before loading`);
+    if (paint.perpetualAnimations.length) problems.push(`perpetual animations: ${paint.perpetualAnimations.join(", ")}`);
   }
   return problems;
 }
