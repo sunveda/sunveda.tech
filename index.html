@@ -63,7 +63,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="i18n.js?v=27" defer></script>
+  <script src="i18n.js?v=28" defer></script>
   <style>
     /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -580,7 +580,10 @@
 
     /* GALLERY */
     .gallery__intro { max-width: 60ch; }
-    .gallery__frame { width: 100%; min-height: 48rem; }
+    .gallery__frame { width: 100%; }
+    .gallery__frame--loading { min-height: 48rem; }
+    .gallery__fallback { display: none; color: var(--color-primary); font-size: var(--text-sm); }
+    .gallery__frame--failed .gallery__fallback { display: inline-block; }
     #curator-feed-default-feed-layout { width: 100%; }
 
     /* STACK SECTION */
@@ -1379,8 +1382,9 @@
           <h2 class="section-heading" id="gallery-heading" data-i18n="gallery.heading">Moments worth sharing</h2>
           <p class="projects__intro gallery__intro" data-i18n="gallery.intro">A few glimpses from Instagram — community meetups and moments along the way.</p>
         </div>
-        <div class="gallery__frame reveal">
+        <div class="gallery__frame gallery__frame--loading reveal">
           <div id="curator-feed-default-feed-layout"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
+          <a class="gallery__fallback" href="https://www.instagram.com/sunvedatech" target="_blank" rel="noopener noreferrer" data-i18n="gallery.fallback">View moments on Instagram ↗</a>
         </div>
     </section>
 
@@ -1532,12 +1536,45 @@
     </div>
   </footer>
 
-  <script type="text/javascript">
-    /* curator-feed-default-feed-layout */
+  <script>
+    // Reserve gallery space only while the third-party feed is loading.
     (function(){
-      var i,e,d=document,s="script";i=d.createElement("script");i.async=1;i.charset="UTF-8";
-      i.src="https://cdn.curator.io/published/911c92a2-9b21-4826-8bc9-522aa752556e.js";
-      e=d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+      const frame = document.querySelector('.gallery__frame');
+      const feed = document.getElementById('curator-feed-default-feed-layout');
+      if (!frame || !feed) return;
+
+      let timeout;
+      const observer = new MutationObserver(function() {
+        if (!feed.querySelector('.crt-feed-scroll .crt-feed')) return;
+        clearTimeout(timeout);
+        frame.classList.remove('gallery__frame--loading', 'gallery__frame--failed');
+        observer.disconnect();
+        visibilityObserver.disconnect();
+      });
+      observer.observe(feed, { childList: true, subtree: true });
+
+      const visibilityObserver = new IntersectionObserver(function(entries) {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        visibilityObserver.disconnect();
+        timeout = setTimeout(function() {
+          frame.classList.remove('gallery__frame--loading');
+          frame.classList.add('gallery__frame--failed');
+        }, 8000);
+      }, { rootMargin: '300px' });
+      visibilityObserver.observe(frame);
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.charset = 'UTF-8';
+      script.onerror = function() {
+        clearTimeout(timeout);
+        frame.classList.remove('gallery__frame--loading');
+        frame.classList.add('gallery__frame--failed');
+        observer.disconnect();
+        visibilityObserver.disconnect();
+      };
+      script.src = 'https://cdn.curator.io/published/911c92a2-9b21-4826-8bc9-522aa752556e.js';
+      document.head.appendChild(script);
     })();
   </script>
   <script>

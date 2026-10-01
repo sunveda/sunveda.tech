@@ -168,6 +168,7 @@ async function auditLayout(page, scenario) {
       experienceValue: document.querySelector('[data-i18n="hero.statExpValue"]')?.textContent ?? "",
       hiddenReveals: [...document.querySelectorAll(".reveal")]
         .filter(element => Number.parseFloat(getComputedStyle(element).opacity) < 1).length,
+      galleryLoading: document.querySelector(".gallery__frame").classList.contains("gallery__frame--loading"),
       galleryMinHeight: Number.parseFloat(getComputedStyle(document.querySelector(".gallery__frame")).minHeight),
       perpetualAnimations: [".nav__meeting", ".hero__eyebrow-dot", ".connect__open-action"]
         .filter(selector => getComputedStyle(document.querySelector(selector)).animationName !== "none"),
@@ -200,7 +201,9 @@ async function auditLayout(page, scenario) {
       problems.push("experience copy does not say 16+ years");
     }
     if (paint.hiddenReveals) problems.push(`${paint.hiddenReveals} sections are hidden until scroll`);
-    if (paint.galleryMinHeight < 768) problems.push(`gallery reserves only ${paint.galleryMinHeight}px before loading`);
+    if (paint.galleryLoading && paint.galleryMinHeight < 768) {
+      problems.push(`gallery reserves only ${paint.galleryMinHeight}px while loading`);
+    }
     if (paint.perpetualAnimations.length) problems.push(`perpetual animations: ${paint.perpetualAnimations.join(", ")}`);
   }
   return problems;
@@ -313,14 +316,38 @@ async function runViewport(browser, origin, viewport) {
   return { checks: scenarios.length, failures };
 }
 
+async function checkGalleryFailure(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  await page.route(/cdn\.curator\.io\/published\//, route => route.abort());
+  try {
+    await page.goto(`${origin}/#gallery`, { waitUntil: "load", timeout: 30_000 });
+    await page.waitForFunction(() => document.querySelector(".gallery__frame--failed"), { timeout: 5_000 });
+    return await page.evaluate(() => {
+      const frame = document.querySelector(".gallery__frame");
+      const fallback = frame.querySelector(".gallery__fallback");
+      const problems = [];
+      if (frame.getBoundingClientRect().height >= 768) problems.push("failed gallery still reserves its loading height");
+      if (getComputedStyle(fallback).display === "none") problems.push("gallery fallback link is hidden after feed failure");
+      return problems;
+    });
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  } finally {
+    await context.close();
+  }
+}
+
 const staticServer = await startStaticServer();
 let browser;
 
 try {
   browser = await chromium.launch({ headless: true });
   const results = await Promise.all(VIEWPORTS.map(viewport => runViewport(browser, staticServer.origin, viewport)));
-  const checks = results.reduce((total, result) => total + result.checks, 0);
+  const checks = results.reduce((total, result) => total + result.checks, 0) + 1;
   const failures = results.flatMap(result => result.failures);
+  const galleryProblems = await checkGalleryFailure(browser, staticServer.origin);
+  if (galleryProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone", problems: galleryProblems });
 
   if (failures.length) {
     console.error(`\n${failures.length} of ${checks} multilingual layout checks failed:\n`);

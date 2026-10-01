@@ -1,6 +1,6 @@
 # Sarveshwar Singh - SunVeda Technologies
 
-> Tokyo-based technology consultant and hands-on engineer connecting business goals, customer needs, and technical delivery. 15+ years across full-stack software, enterprise systems, and decentralised technology.
+> Tokyo-based technology consultant and hands-on engineer connecting business goals, customer needs, and technical delivery. 16+ years across full-stack software, enterprise systems, and decentralised technology.
 
 Sarveshwar Singh runs SunVeda Technologies, working with a trusted team on transformation strategy, product thinking, and hands-on engineering - spanning blockchain/Web3 systems (EVM networks, Solana, Cardano, Canton Network) as well as cloud, full-stack, and mobile development. Based in Tokyo, Japan, with particular experience in cross-market and Japan-market technical enablement, and a growing focus on security-first architecture and AI safety review.
 
