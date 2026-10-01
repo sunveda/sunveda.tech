@@ -243,6 +243,29 @@ async function checkAppsNavigation(page, scenario) {
   return problems;
 }
 
+async function checkCommunityLinks(page, scenario) {
+  if (scenario.route !== "/") return [];
+
+  return page.evaluate(() => {
+    const aiCard = document.querySelector("#community .community-card:first-child");
+    const badmintonCard = document.querySelector("#community .community-card:nth-child(2)");
+    const aiLink = aiCard?.querySelector('[data-i18n="community.c1OpenDiscord"]');
+    const aiDescription = aiCard?.querySelector('[data-i18n="community.c1Desc"]');
+    const badmintonLink = badmintonCard?.querySelector('[data-i18n="community.join"]');
+    const problems = [];
+    if (aiLink?.href !== "https://discord.com/channels/1554803730719703102/1554803731214901322") {
+      problems.push("AI community does not link to the Discord channel");
+    }
+    if (!aiLink?.textContent.includes("Discord") || !aiDescription?.textContent.includes("Discord")) {
+      problems.push("AI community copy does not describe Discord");
+    }
+    if (!badmintonCard?.href.startsWith("https://line.me/") || !badmintonLink?.textContent.includes("LINE")) {
+      problems.push("badminton community LINE link changed unexpectedly");
+    }
+    return problems;
+  });
+}
+
 async function testScenario(page, origin, scenario) {
   const query = scenario.route === "/app/aedoko/"
     ? `?lang=${encodeURIComponent(scenario.language)}&layout-test=1`
@@ -259,6 +282,7 @@ async function testScenario(page, origin, scenario) {
     ...(await auditLayout(page, scenario)),
     ...(await checkMobileMenu(page, scenario)),
     ...(await checkAppsNavigation(page, scenario)),
+    ...(await checkCommunityLinks(page, scenario)),
   ];
 }
 
