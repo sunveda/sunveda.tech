@@ -94,8 +94,9 @@ Run only the responsive multilingual checks with `npm run test:layout`.
 | Agent/tool | Used for | Notes |
 | --- | --- | --- |
 | Claude Code | Feature PRs, docs/architecture sync, PR CI/review babysitting | Branch pattern `agent/<short-description>` or `claude/<session-id>`; PRs assigned to `sunveda`; runs the `footer-version` skill on every PR |
+| Codex | Site content, translations, regression checks, and PR review | Branch pattern `codex/<short-description>`; draft PRs assigned to `sunveda`; re-reviews after every push |
 
-Other SunVeda repos also show `codex/*`-style branch names; any AI coding agent (Claude, Copilot, Cursor, Codex, etc.) is welcome here under the same conventions — add a row above once one has actually worked on this repo.
+Other AI coding agents (Copilot, Cursor, etc.) are welcome here under the same conventions — add a row above once one has actually worked on this repo.
 
 Keep this table in sync with the "AI agents in use" row in `docs/CONTEXT.md`'s Must-not-lose table.
 

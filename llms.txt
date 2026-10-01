@@ -10,7 +10,7 @@ Sarveshwar Singh runs SunVeda Technologies, working with a trusted team on trans
 - [Notable Work](https://sunveda.tech/#projects): Selected contributions - NFT and RWA marketplace smart-contract architecture, SecondFi (formerly Yoroi) Cardano wallet, Samurai Masterpieces European market expansion
 - [Tech Stack](https://sunveda.tech/#stack): Tools across blockchain ecosystems (EVM, Solana, Cardano, Canton Network), frontend, and backend & infrastructure
 - [Capabilities](https://sunveda.tech/#services): Ways to collaborate - transformation discovery, product & technical roadmaps, customer journey & service design, architecture & delivery, security-first & AI safety review, and cross-market technical enablement
-- [Community](https://sunveda.tech/#community): LINE OpenChat communities run outside client work - "Ima Koso AI | Learn AI Now" (AI tools) and SunnyDays Badminton Stories
+- [Community](https://sunveda.tech/#community): Outside-client-work communities — "Ima Koso AI | Learn AI Now" on Discord (AI tools) and SunnyDays Badminton Stories on LINE OpenChat
 - [Gallery](https://sunveda.tech/#gallery): Instagram moments from community meetups
 - [Connect](https://sunveda.tech/#connect): Contact links (GitHub, X, LinkedIn, Instagram, Telegram) and meeting booking
 

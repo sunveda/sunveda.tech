@@ -65,6 +65,11 @@ flowchart TB
     openfreemap[OpenFreeMap<br/>Vector style and tiles]
   end
 
+  subgraph social[Community platforms]
+    discord[Discord<br/>Learn AI Now channel]
+    line[LINE OpenChat<br/>SunnyDays Badminton Stories]
+  end
+
   subgraph automation[GitHub Actions]
     collector[Daily analytics collector<br/>30-day gap reconciliation + retries]
     layoutqa[Playwright multilingual layout checks<br/>PR, main and weekly]
@@ -103,6 +108,8 @@ flowchart TB
 
   site -. sends browser events .-> ga
   site -. sends browser events .-> goat
+  site -. visitor opens AI community .-> discord
+  site -. visitor opens badminton community .-> line
   collector --> cfa
   collector --> ga
   collector --> goat
@@ -122,6 +129,7 @@ flowchart TB
 | -------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | Event feedback                   | Static ES modules + Worker, separate APAC D1, managed Turnstile and private APAC R2     | Pages `/feedback/`, `/feedback/admin/`; Worker `/api/feedback/*`                    | `feedback/`, [runbook](../feedback/README.md)                                                                      |
 | Main website                     | Plain HTML, inline CSS, browser JavaScript                                                | GitHub Pages from `main`                                                            | `index.html`, `i18n.js`                                                                                            |
+| Community outbound links         | Static links to Discord and LINE OpenChat                                                | Homepage `#community`; destinations are hosted by their respective platforms        | `index.html`, `i18n.js`                                                                                            |
 | Analytics dashboard              | Plain HTML, inline CSS, SVG and browser JavaScript                                        | GitHub Pages from `main`                                                            | `a/index.html`                                                                                                     |
 | Application catalogue            | Plain HTML, inline CSS and shared client-side translations                                | GitHub Pages route `/app/`                                                          | `app/index.html`, `i18n.js`                                                                                        |
 | AEDoko application               | Static React bundle with a committed AED data snapshot                                    | GitHub Pages route `/app/aedoko/`                                                   | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko)                                    |
@@ -172,6 +180,12 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 5. AEDoko runs entirely in the browser from a versioned static bundle. Its location calculations and AED snapshot reads do not require a SunVeda server API.
 6. The initial AEDoko route does not request the map bundle, AED snapshot, or map tiles. Those resources load only after the visitor selects **View all AEDs on map**.
 7. A merge to `main` is the static-site deployment mechanism. Core pages have no build artifact; hosted applications commit their reviewed static release artifacts.
+
+### Community outbound navigation
+
+1. The homepage `#community` section describes Learn AI Now and SunnyDays Badminton Stories in the selected site language.
+2. Selecting **Open on Discord** opens the supplied Learn AI Now channel URL in a new tab. This is a channel link, not a server invitation, so non-members may need a separate invite to join.
+3. Selecting **Join on LINE** opens the SunnyDays Badminton Stories OpenChat invitation in a new tab. Neither destination is embedded in the site or called through a SunVeda API.
 
 ### AEDoko interactive map
 
@@ -224,6 +238,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 - The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
 - Layout checks use only repository files on a loopback server, require read-only repository access, and receive no production credentials or visitor data.
+- Community links navigate only after a visitor selects them. Discord and LINE receive ordinary browser request metadata on their own domains; the site sends them no SunVeda-held contact details or credentials.
 - Guest contact details live only in a dedicated feedback D1 database; videos live in private R2 and stream through authenticated Worker endpoints. Feedback data must never flow into analytics, public Pages files, or GitHub context. See [feedback setup, data flows, API and retention runbook](../feedback/README.md).
 
 ## Architecture evolution
@@ -273,6 +288,7 @@ flowchart LR
 | **2026-09-11** | Added the translated `#site-directory` homepage section linking to every public visitor page.               | No revision increment: a human-readable navigation aid; no change to the XML sitemap, existing `noindex` settings, or a runtime/deployment boundary.             |
 | **2026-09-11** | Production verification of A8: the feedback Worker, route, Turnstile, secrets, APAC D1 database, and private APAC R2 bucket were deployed and verified live. The API advertised video as enabled, the hourly cleanup trigger was active, and a generated MP4 completed a byte-identical R2 upload/download round trip before deletion; the bucket and database were returned to zero test data. Existing RSVP cancellation hosting and the separately merged timeline PR #50 were unaffected. | No revision increment: confirms A8 as deployed, does not change the boundary. |
 | **2026-09-19** | Moved this architecture documentation from `README.md` into `docs/architecture.md` per the house docs strategy in [`sunveda/data`](https://github.com/sunveda/data/blob/main/house/DOCS_STRATEGY.md); added `docs/CONTEXT.md` and `docs/SPEC.md`. | No revision increment: documentation reorganization only — no hosting, runtime, route, API, storage, or security boundary changed. |
+| **2026-10-02** | Replaced the Learn AI Now homepage LINE OpenChat link with a Discord channel link while leaving SunnyDays Badminton Stories on LINE. | No revision increment: these remain user-initiated outbound static links; no new runtime service, API, credential, storage, or deployment boundary was added. |
 
 Operational hardening on 2026-09-16 kept A8 unchanged: the existing analytics
 pipeline now retries transient provider responses, reconciles incomplete dates

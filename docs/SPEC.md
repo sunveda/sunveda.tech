@@ -16,6 +16,7 @@ shipped/in-flight/planned status changes.
 ## User journeys
 
 - A visitor browses the site in one of 12 supported languages.
+- A visitor opens the AI learning community on Discord or the badminton community on LINE.
 - A visitor uses AEDoko to find the nearest AED, optionally exploring the full map on demand.
 - A community contributor proposes a new AED city source or leaves feedback via GitHub Issue Forms.
 - A maintainer reviews the aggregate analytics dashboard at `/a/`.
@@ -27,6 +28,7 @@ shipped/in-flight/planned status changes.
 | Requirement | Status | Notes |
 | --- | --- | --- |
 | Main multilingual website (12 locales) | shipped | `index.html`, `i18n.js` |
+| Community discovery links | shipped | Learn AI Now opens a Discord channel; SunnyDays Badminton Stories remains on LINE OpenChat |
 | Analytics dashboard `/a/` (Cloudflare, GA4, GoatCounter) | shipped | Aggregate snapshots only, `noindex,nofollow` |
 | Application catalogue `/app/` | shipped | Links to reviewed applications |
 | AEDoko emergency finder `/app/aedoko/` | shipped | Vendored static bundle from `sunveda/aedoko` |
@@ -60,3 +62,4 @@ Vercel hosting migration (see `CONTEXT.md` blockers for the full runbook):
 
 - **2026-09-19** — Initial SPEC created from the existing `README.md`/`AGENTS.md` content as part of applying the house docs strategy from [`sunveda/data`](https://github.com/sunveda/data). No requirements changed — this captures what was already shipped/in-flight.
 - **2026-09-30** — Added the Vercel hosting migration as an in-flight requirement, now that the Pro plan is available. GitHub Pages remains the live host until the manual Vercel/DNS cutover is completed and verified.
+- **2026-10-02** — Moved the Learn AI Now community card from LINE OpenChat to a Discord channel, leaving the badminton community on LINE. The supplied channel URL may require existing membership; a shareable invite URL would let new visitors join directly.
