@@ -1551,7 +1551,7 @@
 
       let timeout;
       const observer = new MutationObserver(function() {
-        if (!feed.querySelector('.crt-feed-scroll .crt-feed')) return;
+        if (!feed.querySelector('.crt-feed-scroll .crt-feed, .crt-feed .crt-feed-scroll')) return;
         clearTimeout(timeout);
         frame.classList.remove('gallery__frame--loading', 'gallery__frame--failed');
         observer.disconnect();

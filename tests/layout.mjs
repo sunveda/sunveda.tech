@@ -358,18 +358,51 @@ async function checkGalleryWithoutJavaScript(browser, origin) {
   }
 }
 
+async function checkGallerySuccess(browser, origin, feedInsideScroll) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  const markup = feedInsideScroll
+    ? '<div class="crt-feed-scroll"><div class="crt-feed">Feed loaded</div></div>'
+    : '<div class="crt-feed"><div class="crt-feed-scroll">Feed loaded</div></div>';
+  await page.route(/cdn\.curator\.io\/published\//, route => route.fulfill({
+    status: 200,
+    contentType: "application/javascript",
+    body: `document.getElementById("curator-feed-default-feed-layout").innerHTML = ${JSON.stringify(markup)};`,
+  }));
+  try {
+    await page.goto(`${origin}/#gallery`, { waitUntil: "load", timeout: 30_000 });
+    await page.waitForFunction(() => !document.querySelector(".gallery__frame--loading"), { timeout: 5_000 });
+    return await page.evaluate(() => {
+      const frame = document.querySelector(".gallery__frame");
+      const fallback = frame.querySelector(".gallery__fallback");
+      const problems = [];
+      if (frame.classList.contains("gallery__frame--failed")) problems.push("loaded gallery is marked failed");
+      if (getComputedStyle(fallback).display !== "none") problems.push("loaded gallery still shows fallback link");
+      return problems;
+    });
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  } finally {
+    await context.close();
+  }
+}
+
 const staticServer = await startStaticServer();
 let browser;
 
 try {
   browser = await chromium.launch({ headless: true });
   const results = await Promise.all(VIEWPORTS.map(viewport => runViewport(browser, staticServer.origin, viewport)));
-  const checks = results.reduce((total, result) => total + result.checks, 0) + 2;
+  const checks = results.reduce((total, result) => total + result.checks, 0) + 4;
   const failures = results.flatMap(result => result.failures);
   const galleryProblems = await checkGalleryFailure(browser, staticServer.origin);
   if (galleryProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone", problems: galleryProblems });
   const noScriptProblems = await checkGalleryWithoutJavaScript(browser, staticServer.origin);
   if (noScriptProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone, no JavaScript", problems: noScriptProblems });
+  for (const feedInsideScroll of [true, false]) {
+    const successProblems = await checkGallerySuccess(browser, staticServer.origin, feedInsideScroll);
+    if (successProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: `phone, feedInsideScroll=${feedInsideScroll}`, problems: successProblems });
+  }
 
   if (failures.length) {
     console.error(`\n${failures.length} of ${checks} multilingual layout checks failed:\n`);
