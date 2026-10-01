@@ -338,16 +338,38 @@ async function checkGalleryFailure(browser, origin) {
   }
 }
 
+async function checkGalleryWithoutJavaScript(browser, origin) {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${origin}/#gallery`, { waitUntil: "load", timeout: 30_000 });
+    return await page.evaluate(() => {
+      const frame = document.querySelector(".gallery__frame");
+      const fallback = frame.querySelector(".gallery__fallback");
+      const problems = [];
+      if (frame.getBoundingClientRect().height >= 768) problems.push("no-script gallery still reserves its loading height");
+      if (getComputedStyle(fallback).display === "none") problems.push("no-script gallery fallback link is hidden");
+      return problems;
+    });
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  } finally {
+    await context.close();
+  }
+}
+
 const staticServer = await startStaticServer();
 let browser;
 
 try {
   browser = await chromium.launch({ headless: true });
   const results = await Promise.all(VIEWPORTS.map(viewport => runViewport(browser, staticServer.origin, viewport)));
-  const checks = results.reduce((total, result) => total + result.checks, 0) + 1;
+  const checks = results.reduce((total, result) => total + result.checks, 0) + 2;
   const failures = results.flatMap(result => result.failures);
   const galleryProblems = await checkGalleryFailure(browser, staticServer.origin);
   if (galleryProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone", problems: galleryProblems });
+  const noScriptProblems = await checkGalleryWithoutJavaScript(browser, staticServer.origin);
+  if (noScriptProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone, no JavaScript", problems: noScriptProblems });
 
   if (failures.length) {
     console.error(`\n${failures.length} of ${checks} multilingual layout checks failed:\n`);
