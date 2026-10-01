@@ -163,11 +163,23 @@ async function auditLayout(page, scenario) {
     if (route === "/app/aedoko/") addHeaderPair(".brand", ".language-button");
     if (route === "/a/") addHeaderPair(".brand", ".back");
 
+    const homepagePaint = route === "/" ? {
+      experienceSummary: document.querySelector('[data-i18n="hero.sub"]')?.textContent ?? "",
+      experienceValue: document.querySelector('[data-i18n="hero.statExpValue"]')?.textContent ?? "",
+      hiddenReveals: [...document.querySelectorAll(".reveal")]
+        .filter(element => Number.parseFloat(getComputedStyle(element).opacity) < 1).length,
+      galleryLoading: document.querySelector(".gallery__frame").classList.contains("gallery__frame--loading"),
+      galleryMinHeight: Number.parseFloat(getComputedStyle(document.querySelector(".gallery__frame")).minHeight),
+      perpetualAnimations: [".nav__meeting", ".hero__eyebrow-dot", ".connect__open-action"]
+        .filter(selector => getComputedStyle(document.querySelector(selector)).animationName !== "none"),
+    } : null;
+
     return {
       actualLanguage: document.documentElement.lang,
       clipped,
       documentOverflow: Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth),
       headerPairs,
+      homepagePaint,
       language,
       lineCollisions,
       route,
@@ -182,6 +194,17 @@ async function auditLayout(page, scenario) {
   if (result.headerPairs.length) problems.push(`header collisions: ${JSON.stringify(result.headerPairs)}`);
   if (result.actualLanguage !== expectedDocumentLanguage(scenario.language)) {
     problems.push(`document language is ${result.actualLanguage || "missing"}`);
+  }
+  if (result.homepagePaint) {
+    const paint = result.homepagePaint;
+    if (!paint.experienceSummary.includes("16") || !paint.experienceValue.includes("16")) {
+      problems.push("experience copy does not say 16+ years");
+    }
+    if (paint.hiddenReveals) problems.push(`${paint.hiddenReveals} sections are hidden until scroll`);
+    if (paint.galleryLoading && paint.galleryMinHeight < 768) {
+      problems.push(`gallery reserves only ${paint.galleryMinHeight}px while loading`);
+    }
+    if (paint.perpetualAnimations.length) problems.push(`perpetual animations: ${paint.perpetualAnimations.join(", ")}`);
   }
   return problems;
 }
@@ -293,14 +316,93 @@ async function runViewport(browser, origin, viewport) {
   return { checks: scenarios.length, failures };
 }
 
+async function checkGalleryFailure(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  await page.route(/cdn\.curator\.io\/published\//, route => route.abort());
+  try {
+    await page.goto(`${origin}/#gallery`, { waitUntil: "load", timeout: 30_000 });
+    await page.waitForFunction(() => document.querySelector(".gallery__frame--failed"), { timeout: 5_000 });
+    return await page.evaluate(() => {
+      const frame = document.querySelector(".gallery__frame");
+      const fallback = frame.querySelector(".gallery__fallback");
+      const problems = [];
+      if (frame.getBoundingClientRect().height >= 768) problems.push("failed gallery still reserves its loading height");
+      if (getComputedStyle(fallback).display === "none") problems.push("gallery fallback link is hidden after feed failure");
+      return problems;
+    });
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  } finally {
+    await context.close();
+  }
+}
+
+async function checkGalleryWithoutJavaScript(browser, origin) {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${origin}/#gallery`, { waitUntil: "load", timeout: 30_000 });
+    return await page.evaluate(() => {
+      const frame = document.querySelector(".gallery__frame");
+      const fallback = frame.querySelector(".gallery__fallback");
+      const problems = [];
+      if (frame.getBoundingClientRect().height >= 768) problems.push("no-script gallery still reserves its loading height");
+      if (getComputedStyle(fallback).display === "none") problems.push("no-script gallery fallback link is hidden");
+      return problems;
+    });
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  } finally {
+    await context.close();
+  }
+}
+
+async function checkGallerySuccess(browser, origin, feedInsideScroll) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  const markup = feedInsideScroll
+    ? '<div class="crt-feed-scroll"><div class="crt-feed">Feed loaded</div></div>'
+    : '<div class="crt-feed"><div class="crt-feed-scroll">Feed loaded</div></div>';
+  await page.route(/cdn\.curator\.io\/published\//, route => route.fulfill({
+    status: 200,
+    contentType: "application/javascript",
+    body: `document.getElementById("curator-feed-default-feed-layout").innerHTML = ${JSON.stringify(markup)};`,
+  }));
+  try {
+    await page.goto(`${origin}/#gallery`, { waitUntil: "load", timeout: 30_000 });
+    await page.waitForFunction(() => !document.querySelector(".gallery__frame--loading"), { timeout: 5_000 });
+    return await page.evaluate(() => {
+      const frame = document.querySelector(".gallery__frame");
+      const fallback = frame.querySelector(".gallery__fallback");
+      const problems = [];
+      if (frame.classList.contains("gallery__frame--failed")) problems.push("loaded gallery is marked failed");
+      if (getComputedStyle(fallback).display !== "none") problems.push("loaded gallery still shows fallback link");
+      return problems;
+    });
+  } catch (error) {
+    return [error instanceof Error ? error.message : String(error)];
+  } finally {
+    await context.close();
+  }
+}
+
 const staticServer = await startStaticServer();
 let browser;
 
 try {
   browser = await chromium.launch({ headless: true });
   const results = await Promise.all(VIEWPORTS.map(viewport => runViewport(browser, staticServer.origin, viewport)));
-  const checks = results.reduce((total, result) => total + result.checks, 0);
+  const checks = results.reduce((total, result) => total + result.checks, 0) + 4;
   const failures = results.flatMap(result => result.failures);
+  const galleryProblems = await checkGalleryFailure(browser, staticServer.origin);
+  if (galleryProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone", problems: galleryProblems });
+  const noScriptProblems = await checkGalleryWithoutJavaScript(browser, staticServer.origin);
+  if (noScriptProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: "phone, no JavaScript", problems: noScriptProblems });
+  for (const feedInsideScroll of [true, false]) {
+    const successProblems = await checkGallerySuccess(browser, staticServer.origin, feedInsideScroll);
+    if (successProblems.length) failures.push({ route: "/#gallery", language: "en", viewport: `phone, feedInsideScroll=${feedInsideScroll}`, problems: successProblems });
+  }
 
   if (failures.length) {
     console.error(`\n${failures.length} of ${checks} multilingual layout checks failed:\n`);

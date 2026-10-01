@@ -63,7 +63,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="i18n.js?v=26" defer></script>
+  <script src="i18n.js?v=28" defer></script>
   <style>
     /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -211,6 +211,7 @@
     ::selection { background: oklch(from var(--color-primary) l c h / 0.22); color: var(--color-text); }
     :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
     @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
     button { cursor: pointer; background: none; border: none; }
@@ -270,9 +271,8 @@
       border-radius: var(--radius-full);
       color: var(--color-primary); text-decoration: none;
       font-size: var(--text-sm); font-weight: 500; white-space: nowrap;
-      animation: heartbeat 1.8s ease-in-out infinite;
     }
-    .nav__meeting:hover { background: var(--color-primary-highlight); border-color: var(--color-primary); animation-play-state: paused; }
+    .nav__meeting:hover { background: var(--color-primary-highlight); border-color: var(--color-primary); }
     .lang-switch__select, .theme-toggle, .nav__cta { height: 36px; }
     .nav__cta { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
     .lang-switch__select { min-width: 96px; }
@@ -360,8 +360,7 @@
       color: var(--color-primary);
       margin-bottom: var(--space-8);
     }
-    .hero__eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); animation: pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero__eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
     .hero__heading {
       font-family: var(--font-display);
       font-size: var(--text-hero);
@@ -582,6 +581,9 @@
     /* GALLERY */
     .gallery__intro { max-width: 60ch; }
     .gallery__frame { width: 100%; }
+    .gallery__frame--loading { min-height: 48rem; }
+    .gallery__fallback { display: none; color: var(--color-primary); font-size: var(--text-sm); }
+    .gallery__frame--failed .gallery__fallback { display: inline-block; }
     #curator-feed-default-feed-layout { width: 100%; }
 
     /* STACK SECTION */
@@ -684,9 +686,8 @@
       border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600;
       white-space: nowrap;
       transition: background var(--transition-interactive), transform var(--transition-interactive);
-      animation: heartbeat 1.8s ease-in-out infinite;
     }
-    .connect__open:hover .connect__open-action { background: var(--color-primary-hover); animation-play-state: paused; }
+    .connect__open:hover .connect__open-action { background: var(--color-primary-hover); }
     .connect__ask {
       display: flex; align-items: center; justify-content: center;
       padding: var(--space-3) var(--space-6);
@@ -701,11 +702,6 @@
       background: var(--color-surface-2);
       border-color: oklch(from var(--color-primary) l c h / 0.35);
     }
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
-    }
-
     /* FOOTER */
     footer {
       border-top: 1px solid oklch(from var(--color-text) l c h / 0.06);
@@ -725,10 +721,6 @@
 
     /* DIVIDER */
     .section-divider { border: none; border-top: 1px solid oklch(from var(--color-text) l c h / 0.06); margin: 0; }
-
-    /* SCROLL REVEAL */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
 
     /* MOBILE */
     @media (max-width: 1600px) {
@@ -843,6 +835,12 @@
     .site-directory a:hover { text-decoration: underline; }
     .site-directory a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   </style>
+  <noscript>
+    <style>
+      .gallery__frame--loading { min-height: 0; }
+      .gallery__fallback { display: inline-block; }
+    </style>
+  </noscript>
 </head>
 <body>
   <a href="#main" class="skip-link" data-i18n="nav.skipToContent">Skip to content</a>
@@ -922,7 +920,7 @@
           Turning complexity into <em>meaningful change.</em>
         </h1>
         <p class="hero__sub" data-i18n="hero.sub">
-          Tokyo-based technology consultant and hands-on engineer with 15+ years of experience connecting business goals, customer needs, and technical delivery.
+          Tokyo-based technology consultant and hands-on engineer with 16+ years of experience connecting business goals, customer needs, and technical delivery.
         </p>
         <div class="hero__actions">
           <a href="#projects" class="btn-primary">
@@ -934,7 +932,7 @@
         <div class="hero__meta">
           <div>
             <div class="hero__stat-label" data-i18n="hero.statExperience">Experience</div>
-            <div class="hero__stat-value" data-i18n="hero.statExpValue">15+ yrs</div>
+            <div class="hero__stat-value" data-i18n="hero.statExpValue">16+ yrs</div>
           </div>
           <div>
             <div class="hero__stat-label" data-i18n="hero.statBorn">Approach</div>
@@ -1390,8 +1388,9 @@
           <h2 class="section-heading" id="gallery-heading" data-i18n="gallery.heading">Moments worth sharing</h2>
           <p class="projects__intro gallery__intro" data-i18n="gallery.intro">A few glimpses from Instagram — community meetups and moments along the way.</p>
         </div>
-        <div class="gallery__frame reveal">
+        <div class="gallery__frame gallery__frame--loading reveal">
           <div id="curator-feed-default-feed-layout"><a href="https://curator.io" target="_blank" class="crt-logo crt-tag">Powered by Curator.io</a></div>
+          <a class="gallery__fallback" href="https://www.instagram.com/sunvedatech" target="_blank" rel="noopener noreferrer" data-i18n="gallery.fallback">View moments on Instagram ↗</a>
         </div>
     </section>
 
@@ -1538,17 +1537,50 @@
           <a href="terms.html">Service terms</a>
         </nav>
         <div class="footer__copy" data-i18n="footer.copy">© 2026 Sarveshwar Singh. Built with intention.</div>
-        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/66" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #66">v66 · 10fbd4e</a></div>
+        <div class="footer__version"><a href="https://github.com/sunveda/sunveda.tech/pull/68" target="_blank" rel="noopener noreferrer" aria-label="Last merged pull request #68">v68 · 6fa8607</a></div>
       </div>
     </div>
   </footer>
 
-  <script type="text/javascript">
-    /* curator-feed-default-feed-layout */
+  <script>
+    // Reserve gallery space only while the third-party feed is loading.
     (function(){
-      var i,e,d=document,s="script";i=d.createElement("script");i.async=1;i.charset="UTF-8";
-      i.src="https://cdn.curator.io/published/911c92a2-9b21-4826-8bc9-522aa752556e.js";
-      e=d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);
+      const frame = document.querySelector('.gallery__frame');
+      const feed = document.getElementById('curator-feed-default-feed-layout');
+      if (!frame || !feed) return;
+
+      let timeout;
+      const observer = new MutationObserver(function() {
+        if (!feed.querySelector('.crt-feed-scroll .crt-feed, .crt-feed .crt-feed-scroll')) return;
+        clearTimeout(timeout);
+        frame.classList.remove('gallery__frame--loading', 'gallery__frame--failed');
+        observer.disconnect();
+        visibilityObserver.disconnect();
+      });
+      observer.observe(feed, { childList: true, subtree: true });
+
+      const visibilityObserver = new IntersectionObserver(function(entries) {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        visibilityObserver.disconnect();
+        timeout = setTimeout(function() {
+          frame.classList.remove('gallery__frame--loading');
+          frame.classList.add('gallery__frame--failed');
+        }, 8000);
+      }, { rootMargin: '300px' });
+      visibilityObserver.observe(frame);
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.charset = 'UTF-8';
+      script.onerror = function() {
+        clearTimeout(timeout);
+        frame.classList.remove('gallery__frame--loading');
+        frame.classList.add('gallery__frame--failed');
+        observer.disconnect();
+        visibilityObserver.disconnect();
+      };
+      script.src = 'https://cdn.curator.io/published/911c92a2-9b21-4826-8bc9-522aa752556e.js';
+      document.head.appendChild(script);
     })();
   </script>
   <script>
@@ -1600,15 +1632,6 @@
       window.addEventListener('resize', function() {
         if (window.innerWidth > 1100) closeMenu();
       });
-    })();
-
-    // Scroll reveal
-    (function(){
-      const els = document.querySelectorAll('.reveal');
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-      els.forEach(el => obs.observe(el));
     })();
 
     // Init lucide icons
