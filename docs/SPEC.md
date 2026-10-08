@@ -27,6 +27,7 @@ shipped/in-flight/planned status changes.
 | Requirement | Status | Notes |
 | --- | --- | --- |
 | Main multilingual website (12 locales) | shipped | `index.html`, `i18n.js` |
+| Technical service descriptions | in-flight | Describe software development and related technical contributions accurately in all 12 locales; retain Sarveshwar's team and sole-proprietor identity without implying immigration approval |
 | Analytics dashboard `/a/` (Cloudflare, GA4, GoatCounter) | shipped | Aggregate snapshots only, `noindex,nofollow` |
 | Application catalogue `/app/` | shipped | Links to reviewed applications |
 | AEDoko emergency finder `/app/aedoko/` | shipped | Vendored static bundle from `sunveda/aedoko` |
@@ -60,3 +61,4 @@ Vercel hosting migration (see `CONTEXT.md` blockers for the full runbook):
 
 - **2026-09-19** — Initial SPEC created from the existing `README.md`/`AGENTS.md` content as part of applying the house docs strategy from [`sunveda/data`](https://github.com/sunveda/data). No requirements changed — this captures what was already shipped/in-flight.
 - **2026-09-30** — Added the Vercel hosting migration as an in-flight requirement, now that the Pro plan is available. GitHub Pages remains the live host until the manual Vercel/DNS cutover is completed and verified.
+- **2026-10-09** — Narrow public service descriptions to software engineering and related technical support. Clarify the technical contribution to Samurai Masterpieces rather than presenting European business expansion as Sarveshwar's service. Copy changes do not establish immigration permission.
