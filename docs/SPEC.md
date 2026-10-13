@@ -29,6 +29,7 @@ shipped/in-flight/planned status changes.
 | Main multilingual website (12 locales) | shipped | `index.html`, `i18n.js` |
 | Analytics dashboard `/a/` (Cloudflare, GA4, GoatCounter) | shipped | Aggregate snapshots only, `noindex,nofollow` |
 | Application catalogue `/app/` | shipped | Links to reviewed applications |
+| Taxable crypto tax calculator | in-flight | Announce on the homepage and `/app/#taxable` as in development; link the public development repository, with no claim of readiness for tax filing |
 | AEDoko emergency finder `/app/aedoko/` | shipped | Vendored static bundle from `sunveda/aedoko` |
 | AEDoko on-demand interactive map | shipped | Lazy MapLibre bundle, loads only when opened |
 | AEDoko community contribution pipeline | shipped | Issue Forms → unverified draft proposal PR; import/validation stays a separate manual step |
@@ -60,3 +61,4 @@ Vercel hosting migration (see `CONTEXT.md` blockers for the full runbook):
 
 - **2026-09-19** — Initial SPEC created from the existing `README.md`/`AGENTS.md` content as part of applying the house docs strategy from [`sunveda/data`](https://github.com/sunveda/data). No requirements changed — this captures what was already shipped/in-flight.
 - **2026-09-30** — Added the Vercel hosting migration as an in-flight requirement, now that the Pro plan is available. GitHub Pages remains the live host until the manual Vercel/DNS cutover is completed and verified.
+- **2026-10-14** — Add Taxable as a SunVeda crypto tax calculator in development, alongside the live AEDoko application. The listing is an announcement, not a calculator launch.
