@@ -6,6 +6,7 @@ Sarveshwar Singh runs SunVeda Technologies, working with a trusted team on trans
 
 ## Site sections
 
+- [Apps](https://sunveda.tech/app/): AEDoko is live; Taxable is a crypto tax calculator being developed by the SunVeda Technologies team and is not yet ready for tax filing
 - [About](https://sunveda.tech/#about): Background, focus areas, and approach to transformation work
 - [Notable Work](https://sunveda.tech/#projects): Selected contributions - NFT and RWA marketplace smart-contract architecture, SecondFi (formerly Yoroi) Cardano wallet, Samurai Masterpieces European market expansion
 - [Tech Stack](https://sunveda.tech/#stack): Tools across blockchain ecosystems (EVM, Solana, Cardano, Canton Network), frontend, and backend & infrastructure

@@ -13,7 +13,7 @@
   <script data-goatcounter="https://sunveda.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script>(function(){var d=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',d);})();</script>
   <title>SunVeda Apps — Useful technology for real-world needs</title>
-  <meta name="description" content="Explore focused applications built by SunVeda Technologies, starting with AEDoko, a public-good AED finder for Tokyo." />
+  <meta name="description" content="Explore SunVeda applications: AEDoko, a live AED finder for Tokyo, and Taxable, a crypto tax calculator in development." />
   <link rel="canonical" href="https://sunveda.tech/app/" />
   <meta property="og:title" content="SunVeda Apps" />
   <meta property="og:description" content="Focused applications built for practical, real-world needs." />
@@ -37,12 +37,17 @@
     "description": "Focused applications built by SunVeda Technologies for practical, real-world needs.",
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": 1,
+      "numberOfItems": 2,
       "itemListElement": [{
         "@type": "ListItem",
         "position": 1,
         "url": "https://sunveda.tech/app/aedoko/",
         "name": "AEDoko"
+      }, {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://sunveda.tech/app/#taxable",
+        "name": "Taxable — In development"
       }]
     }
   }
@@ -51,7 +56,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="../i18n.js?v=24" defer></script>
+  <script src="../i18n.js?v=29" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -154,6 +159,9 @@
     .app-card__screenshot img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
     .app-card__icon { position: absolute; z-index: 2; right: clamp(1.2rem, 3vw, 2.4rem); bottom: clamp(1.2rem, 3vw, 2.4rem); width: 64px; height: 64px; padding: 8px; background: white; border-radius: 16px; box-shadow: 0 12px 30px rgb(0 0 0 / .20); }
     .app-card__icon img { width: 100%; height: 100%; }
+    .app-card__wordmark { position: relative; display: grid; justify-items: center; gap: 1.25rem; color: var(--color-primary); font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 4.6rem); }
+    .app-card__wordmark img { width: 160px; height: auto; border-radius: var(--radius-2xl); }
+    #taxable { scroll-margin-top: 6rem; }
 
     .principle { margin-top: clamp(3rem, 7vw, 5.5rem); padding-top: 2rem; border-top: 1px solid var(--color-border); display: grid; grid-template-columns: .7fr 1.3fr; gap: 2rem; }
     .principle h2 { font-family: var(--font-display); font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.35; overflow-wrap: anywhere; text-wrap: balance; }
@@ -242,13 +250,13 @@
           <h1 id="apps-heading" data-i18n-html="apps.heading">Useful technology for <em>real-world needs.</em></h1>
         </div>
         <div>
-          <p class="hero__intro" data-i18n="apps.intro">Focused applications built with clear purpose, transparent limits, and practical value. AEDoko is the first public SunVeda app.</p>
-          <span class="count" data-i18n="apps.count">1 app · Live</span>
+          <p class="hero__intro" data-i18n="apps.intro">Focused applications built with clear purpose and practical value. AEDoko is live; Taxable is in development.</p>
+          <span class="count" data-i18n="apps.count">1 live app · 1 in development</span>
         </div>
       </section>
 
       <section class="apps" aria-labelledby="featured-heading">
-        <p class="section-label" id="featured-heading" data-i18n="apps.featured">Featured application</p>
+        <p class="section-label" id="featured-heading" data-i18n="apps.featured">Our applications</p>
         <article class="app-card">
           <div class="app-card__content">
             <p class="app-card__meta" data-i18n="apps.aedokoMeta">Civic technology · Tokyo</p>
@@ -270,6 +278,20 @@
           <div class="app-card__visual" aria-hidden="true">
             <div class="app-card__screenshot"><img src="../showcase-aedoko-v1.webp" alt="" width="1280" height="720" /></div>
             <div class="app-card__icon"><img src="aedoko/favicon.svg" alt="" width="48" height="48" /></div>
+          </div>
+        </article>
+        <article class="app-card" id="taxable" aria-labelledby="taxable-heading">
+          <div class="app-card__content">
+            <p class="app-card__meta" data-i18n="apps.taxableMeta">Crypto tax calculator · In development</p>
+            <h2 id="taxable-heading" data-i18n="apps.taxableName">Taxable</h2>
+            <p class="app-card__body" data-i18n="apps.taxableBody">Taxable is a crypto tax calculator being developed by the SunVeda Technologies team.</p>
+            <p class="app-card__body" data-i18n="apps.taxableNote">In development. Not yet ready for tax filing.</p>
+            <div class="app-card__actions">
+              <a class="source-link" href="https://github.com/sunveda/taxable" target="_blank" rel="noopener noreferrer" data-i18n="apps.taxableDevelopment">Follow development ↗</a>
+            </div>
+          </div>
+          <div class="app-card__visual" aria-hidden="true">
+            <div class="app-card__wordmark"><img src="../taxable-icon-v1.png" alt="" width="512" height="512" loading="lazy" /><span>Taxable</span></div>
           </div>
         </article>
       </section>
