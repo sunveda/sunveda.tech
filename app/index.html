@@ -13,7 +13,7 @@
   <script data-goatcounter="https://sunveda.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script>(function(){var d=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',d);})();</script>
   <title>SunVeda Apps — Useful technology for real-world needs</title>
-  <meta name="description" content="Explore SunVeda applications: AEDoko, a live AED finder for Tokyo, and Taxable, a crypto tax calculator in development." />
+  <meta name="description" content="AEDoko is live. Taxable, Health App and Familiar are in development." />
   <link rel="canonical" href="https://sunveda.tech/app/" />
   <meta property="og:title" content="SunVeda Apps" />
   <meta property="og:description" content="Focused applications built for practical, real-world needs." />
@@ -37,7 +37,7 @@
     "description": "Focused applications built by SunVeda Technologies for practical, real-world needs.",
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": 2,
+      "numberOfItems": 4,
       "itemListElement": [{
         "@type": "ListItem",
         "position": 1,
@@ -48,6 +48,16 @@
         "position": 2,
         "url": "https://sunveda.tech/app/#taxable",
         "name": "Taxable — In development"
+      }, {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://sunveda.tech/app/#health-app",
+        "name": "Health App — In development"
+      }, {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://sunveda.tech/app/#familiar",
+        "name": "Familiar — In development"
       }]
     }
   }
@@ -56,7 +66,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="../i18n.js?v=29" defer></script>
+  <script src="../i18n.js?v=30" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -161,7 +171,7 @@
     .app-card__icon img { width: 100%; height: 100%; }
     .app-card__wordmark { position: relative; display: grid; justify-items: center; gap: 1.25rem; color: var(--color-primary); font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 4.6rem); }
     .app-card__wordmark img { width: 160px; height: auto; border-radius: var(--radius-2xl); }
-    #taxable { scroll-margin-top: 6rem; }
+    .app-card[id] { scroll-margin-top: 6rem; }
 
     .principle { margin-top: clamp(3rem, 7vw, 5.5rem); padding-top: 2rem; border-top: 1px solid var(--color-border); display: grid; grid-template-columns: .7fr 1.3fr; gap: 2rem; }
     .principle h2 { font-family: var(--font-display); font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.35; overflow-wrap: anywhere; text-wrap: balance; }
@@ -250,8 +260,8 @@
           <h1 id="apps-heading" data-i18n-html="apps.heading">Useful technology for <em>real-world needs.</em></h1>
         </div>
         <div>
-          <p class="hero__intro" data-i18n="apps.intro">Focused applications built with clear purpose and practical value. AEDoko is live; Taxable is in development.</p>
-          <span class="count" data-i18n="apps.count">1 live app · 1 in development</span>
+          <p class="hero__intro" data-i18n="apps.intro">AEDoko is live. Taxable, Health App and Familiar are in development.</p>
+          <span class="count" data-i18n="apps.count">1 live app · 3 in development</span>
         </div>
       </section>
 
@@ -292,6 +302,28 @@
           </div>
           <div class="app-card__visual" aria-hidden="true">
             <div class="app-card__wordmark"><img src="../taxable-icon-v1.png?v=1" alt="" width="512" height="512" loading="lazy" /><span>Taxable</span></div>
+          </div>
+        </article>
+        <article class="app-card" id="health-app" aria-labelledby="health-app-heading">
+          <div class="app-card__content">
+            <p class="app-card__meta" data-i18n="apps.healthMeta">Health &amp; wellness · In development</p>
+            <h2 id="health-app-heading" data-i18n="apps.healthName">Health App</h2>
+            <p class="app-card__body" data-i18n="apps.healthBody">Health App is a SunVeda Technologies project planning secure access to personal health information and medical-expense tools.</p>
+            <p class="app-card__body" data-i18n="apps.developmentNote">In development. Not yet available for public use.</p>
+          </div>
+          <div class="app-card__visual" aria-hidden="true">
+            <div class="app-card__wordmark"><img src="../health-app-icon-v1.svg?v=1" alt="" width="256" height="256" loading="lazy" /><span>Health App</span></div>
+          </div>
+        </article>
+        <article class="app-card" id="familiar" aria-labelledby="familiar-heading">
+          <div class="app-card__content">
+            <p class="app-card__meta" data-i18n="apps.familiarMeta">Family learning · In development</p>
+            <h2 id="familiar-heading" data-i18n="apps.familiarName">Familiar</h2>
+            <p class="app-card__body" data-i18n="apps.familiarBody">Familiar is a SunVeda Technologies project exploring personalized educational videos with caregiver consent and guardian review.</p>
+            <p class="app-card__body" data-i18n="apps.developmentNote">In development. Not yet available for public use.</p>
+          </div>
+          <div class="app-card__visual" aria-hidden="true">
+            <div class="app-card__wordmark"><img src="../familiar-icon-v1.svg?v=1" alt="" width="256" height="256" loading="lazy" /><span>Familiar</span></div>
           </div>
         </article>
       </section>

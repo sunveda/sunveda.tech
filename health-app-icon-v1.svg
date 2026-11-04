@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>Health App — a heart held within a leaf</title>
+  <defs>
+    <linearGradient id="field" x1="24" y1="16" x2="232" y2="256" gradientUnits="userSpaceOnUse"><stop stop-color="#137B78"/><stop offset="1" stop-color="#063E4A"/></linearGradient>
+    <linearGradient id="leaf" x1="76" y1="66" x2="183" y2="189" gradientUnits="userSpaceOnUse"><stop stop-color="#D6F3D6"/><stop offset="1" stop-color="#71D7B2"/></linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#field)"/>
+  <circle cx="128" cy="128" r="98" stroke="#C5EBD8" stroke-opacity=".17"/>
+  <path d="M65 153C56 104 102 61 191 61C197 144 165 194 116 193C92 192 71 178 65 153Z" fill="url(#leaf)"/>
+  <path d="M73 198C85 163 115 130 161 96" stroke="#164F55" stroke-width="8" stroke-linecap="round"/>
+  <path d="M128 154L102 130C78 107 111 84 128 108C145 84 178 107 154 130L128 154Z" fill="#FFF9EA"/>
+  <circle cx="197" cy="194" r="9" fill="#E9B44C"/>
+</svg>
