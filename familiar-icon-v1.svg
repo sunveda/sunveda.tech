@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>Familiar — two people together inside a play frame</title>
+  <defs><linearGradient id="field" x1="24" y1="12" x2="232" y2="256" gradientUnits="userSpaceOnUse"><stop stop-color="#68518B"/><stop offset="1" stop-color="#302C55"/></linearGradient></defs>
+  <rect width="256" height="256" rx="56" fill="url(#field)"/>
+  <circle cx="128" cy="128" r="98" stroke="#E9DAF7" stroke-opacity=".17"/>
+  <rect x="48" y="57" width="160" height="142" rx="36" stroke="#F5DDAC" stroke-width="8"/>
+  <circle cx="102" cy="106" r="21" fill="#FFF5E4"/>
+  <circle cx="156" cy="121" r="16" fill="#E9B44C"/>
+  <path d="M72 169C72 129 131 129 131 169" stroke="#FFF5E4" stroke-width="12" stroke-linecap="round"/>
+  <path d="M137 169C137 143 179 143 179 169" stroke="#E9B44C" stroke-width="10" stroke-linecap="round"/>
+  <path d="M180 43L180 77L207 60Z" fill="#E9B44C" stroke="#4D3E70" stroke-width="6" stroke-linejoin="round"/>
+</svg>

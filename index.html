@@ -63,7 +63,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="i18n.js?v=29" defer></script>
+  <script src="i18n.js?v=30" defer></script>
   <style>
     /* Art direction: Technology and transformation leader in Tokyo
        Palette: Dark, minimal, teal accent with warm undertones
@@ -463,9 +463,9 @@
 
     /* PRODUCTS & LIVE EXPERIENCES */
     .showcase__intro { max-width: 68ch; font-size: var(--text-base); color: var(--color-text-muted); line-height: 1.75; margin-top: var(--space-4); }
-    .showcase__categories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); margin-top: var(--space-12); align-items: start; }
-    .showcase-group { display: flex; flex-direction: column; gap: var(--space-6); }
-    .showcase-group__header { padding-bottom: var(--space-5); border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08); }
+    .showcase__categories { display: grid; grid-template-columns: 1fr; gap: var(--space-8); margin-top: var(--space-12); align-items: start; }
+    .showcase-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); align-items: start; }
+    .showcase-group__header { grid-column: 1 / -1; padding-bottom: var(--space-5); border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08); }
     .showcase-group__eyebrow { display: flex; align-items: center; gap: var(--space-2); color: var(--color-primary); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
     .showcase-group__title { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.2; color: var(--color-text); margin-top: var(--space-2); }
     .showcase-group__intro { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.65; margin-top: var(--space-2); }
@@ -473,9 +473,9 @@
     .showcase-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: oklch(from var(--color-primary) l c h / 0.3); }
     .showcase-card__preview { display: block; aspect-ratio: 16 / 9; overflow: hidden; margin: calc(0px - var(--space-6)) calc(0px - var(--space-6)) var(--space-5); border-bottom: 1px solid oklch(from var(--color-text) l c h / 0.08); background: var(--color-bg); }
     .showcase-card__preview img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-interactive); }
-    .showcase-card__preview--taxable { display: grid; place-content: center; justify-items: center; gap: var(--space-4); color: var(--color-primary); background: radial-gradient(circle at center, var(--color-primary-highlight), var(--color-surface)); }
-    .showcase-card__preview--taxable img { width: 128px; height: auto; border-radius: var(--radius-xl); }
-    .showcase-card__preview--taxable span { font-family: var(--font-display); font-size: var(--text-2xl); }
+    .showcase-card__preview--app { aspect-ratio: auto; min-height: 240px; display: grid; place-content: center; justify-items: center; gap: var(--space-4); color: var(--color-primary); background: radial-gradient(circle at center, var(--color-primary-highlight), var(--color-surface)); }
+    .showcase-card__preview--app img { width: 128px; height: auto; border-radius: var(--radius-xl); }
+    .showcase-card__preview--app span { font-family: var(--font-display); font-size: var(--text-2xl); }
     .showcase-card:hover .showcase-card__preview img { transform: scale(1.02); }
     .showcase-card__top { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-5); }
     .showcase-card__icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: var(--radius-md); color: var(--color-primary); background: var(--color-primary-highlight); overflow: hidden; }
@@ -749,7 +749,7 @@
     @media (max-width: 767px) {
       .nav__links { display: none; }
       .nav__logo-text { font-size: var(--text-base); }
-      .about__grid, .work__grid, .showcase__categories, .stack__ecosystems, .stack__shared-grid, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-4); }
+      .about__grid, .work__grid, .showcase__categories, .showcase-group, .stack__ecosystems, .stack__shared-grid, .services__grid, .connect__inner { grid-template-columns: 1fr; gap: var(--space-4); }
       .stack-card__rows { grid-template-columns: 1fr; }
       .work__grid { gap: var(--space-4); }
       .services__grid { gap: var(--space-4); }
@@ -925,7 +925,7 @@
           Turning complexity into <em>meaningful change.</em>
         </h1>
         <p class="hero__sub" data-i18n="hero.sub">
-          Tokyo-based technology consultant and hands-on engineer with 15+ years of experience connecting business goals, customer needs, and technical delivery.
+          Tokyo-based technology consultant and hands-on engineer with 16 years of experience connecting business goals, customer needs, and technical delivery.
         </p>
         <div class="hero__actions">
           <a href="#projects" class="btn-primary">
@@ -937,7 +937,7 @@
         <div class="hero__meta">
           <div>
             <div class="hero__stat-label" data-i18n="hero.statExperience">Experience</div>
-            <div class="hero__stat-value" data-i18n="hero.statExpValue">15+ yrs</div>
+            <div class="hero__stat-value" data-i18n="hero.statExpValue">16 years</div>
           </div>
           <div>
             <div class="hero__stat-label" data-i18n="hero.statBorn">Approach</div>
@@ -1073,7 +1073,7 @@
             </article>
 
             <article class="showcase-card">
-              <div class="showcase-card__preview showcase-card__preview--taxable" aria-hidden="true">
+              <div class="showcase-card__preview showcase-card__preview--app" aria-hidden="true">
                 <img src="taxable-icon-v1.png?v=1" alt="" width="512" height="512" loading="lazy" /><span>Taxable</span>
               </div>
               <div class="showcase-card__top">
@@ -1085,6 +1085,38 @@
               <p class="showcase-card__role" data-i18n="apps.taxableNote">In development. Not yet ready for tax filing.</p>
               <div class="showcase-card__links">
                 <a class="showcase-card__link" href="/app/#taxable" data-i18n="apps.taxableDetails">View app details ↗</a>
+              </div>
+            </article>
+
+            <article class="showcase-card">
+              <div class="showcase-card__preview showcase-card__preview--app" aria-hidden="true">
+                <img src="health-app-icon-v1.svg?v=1" alt="" width="256" height="256" loading="lazy" /><span>Health App</span>
+              </div>
+              <div class="showcase-card__top">
+                <div class="showcase-card__icon"><img src="health-app-icon-v1.svg?v=1" alt="" width="48" height="48" loading="lazy" /></div>
+                <div class="showcase-card__meta" data-i18n="apps.healthMeta">Health &amp; wellness · In development</div>
+              </div>
+              <h4 class="showcase-card__title" data-i18n="apps.healthName">Health App</h4>
+              <p class="showcase-card__body" data-i18n="apps.healthBody">Health App is a SunVeda Technologies project planning secure access to personal health information and medical-expense tools.</p>
+              <p class="showcase-card__role" data-i18n="apps.developmentNote">In development. Not yet available for public use.</p>
+              <div class="showcase-card__links">
+                <a class="showcase-card__link" href="/app/#health-app" data-i18n="apps.taxableDetails">View app details ↗</a>
+              </div>
+            </article>
+
+            <article class="showcase-card">
+              <div class="showcase-card__preview showcase-card__preview--app" aria-hidden="true">
+                <img src="familiar-icon-v1.svg?v=1" alt="" width="256" height="256" loading="lazy" /><span>Familiar</span>
+              </div>
+              <div class="showcase-card__top">
+                <div class="showcase-card__icon"><img src="familiar-icon-v1.svg?v=1" alt="" width="48" height="48" loading="lazy" /></div>
+                <div class="showcase-card__meta" data-i18n="apps.familiarMeta">Family learning · In development</div>
+              </div>
+              <h4 class="showcase-card__title" data-i18n="apps.familiarName">Familiar</h4>
+              <p class="showcase-card__body" data-i18n="apps.familiarBody">Familiar is a SunVeda Technologies project exploring personalized educational videos with caregiver consent and guardian review.</p>
+              <p class="showcase-card__role" data-i18n="apps.developmentNote">In development. Not yet available for public use.</p>
+              <div class="showcase-card__links">
+                <a class="showcase-card__link" href="/app/#familiar" data-i18n="apps.taxableDetails">View app details ↗</a>
               </div>
             </article>
           </div>
