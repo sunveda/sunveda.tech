@@ -58,7 +58,7 @@ Vercel hosting migration (see `CONTEXT.md` blockers for the full runbook):
 - [ ] Add `sunveda.tech` (and `www.sunveda.tech` if used) as a domain on the Vercel project.
 - [ ] Update the Cloudflare DNS record for `sunveda.tech` to point at Vercel instead of GitHub Pages, keeping it **proxied** (orange-cloud) so the existing `sunveda-analytics-api` and feedback Worker routes keep intercepting `/api/analytics*`, `/analyse*`, and `/api/feedback/*` unchanged.
 - [ ] Verify every route (site, `/a/`, `/app/`, `/app/aedoko/`, `/feedback/`, `/privacy.html`, `/terms.html`, `/rsvp/`) on the live domain once cut over.
-- [ ] Only once Vercel is confirmed serving production traffic: disable GitHub Pages in repo Settings → Pages and remove the now-vestigial `CNAME` file, then record this as architecture revision A9 in `architecture.md`.
+- [ ] Only once Vercel is confirmed serving production traffic: disable GitHub Pages in repo Settings → Pages and remove the now-vestigial `CNAME` file, then record this as architecture revision A10 in `architecture.md` (A9 is Daiboju).
 
 ## Spec changelog
 

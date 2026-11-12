@@ -4,11 +4,13 @@ Architecture **source of truth**: current diagram, deployment map, request/data
 flows, security boundaries, and revision history. House-wide rules for this
 file live at [`sunveda/data` → `house/DOCS_STRATEGY.md`](https://github.com/sunveda/data/blob/main/house/DOCS_STRATEGY.md).
 
-**Current architecture revision: A8 · Private event feedback (2026-09-11)**
+**Current architecture revision: A9 · Hosted app with an external API (2026-11-12)**
 
-A8 written feedback and private video upload are deployed and verified. The
-remaining operational choice is how long accepted feedback should be retained
-(tracked in [`SPEC.md`](SPEC.md)).
+A9 adds Daiboju's static pages at `/app/daiboju/`, which call a separately
+deployed Vercel API. Sign-up stays behind a launch gate until the privacy
+policy covers Daiboju. A8 (private event feedback) remains deployed and
+verified; how long accepted feedback is retained is still open (tracked in
+[`SPEC.md`](SPEC.md)). The planned Vercel hosting migration will be **A10**.
 
 > **MANDATORY — keep this file synchronized with architecture changes.**
 > The diagrams, deployment map, and architecture history must be updated in
@@ -52,6 +54,9 @@ flowchart TB
     daibojuStore[(Upstash Redis<br/>encrypted contacts)]
     argon[Gemini 4 Argon API]
     gsi[GSI evacuation-site tiles]
+    hazardFeed[Official hazard data<br/>JMA via P2P地震情報]
+    listener[Listener on Cloud Run<br/>WebSocket + polling]
+    delivery[Delivery providers<br/>Web Push · Resend email · LINE · Twilio SMS/WhatsApp]
   end
 
   subgraph community[GitHub community review plane]
@@ -110,6 +115,10 @@ flowchart TB
   daiboju -->|Sign-up, guidance · CORS| daibojuApi
   daibojuApi --> daibojuStore
   daibojuApi -->|Official hazard data only| argon
+  hazardFeed --> listener
+  listener -->|POST /api/ingest · bearer secret| daibojuApi
+  daibojuApi -->|Decrypted contact + alert text, per message| delivery
+  delivery -. Alert with link to /app/daiboju/go .-> visitor
   daiboju -. Nearest site computed on device .-> gsi
   site -->|Taxable details · /app/#taxable| apphub
   apphub -. Follow development · outbound link .-> taxableRepo
@@ -146,7 +155,9 @@ flowchart TB
 | Taxable announcement             | Static in-development card with a link to the public development repository               | Homepage `#showcase` and `/app/#taxable`; no calculator hosted by this repository     | `index.html`, `app/index.html`, `i18n.js`                                                                          |
 | AEDoko application               | Static React bundle with a committed AED data snapshot                                    | GitHub Pages route `/app/aedoko/`                                                   | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko)                                    |
 | Daiboju pages                    | Path-relative static HTML/CSS/JS, service worker, `config.js` pointing at the API          | GitHub Pages route `/app/daiboju/`                                                  | `app/daiboju/`, synced from `public/` in [`sunveda/daiboju`](https://github.com/sunveda/daiboju)                    |
-| Daiboju alert API                | Vercel functions (Node 22), Upstash Redis, Gemini 4 Argon, Cloud Run listener              | Vercel project `daiboju` (not deployed by this repository)                          | [`sunveda/daiboju`](https://github.com/sunveda/daiboju) — see its `SPEC.md`                                       |
+| Daiboju alert API                | Vercel functions (Node 22), Upstash Redis, Gemini 4 Argon                                  | Vercel project `daiboju` (not deployed by this repository)                          | [`sunveda/daiboju`](https://github.com/sunveda/daiboju) — see its `SPEC.md`                                       |
+| Daiboju hazard listener          | Zero-dependency Node 22 process holding the P2P地震情報 WebSocket, polling while disconnected | Google Cloud Run, one always-on instance (not deployed by this repository)          | `worker/` in [`sunveda/daiboju`](https://github.com/sunveda/daiboju)                                              |
+| Daiboju delivery                 | Web Push (VAPID), Resend email, LINE Messaging API, Twilio SMS and WhatsApp                | Third-party providers called from the Daiboju API                                   | `api/_lib/channels.js` in [`sunveda/daiboju`](https://github.com/sunveda/daiboju)                                 |
 | AEDoko interactive map           | Lazy MapLibre GL bundle, browser-side GeoJSON clustering, and OpenFreeMap vector tiles    | Loaded only after a visitor opens the map at `/app/aedoko/`                         | `app/aedoko/assets/`, built from `app/map-panel.tsx` in [`sunveda/aedoko`](https://github.com/sunveda/aedoko)      |
 | AEDoko community review          | GitHub Issue Forms plus issue-triggered GitHub Actions                                    | Issues and unverified draft PRs in `sunveda/aedoko`                                 | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
 | Analytics API and alias redirect | Cloudflare Worker, ES modules                                                             | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/`                                                                                                |
@@ -206,7 +217,8 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 1. GitHub Pages serves the static Daiboju pages at `/app/daiboju/` (sign-up, `go.html` next steps, `demo.html` drill console marked `noindex`).
 2. The pages call the separately deployed Daiboju API (`window.DAIBOJU_API` in `app/daiboju/config.js`) with CORS limited to `https://sunveda.tech`. Sign-up is closed by a launch gate (`DAIBOJU_SIGNUP_OPEN = false` in `config.js`) until `privacy.html` covers Daiboju; meanwhile the form shows "Sign-up opens soon" and sends nothing.
 3. Sign-up sends only a delivery address (push subscription, email, phone or a LINE linking code), language and prefecture to the API, which stores the contact encrypted in Upstash Redis.
-4. Alert messages link back to `/app/daiboju/go?...`. That page fetches non-personal guidance from the API, then computes the nearest designated evacuation site in the browser from GSI tiles and opens a Google Maps walking-directions link. Coordinates are never sent to SunVeda.
+4. Official hazard data (JMA, relayed by P2P地震情報) reaches an always-on listener on Cloud Run, which forwards each message to the API's `/api/ingest` with a bearer secret. The API sends a fixed first alert, then rule-decided next steps written by Gemini 4 Argon per prefecture and language, through each subscriber's chosen provider.
+5. Alert messages link back to `/app/daiboju/go?...`. That page fetches non-personal guidance from the API, then computes the nearest designated evacuation site in the browser from GSI tiles and opens a Google Maps walking-directions link. Coordinates are never sent to SunVeda.
 
 ### AEDoko interactive map
 
@@ -260,6 +272,8 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
 - Layout checks use only repository files on a loopback server, require read-only repository access, and receive no production credentials or visitor data.
 - Daiboju is the first `/app/` route that sends personal data (an alert contact) to a backend. That backend is the separate Daiboju Vercel project, not a Cloudflare Worker, and it never shares storage with analytics or feedback. Contacts are AES-256-GCM encrypted at rest; Gemini 4 Argon receives official hazard data, an area and a language only; every message carries a one-tap delete link. Real (non-drill) sign-ups must wait for a privacy-policy update covering Daiboju.
+- Daiboju contacts are decrypted only at send time and passed to the one delivery provider the subscriber chose (push service, Resend, LINE or Twilio), which receives that contact and the alert text. The ingest and drill secrets, provider keys and the data key are Vercel or Cloud Run environment variables; the listener holds only the ingest secret.
+- On `/app/daiboju/go`, the exact position stays in browser memory, but the page downloads the public GSI evacuation-site tiles around it (zoom 10, roughly 40 km), so GSI can infer the visitor's approximate area. The page discloses this.
 - The Daiboju pages hold no credentials. Drill and ingest secrets, provider keys and the data key live only in Vercel environment variables.
 - The Taxable listing collects no tax or transaction data. Its development link sends ordinary browser request metadata to GitHub only after a visitor selects it.
 - Guest contact details live only in a dedicated feedback D1 database; videos live in private R2 and stream through authenticated Worker endpoints. Feedback data must never flow into analytics, public Pages files, or GitHub context. See [feedback setup, data flows, API and retention runbook](../feedback/README.md).
