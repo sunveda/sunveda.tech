@@ -101,7 +101,8 @@ if (!cfg) {
   $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">The alert service is not reachable right now. Try again shortly.</p>';
   throw new Error('Daiboju API unreachable');
 }
-const drillOnly = window.DAIBOJU_SIGNUP_OPEN === false || !cfg.signupOpen;
+// The service's own gate wins when it reports one; a service too old to report it has no gate.
+const drillOnly = window.DAIBOJU_SIGNUP_OPEN === false || cfg.signupOpen === false;
 if (drillOnly && !params.has('drill')) closedNotice();
 // Be honest while nothing is really sent. Fail closed: the notice stays unless the service
 // explicitly reports that it delivers for real (dryRun === false).

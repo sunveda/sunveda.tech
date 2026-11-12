@@ -7,8 +7,8 @@ file live at [`sunveda/data` → `house/DOCS_STRATEGY.md`](https://github.com/su
 **Current architecture revision: A9 · Hosted app with an external API (2026-11-12)**
 
 A9 adds Daiboju's static pages at `/app/daiboju/`, which call a separately
-deployed Google Cloud Run service. Sign-up stays behind a launch gate until the privacy
-policy covers Daiboju. A8 (private event feedback) remains deployed and
+deployed Google Cloud Run service. Daiboju is listed as live and sign-up is open, covered
+by `privacy.html`; the service still simulates delivery (test mode). A8 (private event feedback) remains deployed and
 verified; how long accepted feedback is retained is still open (tracked in
 [`SPEC.md`](SPEC.md)). The planned Vercel hosting migration will be **A10**.
 
@@ -51,7 +51,7 @@ flowchart TB
 
   subgraph daibojuPlane[Daiboju alert plane · outside this repository]
     daibojuApi[Daiboju on Google Cloud Run · asia-northeast1<br/>API + in-process hazard listener · 1 always-on instance]
-    daibojuStore[(Encrypted contacts<br/>in-memory for the preview · Upstash Redis for production)]
+    daibojuStore[(Encrypted contacts<br/>in-memory in test mode · Upstash Redis for production)]
     secrets[(Secret Manager<br/>data key · drill/ingest secrets · Gemini key)]
     argon[Gemini 4 Argon API]
     gsi[GSI evacuation-site tiles]
@@ -110,7 +110,7 @@ flowchart TB
   aedrepo --> aedbuild
   aedbuild -->|Vendored release artifact| aedoko
   apphub -->|Open application| aedoko
-  apphub -->|Open preview| daiboju
+  apphub -->|Open| daiboju
   daibojuRepo -->|Synced static pages| daiboju
   daiboju -->|Sign-up, guidance · CORS| daibojuApi
   daibojuApi --> daibojuStore
@@ -211,11 +211,11 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 2. Both cards identify the crypto tax calculator as in development and not yet ready for tax filing. The catalogue distinguishes one live application from one in development.
 3. **Follow development** opens the public `sunveda/taxable` repository in a new tab. The website does not embed or call the separately developed Taxable application or API.
 
-### Daiboju disaster alerts (preview)
+### Daiboju disaster alerts
 
 1. GitHub Pages serves the static Daiboju pages at `/app/daiboju/` (sign-up, `go.html` next steps, `demo.html` drill console marked `noindex`).
-2. The pages call the separately deployed Daiboju Cloud Run service (`window.DAIBOJU_API` in `app/daiboju/config.js`: `https://daiboju-668725030350.asia-northeast1.run.app`, deployed 2026-11-12) with CORS limited to `https://sunveda.tech`. Sign-up is closed by a launch gate (`DAIBOJU_SIGNUP_OPEN = false` in `config.js`) until `privacy.html` covers Daiboju; meanwhile the form shows "Sign-up opens soon" and sends nothing.
-3. Sign-up sends only a delivery address (push subscription, email, phone or a LINE linking code), language and prefecture to the API, which stores the contact encrypted (in memory for the preview; Upstash Redis for production).
+2. The pages call the separately deployed Daiboju Cloud Run service (`window.DAIBOJU_API` in `app/daiboju/config.js`: `https://daiboju-668725030350.asia-northeast1.run.app`, deployed 2026-11-12) with CORS limited to `https://sunveda.tech`. Sign-up has two gates: the page's `DAIBOJU_SIGNUP_OPEN` in `config.js` (open since `privacy.html` covers Daiboju, 2026-11-12) and the service's `SIGNUP_OPEN`, reported as `signupOpen` by `/api/config`. The form shows "Sign-up opens soon" if either is explicitly closed; drill opt-ins (`?drill=1`) are always allowed. While the service reports anything but `dryRun: false`, the form carries a test-mode notice that alerts are simulated and sign-ups may be cleared on restart.
+3. Sign-up sends only a delivery address (push subscription, email, phone or a LINE linking code), language and prefecture to the API, which stores the contact encrypted (in memory while in test mode, so a restart clears it; Upstash Redis for production). An expired push subscription leaves a 30-day, contact-free renewal note so the service worker's renewal can restore it; an unsubscribe leaves none.
 4. `tour.html` ("See how it works") and `go.html?demo=` run a simulated alert entirely in the browser from `demo-data.js`, which is generated from the service's real rules and templates; they make no API calls.
 5. Official hazard data (JMA, relayed by P2P地震情報) reaches the Daiboju Cloud Run service, which holds the P2P地震情報 WebSocket itself and ingests each message in-process. The API sends a fixed first alert, then rule-decided next steps written by Gemini 4 Argon per prefecture and language, through each subscriber's chosen provider.
 6. Alert messages link back to `/app/daiboju/go?...`. That page fetches non-personal guidance from the API, then computes the nearest designated evacuation site in the browser from GSI tiles and opens a Google Maps walking-directions link. Coordinates are never sent to SunVeda.
@@ -271,7 +271,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 - The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
 - Layout checks use only repository files on a loopback server, require read-only repository access, and receive no production credentials or visitor data.
-- Daiboju is the first `/app/` route that sends personal data (an alert contact) to a backend. That backend is the separate Daiboju Cloud Run service in its own Google Cloud project, not a Cloudflare Worker, and it never shares storage with analytics or feedback. Contacts are AES-256-GCM encrypted at rest; Gemini 4 Argon receives official hazard data, an area and a language only; every message carries a one-tap delete link. Real (non-drill) sign-ups must wait for a privacy-policy update covering Daiboju.
+- Daiboju is the first `/app/` route that sends personal data (an alert contact) to a backend. That backend is the separate Daiboju Cloud Run service in its own Google Cloud project, not a Cloudflare Worker, and it never shares storage with analytics or feedback. Contacts are AES-256-GCM encrypted at rest; Gemini 4 Argon receives official hazard data, an area and a language only; every message carries a one-tap delete link. Real (non-drill) sign-ups are covered by the Daiboju section of `privacy.html` (2026-11-12).
 - Daiboju contacts are decrypted only at send time and passed to the one delivery provider the subscriber chose (push service, Resend, LINE or Twilio), which receives that contact and the alert text. The data key, drill and ingest secrets, Gemini key and provider keys live in Google Secret Manager and are mounted into the Cloud Run service; the pages and this repository hold none of them.
 - On `/app/daiboju/go`, the exact position stays in browser memory, but the page downloads the public GSI evacuation-site tiles around it (zoom 10, roughly 40 km), so GSI can infer the visitor's approximate area. The page discloses this.
 - The Daiboju pages hold no credentials. After a browser-push sign-up they keep only the API origin, language and prefecture in Cache Storage so the service worker can renew a replaced subscription; no record id or delete token is stored in the browser.
