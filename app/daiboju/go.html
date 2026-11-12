@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daiboju · What to do now</title>
-<meta name="theme-color" content="#d9381e">
+<meta name="theme-color" content="#c8201a">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -15,35 +15,33 @@
 <main>
   <a class="brand" href="./"><img class="brand-mark" src="icon.svg" alt="" width="36" height="36">Daiboju</a>
   <div id="drill" class="drill-banner" hidden></div>
-  <header id="head" class="alert-head"><h1 id="title">…</h1><p id="summary"></p></header>
-  <ul class="facts" id="facts" style="margin-bottom:16px"></ul>
+  <header id="head" class="alert-head"><div class="tile" aria-hidden="true"><svg class="i"><use id="headIcon" href="icons.svg#warn"/></svg></div><div><h1 id="title">…</h1><p id="summary"></p></div></header>
+  <ul class="facts" id="facts"></ul>
 
   <section class="card">
-    <h2 id="tSteps">What to do</h2>
+    <h2 class="sec-title"><svg class="i" aria-hidden="true"><use href="icons.svg#steps"/></svg><span id="tSteps">What to do</span></h2>
     <ol class="steps" id="steps"></ol>
   </section>
 
   <section class="card" id="avoidCard" hidden>
-    <h2 id="tAvoid">Do not</h2>
+    <h2 class="sec-title"><svg class="i" aria-hidden="true" style="color:var(--danger)"><use href="icons.svg#no"/></svg><span id="tAvoid">Do not</span></h2>
     <ul class="avoid" id="avoid"></ul>
   </section>
 
-  <section class="card" id="routeCard" hidden>
-    <h2 id="tNearest">Nearest evacuation sites</h2>
-    <p class="small muted" id="tPrivacy">Your location stays on your phone. It is never sent to Daiboju.</p>
-    <div id="places" role="status" aria-live="polite"><button class="btn safe" id="locate" type="button">Find my nearest safe place</button></div>
-    <p class="small muted" id="tsunamiTip" hidden style="margin-top:12px"></p>
+  <section class="card shelter-card" id="routeCard" hidden>
+    <h2 class="sec-title"><svg class="i" aria-hidden="true"><use href="icons.svg#exit"/></svg><span id="tNearest">Nearest evacuation sites</span></h2>
+    <p class="small" id="tPrivacy">Your location stays on your phone. It is never sent to Daiboju.</p>
+    <div id="places" role="status" aria-live="polite"><button class="btn safe" id="locate" type="button"><svg class="i" aria-hidden="true"><use href="icons.svg#pin"/></svg><span id="tLocate">Find my nearest safe place</span></button></div>
+    <p class="small" id="tsunamiTip" hidden style="margin-top:12px"></p>
   </section>
 
-  <section class="card">
-    <div class="row">
-      <a class="btn signal" href="tel:119" id="t119">119 Fire / Ambulance</a>
-      <a class="btn ghost" href="tel:110" id="t110">110 Police</a>
-    </div>
-    <a class="btn ghost" href="https://sunveda.tech/app/aedoko/" id="tAed">Someone collapsed? Find an AED</a>
+  <section class="calls" aria-label="Emergency numbers">
+    <a class="btn signal" href="tel:119"><b>119</b><span id="t119">Fire / Ambulance</span></a>
+    <a class="btn" href="tel:110"><b>110</b><span id="t110">Police</span></a>
+    <a class="btn ghost aed" href="https://sunveda.tech/app/aedoko/"><svg class="i" aria-hidden="true" style="color:var(--danger)"><use href="icons.svg#aed"/></svg><span id="tAed">Someone collapsed? Find an AED</span></a>
   </section>
 
-  <footer id="tFoot">Official data: Japan Meteorological Agency via P2P Earthquake Information. Evacuation sites: Geospatial Information Authority of Japan. Always follow your city, police and fire services.</footer>
+  <footer id="tFoot">Data: Japan Meteorological Agency, GSI. Always follow your city, police and fire services.</footer>
 </main>
 
 <script type="module">
@@ -67,7 +65,10 @@ const T = {
 const t = T[lang] || T[lang.slice(0, 2).toLowerCase()] || T.en;
 const set = (id, text) => ($(id).textContent = text);
 set('tSteps', t.steps); set('tAvoid', t.avoid); set('tNearest', t.nearest); set('tPrivacy', t.privacy);
-set('locate', t.locate); set('t119', t.c119); set('t110', t.c110); set('tAed', t.aed);
+set('tLocate', t.locate); set('t119', t.c119.replace(/^\d+\s*/, '')); set('t110', t.c110.replace(/^\d+\s*/, '')); set('tAed', t.aed);
+// One pictogram per action, like a safety sign.
+const ACTION_ICON = { high_ground_now: 'high', coast_high_ground: 'high', leave_coast: 'tsunami', check_building: 'quake', stay_alert: 'home', evacuate_now: 'exit', safest_place_now: 'home', prepare: 'steps', shelter_indoors: 'home', follow_officials: 'warn' };
+const icon = (id) => `<svg class="i" aria-hidden="true"><use href="icons.svg#${id}"/></svg>`;
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('避難場所')}`;
@@ -84,6 +85,7 @@ if (!data || data.error) {
   // Guidance is unavailable (outage, bad or expired link). Say so plainly, keep the
   // emergency numbers, and still offer the evacuation-site search.
   set('title', t.unavailT); set('summary', t.unavail);
+  $('head').classList.add('calm');
   // Shelters are designated per hazard: only search if the link says which hazard this is.
   const LAYER = { earthquake: 'skhb04', tsunami: 'skhb05', rain: 'skhb01', typhoon: 'skhb01', landslide: 'skhb02', volcano: 'skhb08' };
   const layer = LAYER[q.get('h')];
@@ -97,23 +99,26 @@ if (!data || data.error) {
 } else {
   const g = data.guidance || {};
   set('title', g.title || 'Daiboju');
-  set('summary', g.summary || '');
+  // Less to read: skip the summary when it only repeats the first step.
+  set('summary', g.summary && g.summary !== g.steps?.[0] ? g.summary : '');
+  $('summary').hidden = !$('summary').textContent;
   document.title = `Daiboju · ${g.title || ''}`;
   if (!['high_ground_now', 'coast_high_ground', 'evacuate_now', 'safest_place_now', 'check_building'].includes(data.action)) $('head').classList.add('calm');
+  $('headIcon').setAttribute('href', `icons.svg#${ACTION_ICON[data.action] || 'warn'}`);
   $('steps').innerHTML = (g.steps || []).map((s) => `<li>${esc(s)}</li>`).join('');
-  if (g.avoid?.length) { $('avoidCard').hidden = false; $('avoid').innerHTML = g.avoid.map((s) => `<li>${esc(s)}</li>`).join(''); }
-  if (data.event?.drill) { $('drill').hidden = false; set('drill', t.drill); }
+  if (g.avoid?.length) { $('avoidCard').hidden = false; $('avoid').innerHTML = g.avoid.map((s) => `<li>${icon('no')}<span>${esc(s)}</span></li>`).join(''); }
+  if (data.event?.drill) { $('drill').hidden = false; $('drill').innerHTML = `${icon('drill')}<span>${esc(t.drill)}</span>`; }
 
   const f = data.event?.facts || {};
   // Every field below is optional: this page must render the steps even if the payload is partial.
-  const chips = data.pref ? [`${data.pref.en} · ${data.pref.ja}`] : [];
-  if (data.area?.intensity) chips.push(`${t.intensity} ${data.area.intensity}`);
-  if (f.magnitude) chips.push(`${t.mag} ${f.magnitude}`);
-  if (f.epicenter) chips.push(f.epicenter);
-  if (data.area?.region) chips.push(data.area.region);
-  if (data.area?.height) chips.push(data.area.height);
-  if (f.name) chips.push(f.name);
-  $('facts').innerHTML = chips.map((c) => `<li>${esc(c)}</li>`).join('');
+  const chips = data.pref ? [['pin', `${data.pref.en} · ${data.pref.ja}`]] : [];
+  if (data.area?.intensity) chips.push(['quake', `${t.intensity} ${data.area.intensity}`]);
+  if (f.magnitude) chips.push(['wave', `${t.mag} ${f.magnitude}`]);
+  if (f.epicenter) chips.push(['warn', f.epicenter]);
+  if (data.area?.region) chips.push(['tsunami', data.area.region]);
+  if (data.area?.height) chips.push(['tsunami', data.area.height]);
+  if (f.name) chips.push(['typhoon', f.name]);
+  $('facts').innerHTML = chips.map(([ic, c]) => `<li>${icon(ic)}${esc(c)}</li>`).join('');
 
   if (data.showRoute) {
     $('routeCard').hidden = false;
@@ -176,7 +181,7 @@ function locate() {
     $('places').innerHTML = list.map((s) => `
       <div class="place">
         <div class="name">${esc(s.name)}</div>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=walking" target="_blank" rel="noopener">${t.walk} →</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=walking" target="_blank" rel="noopener">${icon('exit')}${t.walk}</a>
         <div class="dist">${s.d < 1000 ? Math.round(s.d) + ' m' : (s.d / 1000).toFixed(1) + ' km'} ${t.straight}${s.address ? ' · ' + esc(s.address) : ''}</div>
       </div>`).join('') + warning;
   }, () => {
