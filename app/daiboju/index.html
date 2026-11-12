@@ -82,7 +82,7 @@ if (window.DAIBOJU_SIGNUP_OPEN === false) {
   $('form').innerHTML = '<h2>Sign-up opens soon · 登録は近日公開</h2><p class="muted">Daiboju is in preview. Sign-up will open once our privacy policy covers it.</p>';
   throw new Error('Daiboju sign-up is not open yet');
 }
-const cfg = await fetch(API + '/api/config').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+const cfg = await fetch(API + '/api/config', { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 if (!cfg) {
   $('form').innerHTML = '<h2>Sign-up opens soon · 登録は近日公開</h2><p class="muted">The alert service is not connected yet. Please check back shortly.</p>';
   throw new Error('Daiboju API unreachable');
@@ -158,9 +158,16 @@ $('form').addEventListener('submit', async (e) => {
         if (body.contact.startsWith('0')) body.contact = '+81' + body.contact.slice(1);
       }
     }
-    const res = await fetch(API + '/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const res = await fetch(API + '/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(15000) })
+      .catch((e) => { throw new Error(e.name === 'TimeoutError' ? 'The alert service did not answer. Please try again in a moment.' : 'Could not reach the alert service. Please try again.'); });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    if (ch === 'webpush') {
+      try {
+        const cache = await caches.open('daiboju');
+        await cache.put('push-registration', new Response(JSON.stringify({ api: new URL(API || '.', location.href).href.replace(/\/$/, ''), lang: body.lang, pref: body.pref, drill: body.drill, id: data.id, t: data.unsubToken })));
+      } catch { /* renewal is best-effort */ }
+    }
     if (ch === 'line') {
       show(`<strong>One more step.</strong> Add the Daiboju LINE account and send this code within 15 minutes:
         <div class="code">${esc(data.code)}</div>

@@ -31,3 +31,25 @@ self.addEventListener('notificationclick', (event) => {
   } catch { /* keep the default */ }
   event.waitUntil(self.clients.openWindow(url));
 });
+
+// The browser can replace a push subscription at any time. Re-subscribe and tell the API,
+// otherwise alerts would silently stop. Uses what the sign-up page stored on this device.
+self.addEventListener('pushsubscriptionchange', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open('daiboju');
+    const saved = await cache.match('push-registration');
+    if (!saved) return;
+    const reg = await saved.json();
+    const sub = event.newSubscription || await self.registration.pushManager.subscribe(event.oldSubscription.options);
+    const res = await fetch(`${reg.api}/api/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channel: 'webpush', contact: sub.toJSON(), lang: reg.lang, pref: reg.pref, drill: reg.drill }),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    // Remove the old record now rather than waiting for a failed delivery.
+    await fetch(`${reg.api}/api/unsubscribe?id=${encodeURIComponent(reg.id)}&t=${encodeURIComponent(reg.t)}`, { method: 'POST' }).catch(() => {});
+    await cache.put('push-registration', new Response(JSON.stringify({ ...reg, id: data.id, t: data.unsubToken })));
+  })());
+});
