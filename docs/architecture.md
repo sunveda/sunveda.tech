@@ -35,6 +35,7 @@ flowchart TB
     dashboard[Analytics dashboard<br/>/a/]
     apphub[Application catalogue<br/>/app/]
     aedoko[AEDoko emergency finder<br/>/app/aedoko/]
+    daiboju[Daiboju disaster-alert pages<br/>/app/daiboju/]
     pages[Legal and RSVP pages]
     feedback[Guest form + private host dashboard<br/>/feedback/ · /feedback/admin/]
   end
@@ -43,6 +44,14 @@ flowchart TB
     aedrepo[sunveda/aedoko<br/>React + static AED snapshot]
     aedbuild[Versioned static bundle]
     taxableRepo[sunveda/taxable<br/>Crypto tax calculator in development]
+    daibojuRepo[sunveda/daiboju<br/>Pages + Vercel API source]
+  end
+
+  subgraph daibojuPlane[Daiboju alert plane · outside this repository]
+    daibojuApi[Daiboju API on Vercel<br/>daiboju.vercel.app]
+    daibojuStore[(Upstash Redis<br/>encrypted contacts)]
+    argon[Gemini 4 Argon API]
+    gsi[GSI evacuation-site tiles]
   end
 
   subgraph community[GitHub community review plane]
@@ -86,6 +95,7 @@ flowchart TB
   cf -->|/a/| dashboard
   cf -->|/app/| apphub
   cf -->|/app/aedoko/| aedoko
+  cf -->|/app/daiboju/| daiboju
   cf -->|/privacy, /terms, /rsvp| pages
   cf -->|/analyse → 308 /a/| worker
   cf -->|/api/analytics*| worker
@@ -95,6 +105,12 @@ flowchart TB
   aedrepo --> aedbuild
   aedbuild -->|Vendored release artifact| aedoko
   apphub -->|Open application| aedoko
+  apphub -->|Open preview| daiboju
+  daibojuRepo -->|Synced static pages| daiboju
+  daiboju -->|Sign-up, guidance · CORS| daibojuApi
+  daibojuApi --> daibojuStore
+  daibojuApi -->|Official hazard data only| argon
+  daiboju -. Nearest site computed on device .-> gsi
   site -->|Taxable details · /app/#taxable| apphub
   apphub -. Follow development · outbound link .-> taxableRepo
   aedoko -. Map opened on demand .-> openfreemap
@@ -129,12 +145,14 @@ flowchart TB
 | Application catalogue            | Plain HTML, inline CSS and shared client-side translations                                | GitHub Pages route `/app/`                                                          | `app/index.html`, `i18n.js`                                                                                        |
 | Taxable announcement             | Static in-development card with a link to the public development repository               | Homepage `#showcase` and `/app/#taxable`; no calculator hosted by this repository     | `index.html`, `app/index.html`, `i18n.js`                                                                          |
 | AEDoko application               | Static React bundle with a committed AED data snapshot                                    | GitHub Pages route `/app/aedoko/`                                                   | `app/aedoko/`, built from [`sunveda/aedoko`](https://github.com/sunveda/aedoko)                                    |
+| Daiboju pages                    | Path-relative static HTML/CSS/JS, service worker, `config.js` pointing at the API          | GitHub Pages route `/app/daiboju/`                                                  | `app/daiboju/`, synced from `public/` in [`sunveda/daiboju`](https://github.com/sunveda/daiboju)                    |
+| Daiboju alert API                | Vercel functions (Node 22), Upstash Redis, Gemini 4 Argon, Cloud Run listener              | Vercel project `daiboju` (not deployed by this repository)                          | [`sunveda/daiboju`](https://github.com/sunveda/daiboju) — see its `SPEC.md`                                       |
 | AEDoko interactive map           | Lazy MapLibre GL bundle, browser-side GeoJSON clustering, and OpenFreeMap vector tiles    | Loaded only after a visitor opens the map at `/app/aedoko/`                         | `app/aedoko/assets/`, built from `app/map-panel.tsx` in [`sunveda/aedoko`](https://github.com/sunveda/aedoko)      |
 | AEDoko community review          | GitHub Issue Forms plus issue-triggered GitHub Actions                                    | Issues and unverified draft PRs in `sunveda/aedoko`                                 | `.github/ISSUE_TEMPLATE/`, `.github/workflows/community-city-pr.yml`, `community/` in the AEDoko source repository |
 | Analytics API and alias redirect | Cloudflare Worker, ES modules                                                             | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/`                                                                                                |
 | Analytics database               | Cloudflare D1                                                                             | APAC region                                                                         | Schema in `analytics/worker/schema.sql`                                                                            |
 | Daily collector                  | Zero-dependency Node.js 24 scripts with transient retry and 30-day gap reconciliation     | GitHub Actions                                                                      | `analytics/collect.mjs`, `analytics/reconcile.mjs`, `.github/workflows/analytics.yml`                              |
-| Multilingual layout QA           | Playwright with 188 route, language, and viewport combinations                            | GitHub Actions on pull requests, `main`, weekly, and manual dispatch                | `tests/layout.mjs`, `.github/workflows/layout-tests.yml`                                                           |
+| Multilingual layout QA           | Playwright with 196 route, language, and viewport combinations                            | GitHub Actions on pull requests, `main`, weekly, and manual dispatch                | `tests/layout.mjs`, `.github/workflows/layout-tests.yml`                                                           |
 | Human-readable archive           | Markdown reports                                                                          | Orphan-style `analytics-data` Git branch                                            | `analytics/reports/YYYY-MM-DD.md` on that branch                                                                   |
 | Legal and event pages            | Plain HTML                                                                                | GitHub Pages from `main`                                                            | `privacy.html`, `terms.html`, `rsvp/index.html`                                                                    |
 | Domain and CDN                   | `CNAME` plus Cloudflare DNS/CDN                                                           | Cloudflare in front of GitHub Pages                                                 | `CNAME` and Cloudflare configuration                                                                               |
@@ -183,6 +201,13 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 2. Both cards identify the crypto tax calculator as in development and not yet ready for tax filing. The catalogue distinguishes one live application from one in development.
 3. **Follow development** opens the public `sunveda/taxable` repository in a new tab. The website does not embed or call the separately developed Taxable application or API.
 
+### Daiboju disaster alerts (preview)
+
+1. GitHub Pages serves the static Daiboju pages at `/app/daiboju/` (sign-up, `go.html` next steps, `demo.html` drill console marked `noindex`).
+2. The pages call the separately deployed Daiboju API (`window.DAIBOJU_API` in `app/daiboju/config.js`) with CORS limited to `https://sunveda.tech`. Until that API is deployed, the sign-up form shows a "sign-up opens soon" notice and sends nothing.
+3. Sign-up sends only a delivery address (push subscription, email, phone or a LINE linking code), language and prefecture to the API, which stores the contact encrypted in Upstash Redis.
+4. Alert messages link back to `/app/daiboju/go?...`. That page fetches non-personal guidance from the API, then computes the nearest designated evacuation site in the browser from GSI tiles and opens a Google Maps walking-directions link. Coordinates are never sent to SunVeda.
+
 ### AEDoko interactive map
 
 1. The emergency finder renders without loading MapLibre GL, the map stylesheet, OpenFreeMap tiles, or the full Tokyo snapshot.
@@ -207,7 +232,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 1. GitHub Actions runs the Playwright suite for relevant pull requests and pushes to `main`, every Monday at 09:15 JST, or by manual dispatch.
 2. The suite serves the checked-out static files on a loopback-only ephemeral port.
 3. Chromium checks 360×800, 390×844, 768×1024, and 1366×768 viewports.
-4. The homepage and `/app/` run in all 12 shared locales, AEDoko runs in all 16 available language choices, and the legal, RSVP, and analytics routes run in English.
+4. The homepage and `/app/` run in all 12 shared locales, AEDoko runs in all 16 available language choices, and the legal, RSVP, analytics and Daiboju routes run in English (the Daiboju next-steps page also in Japanese).
 5. The job fails when it finds text clipping, multi-line heading collisions, header collisions, mobile-menu overflow, or document-level horizontal overflow.
 
 ### AEDoko community contributions
@@ -234,6 +259,8 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 - The AEDoko workflow receives write access only to repository contents, issues, and pull requests. It stores untrusted submissions as inert Markdown and never executes their content.
 - Community submissions cannot modify the live AED snapshot automatically; a separate maintainer review and data-import change are required.
 - Layout checks use only repository files on a loopback server, require read-only repository access, and receive no production credentials or visitor data.
+- Daiboju is the first `/app/` route that sends personal data (an alert contact) to a backend. That backend is the separate Daiboju Vercel project, not a Cloudflare Worker, and it never shares storage with analytics or feedback. Contacts are AES-256-GCM encrypted at rest; Gemini 4 Argon receives official hazard data, an area and a language only; every message carries a one-tap delete link. Real (non-drill) sign-ups must wait for a privacy-policy update covering Daiboju.
+- The Daiboju pages hold no credentials. Drill and ingest secrets, provider keys and the data key live only in Vercel environment variables.
 - The Taxable listing collects no tax or transaction data. Its development link sends ordinary browser request metadata to GitHub only after a visitor selects it.
 - Guest contact details live only in a dedicated feedback D1 database; videos live in private R2 and stream through authenticated Worker endpoints. Feedback data must never flow into analytics, public Pages files, or GitHub context. See [feedback setup, data flows, API and retention runbook](../feedback/README.md).
 
@@ -261,7 +288,9 @@ flowchart LR
   classDef current fill:#01696f,color:#fff,stroke:#83e6c2,stroke-width:2px;
   A8["A8 · 2026-09-11<br/>Private event feedback"]
   A7 -->|Reusable events and private uploads| A8
-  class A8 current;
+  A9["A9 · 2026-11-12<br/>App route with external API"]
+  A8 -->|Multilingual alerts need a live backend| A9
+  class A9 current;
 ```
 
 | Revision                                        | Change                                                                                                                                                                  | Why the architecture changed                                                                                                                                                        |
@@ -274,6 +303,7 @@ flowchart LR
 | **A6 · Community contribution review pipeline** | Added structured city and feedback Issue Forms in `sunveda/aedoko`; city issues generate unverified draft source-proposal PRs through a restricted GitHub Action.       | Invite community source discovery while keeping unverified links and coordinates outside the emergency-use dataset until explicit maintainer review and separate import validation. |
 | **A7 · On-demand AED map**                      | Added a lazy full-screen MapLibre map with browser-side clustering for all 4,772 published Tokyo AED records and OpenFreeMap vector tiles.                              | Let visitors explore the complete dataset visually while preserving the fast initial emergency-finder path and making geolocation an explicit action.                               |
 | **A8 · Private event feedback**                 | Adds a reusable guest form, authenticated host dashboard, dedicated Worker/D1, managed Turnstile and private multipart R2 video storage.                                | Store private contact details and videos independently of public analytics without migrating the static site.                                                                       |
+| **A9 · Hosted app with an external API**        | Added Daiboju's static pages at `/app/daiboju/`, calling a separately deployed Vercel API (Upstash Redis, Gemini 4 Argon) via CORS; nearest-site search stays in the browser. | Disaster alerts need an always-on backend for sign-up and delivery. Keeping it in its own project avoids widening Cloudflare Worker routes or mixing alert contacts with analytics or feedback data. |
 
 ### Non-revision architecture maintenance
 
@@ -300,6 +330,7 @@ recovery behavior, not the system boundary or deployment platform.
 | Host focused applications under `/app/`       | Active | Independent deployment or runtime requirements make vendored static bundles difficult to audit or update.                                    |
 | Keep community AED submissions proposal-only  | Active | A source-independent validation and normalization pipeline can safely prove submitted records before publication.                            |
 | Keep the AED map payload strictly on demand   | Active | Map exploration becomes the primary emergency flow or measured usage justifies the additional initial payload and third-party tile requests. |
+| Host app backends outside this repository     | Active | An app's API needs to share the `sunveda.tech` origin (cookies, same-origin requests) or Cloudflare Workers become the preferred runtime. |
 | Keep analytics providers separate             | Active | A validated cross-provider identity and metric model exists.                                                                                 |
 | Use D1 as dashboard source of truth           | Active | Query volume, retention, or analysis requirements exceed the current snapshot model.                                                         |
 | Retain `analytics-data` as an audit archive   | Active | A replacement provides equally reviewable and recoverable history.                                                                           |
