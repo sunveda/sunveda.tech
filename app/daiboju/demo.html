@@ -20,7 +20,8 @@
   .msg .meta b { color: var(--ink); }
   .pill { border-radius: 999px; padding: 1px 8px; background: var(--paper); border: 1px solid var(--line); }
   .pill.argon { background: var(--safe-soft); border-color: transparent; }
-  .lane h2 small { font-weight: 400; color: var(--muted); font-size: .85rem; }
+  .lane h2 { margin-bottom: 2px; }
+  .lane-sub { margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -39,8 +40,8 @@
   <p id="status" class="muted" role="status" aria-live="polite"></p>
 
   <div class="lanes">
-    <section class="card lane"><h2>① First alert <small>fixed text, seconds, no AI</small></h2><div id="s1"></div></section>
-    <section class="card lane"><h2>② Next steps <small>rules decide, Argon explains</small></h2><div id="s2"></div></section>
+    <section class="card lane"><h2>① First alert</h2><p class="small muted lane-sub">Fixed text, within seconds, no AI</p><div id="s1"></div></section>
+    <section class="card lane"><h2>② Next steps</h2><p class="small muted lane-sub">Rules decide, Argon explains</p><div id="s2"></div></section>
   </div>
 </main>
 
@@ -50,7 +51,11 @@ const API = window.DAIBOJU_API || '';
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 try { $('secret').value = sessionStorage.getItem('drillSecret') || ''; } catch {}
 
-const { scenarios } = await fetch(API + '/api/drill').then((r) => r.json());
+const safeLink = (u) => { try { const x = new URL(u, location.href); return ['https:', 'http:'].includes(x.protocol) ? x.href : '#'; } catch { return '#'; } };
+const { scenarios } = await fetch(API + '/api/drill').then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))).catch((err) => {
+  $('status').textContent = `The Daiboju API is not reachable (${err.message}). Drills need a deployed API.`;
+  return { scenarios: {} };
+});
 for (const [key, label] of Object.entries(scenarios)) {
   const b = Object.assign(document.createElement('button'), { className: 'btn' + (key === 'p2p-latest' ? ' ghost' : ' signal'), type: 'button', textContent: label });
   b.onclick = () => run(key, b);
@@ -78,7 +83,7 @@ async function run(scenario, button) {
       $('s2').insertAdjacentHTML('beforeend', `<div class="msg">
         <div class="meta"><b>${esc(p.pref)}</b><span class="pill">${esc(p.lang)}</span><span class="pill">${esc(p.action)}</span>${p.intensity ? `<span class="pill">intensity ${esc(p.intensity)}</span>` : ''}<span class="pill ${argon ? 'argon' : ''}">${argon ? `${esc(p.by)} · ${(p.ms / 1000).toFixed(1)} s` : 'template fallback'}</span></div>
         <strong>${esc(g.title)}</strong><br>${esc(g.sms)}
-        <br><a class="small" href="${esc(p.link)}" target="_blank">Open the link they receive →</a></div>`);
+        <br><a class="small" href="${esc(safeLink(p.link))}" target="_blank" rel="noopener">Open the link they receive →</a></div>`);
     }
   } catch (err) {
     $('status').textContent = `Error: ${err.message}`;

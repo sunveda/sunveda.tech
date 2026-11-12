@@ -78,6 +78,11 @@
 const $ = (id) => document.getElementById(id);
 const API = window.DAIBOJU_API || '';
 const params = new URLSearchParams(location.search);
+if (window.DAIBOJU_SIGNUP_OPEN === false) {
+  // Launch gate: sign-up stays closed until the privacy policy covers Daiboju.
+  $('form').innerHTML = '<h2>Sign-up opens soon · 登録は近日公開</h2><p class="muted">Daiboju is in preview. Sign-up will open once our privacy policy covers it.</p>';
+  throw new Error('Daiboju sign-up is not open yet');
+}
 const cfg = await fetch(API + '/api/config').then((r) => (r.ok ? r.json() : null)).catch(() => null);
 if (!cfg) {
   $('form').innerHTML = '<h2>Sign-up opens soon · 登録は近日公開</h2><p class="muted">The alert service is not connected yet. Please check back shortly.</p>';
@@ -122,6 +127,8 @@ $('channels').addEventListener('change', syncContact);
 syncContact();
 if (params.has('drill')) { $('drillBox').hidden = false; $('drill').checked = true; }
 
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const httpsUrl = (u) => { try { const x = new URL(u); return x.protocol === 'https:' ? x.href : null; } catch { return null; } };
 const show = (html, err = false) => ($('result').innerHTML = `<div class="notice ${err ? 'err' : ''}">${html}</div>`);
 
 function urlB64ToUint8(b64) {
@@ -138,8 +145,10 @@ $('form').addEventListener('submit', async (e) => {
   $('submit').disabled = true;
   try {
     if (ch === 'webpush') {
-      const reg = await navigator.serviceWorker.register('sw.js');
+      await navigator.serviceWorker.register('sw.js');
       if ((await Notification.requestPermission()) !== 'granted') throw new Error('Notifications are blocked in this browser.');
+      // A first-time registration may not be active yet; subscribing then fails.
+      const reg = await navigator.serviceWorker.ready;
       if (!cfg.vapidPublicKey) throw new Error('Push is not configured on the server yet.');
       const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(cfg.vapidPublicKey) });
       body.contact = sub.toJSON();
@@ -152,11 +161,11 @@ $('form').addEventListener('submit', async (e) => {
     if (!res.ok) throw new Error(data.error || 'Something went wrong');
     if (ch === 'line') {
       show(`<strong>One more step.</strong> Add the Daiboju LINE account and send this code within 15 minutes:
-        <div class="code">${data.code}</div>
-        ${data.lineAddUrl ? `<a class="btn safe" href="${data.lineAddUrl}" target="_blank" rel="noopener">Open LINE · LINEを開く</a>` : '<span class="small muted">(LINE account link not configured yet)</span>'}`);
+        <div class="code">${esc(data.code)}</div>
+        ${httpsUrl(data.lineAddUrl) ? `<a class="btn safe" href="${esc(httpsUrl(data.lineAddUrl))}" target="_blank" rel="noopener">Open LINE · LINEを開く</a>` : '<span class="small muted">(LINE account link not configured yet)</span>'}`);
     } else {
       show(`<strong>You're set. · 登録しました。</strong><br>You will get alerts for ${$('pref').selectedOptions[0].text} in ${$('lang').selectedOptions[0].text.replace(' *', '')}.
-        <br><a class="small" href="${API}/api/unsubscribe?id=${encodeURIComponent(data.id)}&t=${encodeURIComponent(data.unsubToken)}">Delete my data</a>`);
+        <br><a class="small" href="${esc(API)}/api/unsubscribe?id=${encodeURIComponent(data.id)}&t=${encodeURIComponent(data.unsubToken)}">Delete my data</a>`);
     }
   } catch (err) {
     show(err.message, true);

@@ -13,7 +13,7 @@ self.addEventListener('push', (event) => {
     body: data.body || '',
     icon: 'icon-192.png',
     badge: 'icon-192.png',
-    tag: data.url || 'daiboju',
+    tag: 'daiboju',
     renotify: true,
     requireInteraction: true,
     vibrate: [300, 100, 300, 100, 300],
@@ -23,6 +23,11 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const url = event.notification.data?.url || './';
+  // Only ever open a page of this app, whatever the push payload says.
+  let url = new URL('./', self.registration.scope).href;
+  try {
+    const target = new URL(event.notification.data?.url || './', self.registration.scope);
+    if (target.href.startsWith(self.registration.scope)) url = target.href;
+  } catch { /* keep the default */ }
   event.waitUntil(self.clients.openWindow(url));
 });

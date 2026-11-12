@@ -60,6 +60,7 @@ select:focus, input:focus, button:focus-visible, a.btn:focus-visible { outline: 
 .channels label { margin: 0; font-weight: 600; padding: 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; background: var(--bg); }
 .channels label small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
 .channels input:checked + label { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); background: var(--paper); }
+.channels input:focus-visible + label { outline: 3px solid color-mix(in srgb, var(--signal) 45%, transparent); outline-offset: 2px; }
 .channels input:disabled + label { opacity: .45; cursor: not-allowed; }
 
 .btn {
