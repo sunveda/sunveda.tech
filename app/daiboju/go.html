@@ -63,7 +63,8 @@ const T = {
   pt: { steps: 'O que fazer', avoid: 'Não faça', nearest: 'Locais de evacuação mais próximos', privacy: 'Sua localização fica no seu celular. Nunca é enviada ao Daiboju.', locate: 'Encontrar o local seguro mais próximo', walk: 'Ir a pé', min: 'min a pé', none: 'Nenhum local designado encontrado perto.', search: 'Buscar locais de evacuação no Google Maps', noLoc: 'A localização está desligada. Ative-a ou busque no Google Maps:', c119: '119 Bombeiros / Ambulância', c110: '110 Polícia', aed: 'Alguém desmaiou? Encontre um DEA', tsunami: 'Se não der tempo, suba agora ao 3º andar ou acima do prédio de concreto firme mais próximo.', drill: 'SIMULADO · Não é uma emergência real', intensity: 'Intensidade', mag: 'Magnitude' },
   es: { steps: 'Qué hacer', avoid: 'No hagas', nearest: 'Lugares de evacuación más cercanos', privacy: 'Tu ubicación se queda en tu teléfono. Nunca se envía a Daiboju.', locate: 'Buscar el lugar seguro más cercano', walk: 'Ir caminando', min: 'min a pie', none: 'No se encontró ningún lugar designado cerca.', search: 'Buscar lugares de evacuación en Google Maps', noLoc: 'La ubicación está desactivada. Actívala o busca en Google Maps:', c119: '119 Bomberos / Ambulancia', c110: '110 Policía', aed: '¿Alguien se desmayó? Busca un DEA', tsunami: 'Si no llegas a tiempo, sube ya al 3.er piso o más alto del edificio de concreto firme más cercano.', drill: 'SIMULACRO · No es una emergencia real', intensity: 'Intensidad', mag: 'Magnitud' },
 };
-const t = T[lang] || T.en;
+// Match full tags like "zh-CN" or "pt-BR" to their base language.
+const t = T[lang] || T[lang.slice(0, 2).toLowerCase()] || T.en;
 const set = (id, text) => ($(id).textContent = text);
 set('tSteps', t.steps); set('tAvoid', t.avoid); set('tNearest', t.nearest); set('tPrivacy', t.privacy);
 set('locate', t.locate); set('t119', t.c119); set('t110', t.c110); set('tAed', t.aed);
@@ -80,17 +81,18 @@ try {
 if (!data || data.error) {
   set('title', 'Daiboju'); set('summary', t.noLoc);
 } else {
-  const g = data.guidance;
-  set('title', g.title);
-  set('summary', g.summary);
-  document.title = `Daiboju · ${g.title}`;
+  const g = data.guidance || {};
+  set('title', g.title || 'Daiboju');
+  set('summary', g.summary || '');
+  document.title = `Daiboju · ${g.title || ''}`;
   if (!['high_ground_now', 'coast_high_ground', 'evacuate_now', 'safest_place_now', 'check_building'].includes(data.action)) $('head').classList.add('calm');
-  $('steps').innerHTML = g.steps.map((s) => `<li>${esc(s)}</li>`).join('');
+  $('steps').innerHTML = (g.steps || []).map((s) => `<li>${esc(s)}</li>`).join('');
   if (g.avoid?.length) { $('avoidCard').hidden = false; $('avoid').innerHTML = g.avoid.map((s) => `<li>${esc(s)}</li>`).join(''); }
   if (data.event?.drill) { $('drill').hidden = false; set('drill', t.drill); }
 
   const f = data.event?.facts || {};
-  const chips = [data.pref.en + ' · ' + data.pref.ja];
+  // Every field below is optional: this page must render the steps even if the payload is partial.
+  const chips = data.pref ? [`${data.pref.en} · ${data.pref.ja}`] : [];
   if (data.area?.intensity) chips.push(`${t.intensity} ${data.area.intensity}`);
   if (f.magnitude) chips.push(`${t.mag} ${f.magnitude}`);
   if (f.epicenter) chips.push(f.epicenter);

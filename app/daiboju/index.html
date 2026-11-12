@@ -65,10 +65,13 @@
         </ul>
       </div>
     </div>
-    <p class="small muted" style="margin:12px 0 0">Every message has a link that deletes your data in one tap. Alerts come from official Japan Meteorological Agency data. Always follow instructions from your city, police and fire services.</p>
+    <p class="small muted" style="margin:12px 0 0">Every message has a link to delete your data. Alerts come from official Japan Meteorological Agency data. Always follow instructions from your city, police and fire services.</p>
   </section>
 
-  <footer>Built by SunVeda with Gemini 4 Argon and Google Maps. Someone collapsed? <a href="https://sunveda.tech/app/aedoko/">Find an AED with AEDoko</a>.</footer>
+  <footer>
+    <p>Built by SunVeda with Gemini 4 Argon and Google Maps. Someone collapsed? <a href="https://sunveda.tech/app/aedoko/">Find an AED with AEDoko</a>.</p>
+    <p class="small">* The first alert is sent in English for these languages; the next steps are written in your language.</p>
+  </footer>
 </main>
 
 <script type="module">
@@ -153,7 +156,7 @@ $('form').addEventListener('submit', async (e) => {
         ${data.lineAddUrl ? `<a class="btn safe" href="${data.lineAddUrl}" target="_blank" rel="noopener">Open LINE · LINEを開く</a>` : '<span class="small muted">(LINE account link not configured yet)</span>'}`);
     } else {
       show(`<strong>You're set. · 登録しました。</strong><br>You will get alerts for ${$('pref').selectedOptions[0].text} in ${$('lang').selectedOptions[0].text.replace(' *', '')}.
-        <br><a class="small" href="${API}/api/unsubscribe?id=${data.id}&t=${data.unsubToken}">Delete my data now</a>`);
+        <br><a class="small" href="${API}/api/unsubscribe?id=${encodeURIComponent(data.id)}&t=${encodeURIComponent(data.unsubToken)}">Delete my data</a>`);
     }
   } catch (err) {
     show(err.message, true);
@@ -162,6 +165,5 @@ $('form').addEventListener('submit', async (e) => {
   }
 });
 </script>
-<p class="small muted" style="max-width:40rem;margin:-48px auto 40px;padding:0 16px">* The first alert is sent in English for these languages; the next steps are written in your language.</p>
 </body>
 </html>
