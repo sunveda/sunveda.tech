@@ -13,7 +13,7 @@
   <script data-goatcounter="https://sunveda.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script>(function(){var d=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',d);})();</script>
   <title>SunVeda Apps — Useful technology for real-world needs</title>
-  <meta name="description" content="AEDoko is live. Taxable, Health App and Familiar are in development." />
+  <meta name="description" content="AEDoko is live. Daiboju is in preview. Taxable, Health App and Familiar are in development." />
   <link rel="canonical" href="https://sunveda.tech/app/" />
   <meta property="og:title" content="SunVeda Apps" />
   <meta property="og:description" content="Focused applications built for practical, real-world needs." />
@@ -37,7 +37,7 @@
     "description": "Focused applications built by SunVeda Technologies for practical, real-world needs.",
     "mainEntity": {
       "@type": "ItemList",
-      "numberOfItems": 4,
+      "numberOfItems": 5,
       "itemListElement": [{
         "@type": "ListItem",
         "position": 1,
@@ -46,16 +46,21 @@
       }, {
         "@type": "ListItem",
         "position": 2,
+        "url": "https://sunveda.tech/app/daiboju/",
+        "name": "Daiboju — Preview"
+      }, {
+        "@type": "ListItem",
+        "position": 3,
         "url": "https://sunveda.tech/app/#taxable",
         "name": "Taxable — In development"
       }, {
         "@type": "ListItem",
-        "position": 3,
+        "position": 4,
         "url": "https://sunveda.tech/app/#health-app",
         "name": "Health App — In development"
       }, {
         "@type": "ListItem",
-        "position": 4,
+        "position": 5,
         "url": "https://sunveda.tech/app/#familiar",
         "name": "Familiar — In development"
       }]
@@ -66,7 +71,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="../i18n.js?v=30" defer></script>
+  <script src="../i18n.js?v=31" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -260,8 +265,8 @@
           <h1 id="apps-heading" data-i18n-html="apps.heading">Useful technology for <em>real-world needs.</em></h1>
         </div>
         <div>
-          <p class="hero__intro" data-i18n="apps.intro">AEDoko is live. Taxable, Health App and Familiar are in development.</p>
-          <span class="count" data-i18n="apps.count">1 live app · 3 in development</span>
+          <p class="hero__intro" data-i18n="apps.intro">AEDoko is live. Daiboju is in preview. Taxable, Health App and Familiar are in development.</p>
+          <span class="count" data-i18n="apps.count">1 live app · 1 preview · 3 in development</span>
         </div>
       </section>
 
@@ -288,6 +293,29 @@
           <div class="app-card__visual" aria-hidden="true">
             <div class="app-card__screenshot"><img src="../showcase-aedoko-v1.webp" alt="" width="1280" height="720" /></div>
             <div class="app-card__icon"><img src="aedoko/favicon.svg" alt="" width="48" height="48" /></div>
+          </div>
+        </article>
+        <article class="app-card" id="daiboju" aria-labelledby="daiboju-heading">
+          <div class="app-card__content">
+            <p class="app-card__meta" data-i18n="apps.daibojuMeta">Disaster alerts · Preview</p>
+            <h2 id="daiboju-heading">Daiboju</h2>
+            <p class="app-card__body" data-i18n="apps.daibojuBody">Multilingual disaster alerts for Japan. A first alert within seconds, then clear next steps in your language and a walking route to the nearest evacuation site.</p>
+            <div class="features" aria-label="Daiboju highlights">
+              <p class="feature"><i data-lucide="bell-ring" aria-hidden="true"></i><span data-i18n="apps.daibojuAlerts">First alert in seconds, next steps written with Gemini 4 Argon</span></p>
+              <p class="feature"><i data-lucide="shield-check" aria-hidden="true"></i><span data-i18n="apps.daibojuPrivacy">No account. Your location stays on your phone</span></p>
+              <p class="feature"><i data-lucide="footprints" aria-hidden="true"></i><span data-i18n="apps.daibojuRoute">Google Maps walking route to the nearest evacuation site</span></p>
+            </div>
+            <p class="app-card__body" data-i18n="apps.daibojuNote">Preview. Not an official warning service: always follow your city, police and fire services.</p>
+            <div class="app-card__actions">
+              <a class="button" href="daiboju/">
+                <span data-i18n="apps.daibojuOpen">Open Daiboju</span>
+                <i data-lucide="arrow-up-right" aria-hidden="true"></i>
+              </a>
+              <a class="source-link" href="https://github.com/sunveda/daiboju" target="_blank" rel="noopener noreferrer" data-i18n="apps.taxableDevelopment">Follow development ↗</a>
+            </div>
+          </div>
+          <div class="app-card__visual" aria-hidden="true">
+            <div class="app-card__wordmark"><img src="daiboju/icon.svg" alt="" width="256" height="256" loading="lazy" /><span>Daiboju</span></div>
           </div>
         </article>
         <article class="app-card" id="taxable" aria-labelledby="taxable-heading">
