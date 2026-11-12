@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daiboju · Drill console</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+<script src="config.js"></script>
+<style>
+  main { max-width: 72rem; }
+  .scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  .scen .btn { margin: 0; text-align: left; justify-content: flex-start; }
+  .lanes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 760px) { .lanes { grid-template-columns: 1fr; } }
+  .msg { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; background: var(--bg); }
+  .msg .meta { font-size: .8rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+  .msg .meta b { color: var(--ink); }
+  .pill { border-radius: 999px; padding: 1px 8px; background: var(--paper); border: 1px solid var(--line); }
+  .pill.argon { background: var(--safe-soft); border-color: transparent; }
+  .lane h2 { margin-bottom: 2px; }
+  .lane-sub { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="./"><img class="brand-mark" src="icon.svg" alt="" width="36" height="36">Daiboju · Drill console</a>
+
+  <section class="card">
+    <div class="row" style="align-items:end">
+      <div><label for="secret" style="margin-top:0">Drill secret</label><input id="secret" type="password" autocomplete="off"></div>
+      <a class="btn ghost" href="./?drill=1" target="_blank" style="margin:0">Sign up a demo phone →</a>
+    </div>
+    <p class="small muted" style="margin:10px 0 16px">Drills run through the real pipeline but only reach people who signed up with "drill" ticked, and every message is labelled DRILL.</p>
+    <div class="scen" id="scen"></div>
+  </section>
+
+  <p id="status" class="muted" role="status" aria-live="polite"></p>
+
+  <div class="lanes">
+    <section class="card lane"><h2>① First alert</h2><p class="small muted lane-sub">Fixed text, within seconds, no AI</p><div id="s1"></div></section>
+    <section class="card lane"><h2>② Next steps</h2><p class="small muted lane-sub">Rules decide, Argon explains</p><div id="s2"></div></section>
+  </div>
+</main>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const API = window.DAIBOJU_API || '';
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+const safeLink = (u) => { try { const x = new URL(u, location.href); return ['https:', 'http:'].includes(x.protocol) ? x.href : '#'; } catch { return '#'; } };
+const { scenarios } = await fetch(API + '/api/drill', { signal: AbortSignal.timeout(10000) }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))).catch((err) => {
+  $('status').textContent = `The Daiboju API is not reachable (${err.message}). Drills need a deployed API.`;
+  return { scenarios: {} };
+});
+for (const [key, label] of Object.entries(scenarios)) {
+  const b = Object.assign(document.createElement('button'), { className: 'btn' + (key === 'p2p-latest' ? ' ghost' : ' signal'), type: 'button', textContent: label });
+  b.onclick = () => run(key, b);
+  $('scen').append(b);
+}
+
+async function run(scenario, button) {
+  document.querySelectorAll('.scen .btn').forEach((b) => (b.disabled = true));
+  $('s1').innerHTML = $('s2').innerHTML = '';
+  $('status').textContent = `Running “${button.textContent}”…`;
+  try {
+    const res = await fetch(API + '/api/drill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ secret: $('secret').value, scenario }), signal: AbortSignal.timeout(90000) });
+    const r = await res.json();
+    if (!res.ok) throw new Error(r.error);
+    const sent = r.deliveries.filter((d) => d.status === 'sent').length;
+    const sim = r.deliveries.filter((d) => d.status === 'simulated').length;
+    $('status').textContent = `Done in ${(r.ms / 1000).toFixed(1)} s · ${sent} sent · ${sim} simulated · ${r.events.length} event stages`;
+    for (const p of r.previews.filter((x) => x.stage === 1)) {
+      $('s1').insertAdjacentHTML('beforeend', `<div class="msg"><div class="meta"><b>${esc(p.pref)}</b><span class="pill">${esc(p.lang)}</span></div>${esc(p.text)}</div>`);
+    }
+    for (const p of r.previews.filter((x) => x.stage === 2)) {
+      const g = p.guidance;
+      const argon = p.by && p.by !== 'template';
+      $('s2').insertAdjacentHTML('beforeend', `<div class="msg">
+        <div class="meta"><b>${esc(p.pref)}</b><span class="pill">${esc(p.lang)}</span><span class="pill">${esc(p.action)}</span>${p.intensity ? `<span class="pill">intensity ${esc(p.intensity)}</span>` : ''}<span class="pill ${argon ? 'argon' : ''}">${argon ? `${esc(p.by)} · ${(p.ms / 1000).toFixed(1)} s` : 'template fallback'}</span></div>
+        <strong>${esc(g.title)}</strong><br>${esc(g.sms)}
+        <br><a class="small" href="${esc(safeLink(p.link))}" target="_blank" rel="noopener">Open the link they receive →</a></div>`);
+    }
+  } catch (err) {
+    $('status').textContent = `Error: ${err.message}`;
+  } finally {
+    document.querySelectorAll('.scen .btn').forEach((b) => (b.disabled = false));
+  }
+}
+</script>
+</body>
+</html>

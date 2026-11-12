@@ -34,8 +34,9 @@ shipped/in-flight/planned status changes.
 | Taxable crypto tax calculator | in-flight | Announce on the homepage and `/app/#taxable` as in development; link the public development repository, with no claim of readiness for tax filing |
 | AEDoko emergency finder `/app/aedoko/` | shipped | Vendored static bundle from `sunveda/aedoko` |
 | AEDoko on-demand interactive map | shipped | Lazy MapLibre bundle, loads only when opened |
+| Daiboju disaster-alert pages `/app/daiboju/` | in-flight | Static pages synced from `sunveda/daiboju`; Cloud Run service deployed 2026-11-12 (`daiboju-668725030350.asia-northeast1.run.app`); real sign-ups wait for a privacy-policy update |
 | AEDoko community contribution pipeline | shipped | Issue Forms → unverified draft proposal PR; import/validation stays a separate manual step |
-| Multilingual layout regression QA | shipped | Playwright, 188 route/language/viewport combinations |
+| Multilingual layout regression QA | shipped | Playwright, 220 route/language/viewport combinations |
 | RSVP parking page `/rsvp/` | shipped | Bilingual thank-you, redirects home; original invitation content archived under `docs/archive/` |
 | Event feedback guest form (`/feedback/`) | shipped | Name + at least one contact method + overall experience + privacy acknowledgement required; food/decoration/cake/biryani questions and video upload optional |
 | Event feedback host dashboard (`/feedback/admin/`) | shipped | Private password session, paginated review, CSV export |
@@ -57,7 +58,7 @@ Vercel hosting migration (see `CONTEXT.md` blockers for the full runbook):
 - [ ] Add `sunveda.tech` (and `www.sunveda.tech` if used) as a domain on the Vercel project.
 - [ ] Update the Cloudflare DNS record for `sunveda.tech` to point at Vercel instead of GitHub Pages, keeping it **proxied** (orange-cloud) so the existing `sunveda-analytics-api` and feedback Worker routes keep intercepting `/api/analytics*`, `/analyse*`, and `/api/feedback/*` unchanged.
 - [ ] Verify every route (site, `/a/`, `/app/`, `/app/aedoko/`, `/feedback/`, `/privacy.html`, `/terms.html`, `/rsvp/`) on the live domain once cut over.
-- [ ] Only once Vercel is confirmed serving production traffic: disable GitHub Pages in repo Settings → Pages and remove the now-vestigial `CNAME` file, then record this as architecture revision A9 in `architecture.md`.
+- [ ] Only once Vercel is confirmed serving production traffic: disable GitHub Pages in repo Settings → Pages and remove the now-vestigial `CNAME` file, then record this as architecture revision A10 in `architecture.md` (A9 is Daiboju).
 
 ## Spec changelog
 

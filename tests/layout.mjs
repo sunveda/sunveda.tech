@@ -16,7 +16,42 @@ const VIEWPORTS = [
 
 const SHARED_LANGUAGES = ["en", "ja", "ko", "zh", "es", "de", "fr", "pt", "ru", "ar", "hi", "it"];
 const AEDOKO_LANGUAGES = ["ja", "ja-x-easy", "en", "zh-Hans", "zh-Hant", "ko", "pt", "es", "vi", "tl", "ne", "id", "th", "hi", "fr", "ru"];
-const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/", "/feedback/?lang=en", "/feedback/?lang=ja", "/feedback/admin/"];
+const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/", "/feedback/?lang=en", "/feedback/?lang=ja", "/feedback/admin/", "/app/daiboju/", "/app/daiboju/go.html?p=13&l=ja&lang=ja", "/app/daiboju/?drill=1&daiboju-mock=1", "/app/daiboju/go.html?e=layout&p=12&l=ja&daiboju-mock=1&lang=ja", "/app/daiboju/go.html?e=layout&p=12&l=en&daiboju-mock=1", "/app/daiboju/demo.html", "/app/daiboju/tour.html", "/app/daiboju/go.html?demo=tsunami&l=en&h=tsunami"];
+
+// Daiboju's API is deployed separately on Cloud Run; tests never call the live service. Routes with `daiboju-mock` get populated fixtures so the
+// connected sign-up form and the full guidance page are audited; other Daiboju routes see the API
+// as unreachable and audit the fallback states.
+const DAIBOJU_FIXTURES = {
+  config: {
+    vapidPublicKey: null, lineAddUrl: null, dryRun: false,
+    channels: { webpush: true, email: true, line: true, sms: true, whatsapp: true },
+    languages: { en: "English", ja: "日本語", zh: "中文(简体)", ko: "한국어", vi: "Tiếng Việt", pt: "Português", es: "Español" },
+    templateLanguages: ["en", "ja", "zh", "ko", "vi", "pt", "es"],
+    prefectures: [{ code: "12", ja: "千葉県", en: "Chiba" }, { code: "13", ja: "東京都", en: "Tokyo" }, { code: "46", ja: "鹿児島県", en: "Kagoshima" }],
+  },
+  guidance: {
+    en: { title: "Near the coast or a river? Go to high ground now", summary: "If you are near the sea or a river mouth, go to high ground or the 3rd floor or higher of a sturdy concrete building now.", steps: ["If you are near the sea or a river mouth, go to high ground or the 3rd floor or higher of a sturdy concrete building now.", "Do not wait for the official tsunami forecast and do not go to look at the sea.", "If you are inland, check your building for damage and watch for aftershocks."], avoid: ["Do not drive unless you cannot walk.", "Do not return to the coast until the warning is lifted."] },
+    ja: { title: "海や川の近くなら、今すぐ高い所へ", summary: "海岸や河口の近くにいる人は、今すぐ高台か頑丈な建物の3階以上へ避難してください。", steps: ["海岸や河口の近くにいる人は、今すぐ高台か頑丈な建物の3階以上へ避難してください。", "津波の発表を待たず、海を見に行かないでください。", "内陸にいる人は建物の被害を確認し、余震に注意してください。"], avoid: ["歩ける人は車を使わないでください。", "警報が解除されるまで海岸に戻らないでください。"] },
+  },
+};
+
+function daibojuMock(route) {
+  const pageUrl = route.request().frame()?.url() || "";
+  if (!pageUrl.includes("daiboju-mock")) return route.abort();
+  const url = new URL(route.request().url());
+  if (url.pathname.endsWith("/api/config")) return route.fulfill({ json: DAIBOJU_FIXTURES.config });
+  if (url.pathname.endsWith("/api/guidance")) {
+    const lang = url.searchParams.get("l") === "ja" ? "ja" : "en";
+    return route.fulfill({ json: {
+      event: { id: "layout", hazard: "earthquake", drill: true, facts: { epicenter: "千葉県東方沖", magnitude: 7.4 } },
+      pref: { code: "12", en: "Chiba", ja: "千葉県" },
+      area: { prefCode: "12", scale: 50, intensity: "5+", tsunamiRisk: "Warning" },
+      action: "coast_high_ground", showRoute: true, shelterLayer: "skhb05",
+      guidance: DAIBOJU_FIXTURES.guidance[lang],
+    } });
+  }
+  return route.abort();
+}
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -267,8 +302,10 @@ async function runViewport(browser, origin, viewport) {
   const page = await context.newPage();
   await page.addInitScript(() => {
     localStorage.setItem("aedoko-public-data-notice-v1", "acknowledged");
+    if (location.href.includes("daiboju-mock")) window.DAIBOJU_SIGNUP_OPEN = true;
   });
   await page.route(/googletagmanager|goatcounter|unpkg\.com/, route => route.abort());
+  await page.route(/\/api\/(config|guidance|drill|subscribe)(\?|$)/, daibojuMock);
 
   const scenarios = [
     ...SHARED_LANGUAGES.flatMap(language => [

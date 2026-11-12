@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daiboju · Disaster alerts in your language</title>
+<meta name="description" content="When an earthquake, tsunami, typhoon or flood hits Japan, Daiboju tells you what to do, in your language. No account. No tracking.">
+<meta name="theme-color" content="#c8201a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="app.css">
+<script src="config.js"></script>
+</head>
+<body>
+<main>
+  <a class="brand" href="./"><img class="brand-mark" src="icon.svg" alt="" width="36" height="36">Daiboju</a>
+
+  <h1>Know what to do. In your language.</h1>
+  <p class="muted" lang="ja">災害のとき、何をすればいいか。</p>
+
+  <div class="hazards" role="list" aria-label="Disasters covered">
+    <figure role="listitem"><div class="tile"><svg class="i"><use href="icons.svg#quake"/></svg></div><figcaption>Earthquake</figcaption></figure>
+    <figure role="listitem"><div class="tile"><svg class="i"><use href="icons.svg#tsunami"/></svg></div><figcaption>Tsunami</figcaption></figure>
+    <figure role="listitem"><div class="tile caution"><svg class="i"><use href="icons.svg#typhoon"/></svg></div><figcaption>Typhoon</figcaption></figure>
+    <figure role="listitem"><div class="tile caution"><svg class="i"><use href="icons.svg#rain"/></svg></div><figcaption>Flood</figcaption></figure>
+  </div>
+
+  <ol class="flow" aria-label="How it works">
+    <li><div class="tile"><svg class="i"><use href="icons.svg#bell"/></svg></div><strong>Alert</strong><span>in seconds</span></li>
+    <li><div class="tile ink"><svg class="i"><use href="icons.svg#steps"/></svg></div><strong>What to do</strong><span>in your language</span></li>
+    <li><div class="tile safe"><svg class="i"><use href="icons.svg#exit"/></svg></div><strong>Safe place</strong><span>walking route</span></li>
+  </ol>
+
+  <a class="btn ghost" href="tour.html" style="margin:0 0 22px"><svg class="i" aria-hidden="true"><use href="icons.svg#bell"/></svg>See how it works</a>
+
+  <form class="card" id="form" novalidate>
+    <h2>Get alerts</h2>
+
+    <div class="field">
+      <span class="num" aria-hidden="true">1</span>
+      <label for="lang"><svg class="i"><use href="icons.svg#globe"/></svg>Language</label>
+      <select id="lang" required></select>
+    </div>
+
+    <div class="field">
+      <span class="num" aria-hidden="true">2</span>
+      <label for="pref"><svg class="i"><use href="icons.svg#pin"/></svg>Your area</label>
+      <select id="pref" required></select>
+    </div>
+
+    <fieldset class="field" style="border:0;padding:0;margin-inline:0">
+      <span class="num" aria-hidden="true">3</span>
+      <legend class="label" style="float:left;padding:0">How to reach you</legend>
+      <div class="channels" id="channels"></div>
+    </fieldset>
+
+    <div id="contactBox" hidden style="margin-top:14px">
+      <label for="contact" id="contactLabel" class="sr">Contact</label>
+      <input id="contact" autocomplete="off">
+    </div>
+
+    <label id="drillBox" class="check" hidden><input type="checkbox" id="drill"> Also send me drill messages</label>
+
+    <button class="btn signal" id="submit" type="submit"><svg class="i"><use href="icons.svg#bell"/></svg>Turn on alerts</button>
+    <div id="result" role="status" aria-live="polite" style="margin-top:14px"></div>
+  </form>
+
+  <section class="card" aria-labelledby="privacy-h">
+    <h2 id="privacy-h" style="margin-bottom:14px">Private by design</h2>
+    <ul class="promises">
+      <li><div class="tile sm ink"><svg class="i"><use href="icons.svg#noaccount"/></svg></div><p><strong>No account</strong><span>Only your language, area and where to send alerts.</span></p></li>
+      <li><div class="tile sm ink"><svg class="i"><use href="icons.svg#lock"/></svg></div><p><strong>Encrypted</strong><span>Your email or number is stored encrypted. Delete it any time.</span></p></li>
+      <li><div class="tile sm safe"><svg class="i"><use href="icons.svg#phonepin"/></svg></div><p><strong>Location stays on your phone</strong><span>Shelters are found on your phone with public GSI map data.</span></p></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Official data from the Japan Meteorological Agency. Always follow your city, police and fire services.</p>
+    <p>By SunVeda with Gemini 4 Argon and Google Maps. Someone collapsed? <a href="https://sunveda.tech/app/aedoko/">Find an AED</a></p>
+  </footer>
+</main>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const API = window.DAIBOJU_API || '';
+const params = new URLSearchParams(location.search);
+// Launch gate: until the privacy policy covers Daiboju, only drill opt-ins (?drill=1) are possible.
+// The page sets DAIBOJU_SIGNUP_OPEN = false; the service enforces it too (SIGNUP_OPEN).
+const closedNotice = () => {
+  $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">Daiboju is in preview.</p>';
+  throw new Error('Daiboju sign-up is not open yet');
+};
+if (window.DAIBOJU_SIGNUP_OPEN === false && !params.has('drill')) closedNotice();
+const cfg = await fetch(API + '/api/config', { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+if (!cfg) {
+  $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">The alert service is not reachable right now. Try again shortly.</p>';
+  throw new Error('Daiboju API unreachable');
+}
+const drillOnly = window.DAIBOJU_SIGNUP_OPEN === false || !cfg.signupOpen;
+if (drillOnly && !params.has('drill')) closedNotice();
+
+const CH = {
+  webpush: { label: 'Browser', icon: 'browser', field: null },
+  line: { label: 'LINE', icon: 'chat', field: null },
+  email: { label: 'Email', icon: 'mail', field: { type: 'email', label: 'Email address', ph: 'Email address' } },
+  sms: { label: 'SMS', icon: 'sms', field: { type: 'tel', label: 'Mobile number', ph: 'Mobile number, e.g. 090 1234 5678' } },
+  whatsapp: { label: 'WhatsApp', icon: 'phone', field: { type: 'tel', label: 'WhatsApp number', ph: 'WhatsApp number, e.g. +81 90 1234 5678' } },
+};
+
+// Language: preselect from the browser.
+const guess = (navigator.language || 'en').slice(0, 2);
+for (const [code, name] of Object.entries(cfg.languages)) {
+  $('lang').add(new Option(name, code, false, code === (cfg.languages[guess] ? guess : 'en')));
+}
+$('pref').add(new Option('Choose your prefecture', ''));
+for (const p of cfg.prefectures) $('pref').add(new Option(`${p.en} · ${p.ja}`, p.code, false, p.code === '13' && params.has('drill')));
+
+// Channels: hide the ones the server has not configured, unless running in dry-run mode.
+const pushOk = 'serviceWorker' in navigator && 'PushManager' in window;
+let first = true;
+for (const [key, c] of Object.entries(CH)) {
+  const available = (cfg.channels[key] || cfg.dryRun) && (key !== 'webpush' || pushOk);
+  const id = `ch-${key}`;
+  $('channels').insertAdjacentHTML('beforeend',
+    `<input type="radio" name="ch" id="${id}" value="${key}" ${available ? '' : 'disabled'} ${available && first ? 'checked' : ''}>
+     <label for="${id}"><svg class="i" aria-hidden="true"><use href="icons.svg#${c.icon}"/></svg>${c.label}${available ? '' : '<small>Soon</small>'}</label>`);
+  if (available) first = false;
+}
+const channel = () => document.querySelector('input[name=ch]:checked')?.value;
+function syncContact() {
+  const f = CH[channel()]?.field;
+  $('contactBox').hidden = !f;
+  if (f) Object.assign($('contact'), { type: f.type, placeholder: f.ph, autocomplete: f.type === 'email' ? 'email' : 'tel' }), ($('contactLabel').textContent = f.label);
+}
+$('channels').addEventListener('change', syncContact);
+syncContact();
+if (params.has('drill')) { $('drillBox').hidden = false; $('drill').checked = true; $('drill').disabled = drillOnly; }
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const httpsUrl = (u) => { try { const x = new URL(u); return x.protocol === 'https:' ? x.href : null; } catch { return null; } };
+const show = (html, err = false) => ($('result').innerHTML = `<div class="notice ${err ? 'err' : ''}">${html}</div>`);
+
+function urlB64ToUint8(b64) {
+  const s = atob((b64 + '='.repeat((4 - (b64.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(s, (c) => c.charCodeAt(0));
+}
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const ch = channel();
+  const body = { channel: ch, lang: $('lang').value, pref: $('pref').value, drill: $('drill').checked };
+  if (!body.pref) return show('Please choose your prefecture. · 地域を選択してください。', true);
+  if (!ch) return show('No delivery method is available yet.', true);
+  $('submit').disabled = true;
+  try {
+    if (ch === 'webpush') {
+      await navigator.serviceWorker.register('sw.js');
+      if ((await Notification.requestPermission()) !== 'granted') throw new Error('Notifications are blocked in this browser.');
+      // A first-time registration may not be active yet; subscribing then fails.
+      const reg = await navigator.serviceWorker.ready;
+      if (!cfg.vapidPublicKey) throw new Error('Push is not configured on the server yet.');
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(cfg.vapidPublicKey) });
+      body.contact = sub.toJSON();
+    } else if (CH[ch].field) {
+      if (ch === 'email') {
+        body.contact = $('contact').value.trim();
+      } else {
+        body.contact = $('contact').value.replace(/[\s\-()]/g, '');
+        if (body.contact.startsWith('0')) body.contact = '+81' + body.contact.slice(1);
+      }
+    }
+    const res = await fetch(API + '/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(15000) })
+      .catch((e) => { throw new Error(e.name === 'TimeoutError' ? 'The alert service did not answer. Please try again in a moment.' : 'Could not reach the alert service. Please try again.'); });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    if (ch === 'webpush') {
+      try {
+        const cache = await caches.open('daiboju');
+        // Only what is needed to re-subscribe; no record id or delete token is stored in the browser.
+        await cache.put('push-registration', new Response(JSON.stringify({ api: new URL(API || '.', location.href).href.replace(/\/$/, ''), lang: body.lang, pref: body.pref, drill: body.drill })));
+      } catch { /* renewal is best-effort */ }
+    }
+    if (ch === 'line') {
+      show(`<strong>One more step.</strong> Send this code to Daiboju on LINE within 15 minutes:
+        <div class="code">${esc(data.code)}</div>
+        ${httpsUrl(data.lineAddUrl) ? `<a class="btn safe" href="${esc(httpsUrl(data.lineAddUrl))}" target="_blank" rel="noopener">Open LINE · LINEを開く</a>` : '<span class="small muted">(LINE account link not configured yet)</span>'}`);
+    } else {
+      show(`<strong>You're set.</strong> Alerts for ${esc($('pref').selectedOptions[0].text)}, in ${esc($('lang').selectedOptions[0].text)}.
+        <br><a class="small" href="${esc(API)}/api/unsubscribe?id=${encodeURIComponent(data.id)}&t=${encodeURIComponent(data.unsubToken)}">Delete my data</a>`);
+    }
+  } catch (err) {
+    show(esc(err.message), true);
+  } finally {
+    $('submit').disabled = false;
+  }
+});
+</script>
+</body>
+</html>

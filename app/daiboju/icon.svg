@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Daiboju</title>
+  <defs>
+    <linearGradient id="dbj-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F45D3C"/>
+      <stop offset="1" stop-color="#C02813"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#dbj-bg)"/>
+  <path d="M72 410 C112 386 152 386 192 410 S272 434 312 410 S392 386 440 406" fill="none" stroke="#FFE1D6" stroke-width="22" stroke-linecap="round" opacity=".6"/>
+  <path d="M100 254 C100 160 170 92 256 92 C342 92 412 160 412 254 A52 26 0 0 0 308 254 A52 26 0 0 0 204 254 A52 26 0 0 0 100 254 Z" fill="#fff"/>
+  <path d="M256 250 V346 a30 30 0 0 1 -60 0" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
+  <path d="M256 214 c-9-17-40-14-40 9 c0 20 40 40 40 40 s40-20 40-40 c0-23-31-26-40-9z" fill="#E2421F" transform="translate(0 -46)"/>
+</svg>

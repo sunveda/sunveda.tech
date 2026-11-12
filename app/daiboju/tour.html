@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daiboju · See how it works</title>
+<meta name="description" content="A simulated disaster alert, from official data to the nearest shelter, in your language. No sign-up needed.">
+<meta name="theme-color" content="#c8201a">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="app.css">
+<script src="demo-data.js"></script>
+<style>
+  main { max-width: 62rem; }
+  .intro { max-width: 34rem; }
+  .intro p { margin-top: 6px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin: 20px 0 22px; }
+  .scenarios { display: flex; gap: 8px; flex-wrap: wrap; }
+  .scenarios button { display: inline-flex; align-items: center; gap: 8px; font: inherit; font-weight: 700; padding: 10px 14px 10px 10px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .scenarios button .tile { width: 32px; height: 32px; border-radius: 8px; }
+  .scenarios button .tile svg { width: 20px; height: 20px; }
+  .scenarios button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .controls select { width: auto; min-width: 11rem; }
+  .controls .btn { width: auto; margin: 0; padding-inline: 22px; }
+
+  .stage { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: start; }
+  @media (max-width: 760px) { .stage { grid-template-columns: 1fr; } .phone { justify-self: center; order: -1; height: 470px; width: 270px; } .clock { font-size: 2.4rem; } .date { margin-bottom: 12px; } }
+
+  .pipeline { list-style: none; margin: 0; padding: 0; position: relative; }
+  .pipeline::before { content: ""; position: absolute; left: 31px; top: 32px; bottom: 32px; width: 3px; background: var(--line); }
+  .pipeline li { position: relative; display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; padding: 8px 0; opacity: .38; transition: opacity .35s; }
+  .pipeline li.on { opacity: 1; }
+  .pipeline li .tile { position: relative; }
+  .pipeline strong { display: block; font-size: 1.05rem; line-height: 1.3; }
+  .pipeline span { display: block; color: var(--muted); font-size: .9rem; line-height: 1.4; }
+  .pipeline b.live { display: inline-block; margin-top: 4px; font-size: .85rem; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
+  .pipeline .tile.argon { background: linear-gradient(135deg, #1a73e8, #8e44c9); }
+  .open { display: none; margin-top: 10px; }
+  .pipeline li.on .open { display: flex; width: auto; }
+
+  .phone { width: 300px; height: 600px; border-radius: 44px; background: #0b1410; padding: 12px; box-shadow: 0 0 0 2px #2a3830 inset; }
+  .screen { height: 100%; border-radius: 34px; overflow: hidden; position: relative; background: linear-gradient(170deg, #1f3d33, #0f1d18 60%); color: #fff; padding: 52px 12px 12px; }
+  .clock { text-align: center; font-weight: 700; font-size: 3.2rem; line-height: 1; letter-spacing: -.02em; }
+  .date { text-align: center; opacity: .8; font-size: .85rem; margin: 6px 0 20px; }
+  .badge { position: absolute; top: 14px; left: 50%; translate: -50% 0; background: var(--drill); font-size: .7rem; font-weight: 900; padding: 2px 10px; border-radius: 999px; }
+  .notif { background: rgb(255 255 255 / .93); color: #14211b; border-radius: 18px; padding: 10px 12px; margin-bottom: 10px; display: grid; grid-template-columns: 30px 1fr; gap: 4px 10px; font-size: .82rem; line-height: 1.4; transform-origin: top; }
+  .notif img { width: 30px; height: 30px; border-radius: 8px; grid-row: span 2; }
+  .notif .meta { display: flex; justify-content: space-between; font-weight: 900; font-size: .78rem; }
+  .notif .meta i { font-style: normal; font-weight: 500; opacity: .6; }
+  .notif p { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .notif.next { box-shadow: 0 0 0 2px var(--safe); }
+  .notif .link { grid-column: 2; color: var(--safe); font-weight: 900; font-size: .78rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .notif.enter { animation: drop .45s cubic-bezier(.2, .9, .3, 1.2); }
+    @keyframes drop { from { opacity: 0; transform: translateY(-14px) scale(.96); } to { opacity: 1; transform: none; } }
+    .screen.shake { animation: shake .5s ease-in-out 2; }
+    @keyframes shake { 0%, 100% { transform: none; } 25% { transform: translateX(-4px) rotate(-.4deg); } 75% { transform: translateX(4px) rotate(.4deg); } }
+  }
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="./"><img class="brand-mark" src="icon.svg" alt="" width="36" height="36">Daiboju</a>
+
+  <div class="intro">
+    <h1>See how it works</h1>
+    <p class="muted">A simulated alert, using the real safety rules and messages. No sign-up.</p>
+  </div>
+
+  <div class="controls">
+    <div class="scenarios" role="group" aria-label="Disaster">
+      <button type="button" data-s="quake" aria-pressed="true"><span class="tile"><svg class="i"><use href="icons.svg#quake"/></svg></span>Earthquake</button>
+      <button type="button" data-s="tsunami" aria-pressed="false"><span class="tile"><svg class="i"><use href="icons.svg#tsunami"/></svg></span>Tsunami</button>
+      <button type="button" data-s="typhoon" aria-pressed="false"><span class="tile caution"><svg class="i"><use href="icons.svg#typhoon"/></svg></span>Typhoon</button>
+    </div>
+    <select id="lang" aria-label="Language"></select>
+    <button class="btn signal" id="play" type="button"><svg class="i" aria-hidden="true"><use href="icons.svg#bell"/></svg>Play</button>
+  </div>
+
+  <div class="stage">
+    <ol class="pipeline" id="pipeline" aria-live="polite">
+      <li><div class="tile ink"><svg class="i"><use href="icons.svg#wave"/></svg></div><div><strong>Official data arrives</strong><span>Japan Meteorological Agency, live feed</span><b class="live" id="s1"></b></div></li>
+      <li><div class="tile"><svg class="i"><use href="icons.svg#bell"/></svg></div><div><strong>First alert, in seconds</strong><span>Fixed text checked in advance. No AI, no waiting.</span><b class="live" id="s2"></b></div></li>
+      <li><div class="tile ink"><svg class="i"><use href="icons.svg#steps"/></svg></div><div><strong>Safety rules decide</strong><span>The same rules for everyone in the area</span><b class="live" id="s3"></b></div></li>
+      <li><div class="tile argon"><svg class="i"><use href="icons.svg#globe"/></svg></div><div><strong>Gemini 4 Argon explains</strong><span>Clear steps in your language. It never changes the rule.</span><b class="live" id="s4"></b></div></li>
+      <li><div class="tile safe"><svg class="i"><use href="icons.svg#exit"/></svg></div><div><strong>Tap for the nearest safe place</strong><span>Found on your phone, walking route on Google Maps</span><a class="btn safe open" id="open" href="#"><svg class="i" aria-hidden="true"><use href="icons.svg#pin"/></svg>Open the page they get</a></div></li>
+    </ol>
+
+    <div class="phone" aria-label="What the person receives">
+      <div class="screen" id="screen">
+        <span class="badge">DEMO</span>
+        <div class="clock" id="clock">20:58</div>
+        <div class="date" id="date"></div>
+        <div id="notifs" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>In the live service the first alert goes out the moment official data arrives, and Gemini 4 Argon writes the next steps. This demo shows the prepared versions of both, generated from the same rules.</p>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const D = window.DAIBOJU_DEMO;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const ACTION = { check_building: 'Check your building', high_ground_now: 'Go to high ground now', evacuate_now: 'Evacuate now', coast_high_ground: 'Coast: go to high ground', stay_alert: 'Stay alert', leave_coast: 'Leave the coast', shelter_indoors: 'Stay indoors', safest_place_now: 'Safest spot now', prepare: 'Get ready' };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let scenario = 'quake', timers = [];
+
+  const guess = (navigator.language || 'en').slice(0, 2);
+  for (const [code, name] of Object.entries(D.languages)) $('lang').add(new Option(name, code, false, code === (D.languages[guess] ? guess : 'en')));
+
+  const now = new Date();
+  $('clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  $('date').textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+
+  document.querySelectorAll('.scenarios button').forEach((b) => b.addEventListener('click', () => {
+    scenario = b.dataset.s;
+    document.querySelectorAll('.scenarios button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    reset();
+  }));
+  $('lang').addEventListener('change', reset);
+  $('play').addEventListener('click', play);
+
+  function reset() {
+    timers.forEach(clearTimeout); timers = [];
+    document.querySelectorAll('#pipeline li').forEach((li) => li.classList.remove('on'));
+    ['s1', 's2', 's3', 's4'].forEach((id) => ($(id).hidden = true));
+    $('notifs').innerHTML = '';
+  }
+
+  function notify(title, body, next, link) {
+    const n = document.createElement('div');
+    n.className = `notif enter${next ? ' next' : ''}`;
+    n.innerHTML = `<img src="icon.svg" alt=""><div class="meta">${esc(title)}<i>now</i></div><p>${esc(body)}</p>${link ? `<span class="link">${esc(link)}</span>` : ''}`;
+    $('notifs').prepend(n);
+  }
+
+  function play() {
+    reset();
+    const sc = D.scenarios[scenario], lang = $('lang').value, g = sc.guidance[lang];
+    const where = `${sc.pref.en} · ${sc.pref.ja}`;
+    const detail = sc.area.intensity ? `Intensity ${sc.area.intensity}` : sc.area.height ? `${sc.area.region} · ${sc.area.height}` : `Level ${sc.area.level}`;
+    const steps = [
+      () => { $('s1').textContent = `${sc.feed} · ${detail} · ${where}`; if (!reduce) $('screen').classList.add('shake'); },
+      () => { $('s2').textContent = `Sent in ${D.languages[lang]}`; notify('Daiboju', sc.stage1[lang], false); },
+      () => { $('s3').textContent = ACTION[sc.action] || sc.action; },
+      () => { $('s4').textContent = `${D.languages[lang]} · ${g.steps.length} steps`; notify(g.title, g.steps[0], true, 'Tap for your nearest safe place'); },
+      () => { $('open').href = `go.html?demo=${scenario}&l=${lang}&h=${sc.hazard}`; },
+    ];
+    const items = document.querySelectorAll('#pipeline li');
+    steps.forEach((fn, i) => timers.push(setTimeout(() => {
+      items[i].classList.add('on');
+      const live = items[i].querySelector('.live'); if (live) live.hidden = false;
+      fn();
+    }, reduce ? 0 : [0, 1200, 2700, 4000, 5400][i])));
+    timers.push(setTimeout(() => $('screen').classList.remove('shake'), 1100));
+  }
+  reset();
+})();
+</script>
+</body>
+</html>

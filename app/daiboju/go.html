@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daiboju · What to do now</title>
+<meta name="theme-color" content="#c8201a">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+<script src="config.js"></script>
+</head>
+<body>
+<main>
+  <a class="brand" href="./"><img class="brand-mark" src="icon.svg" alt="" width="36" height="36">Daiboju</a>
+  <div id="drill" class="drill-banner" hidden></div>
+  <header id="head" class="alert-head"><div class="tile" aria-hidden="true"><svg class="i"><use id="headIcon" href="icons.svg#warn"/></svg></div><div><h1 id="title">…</h1><p id="summary"></p></div></header>
+  <ul class="facts" id="facts"></ul>
+
+  <section class="card">
+    <div class="sec-title"><svg class="i" aria-hidden="true"><use href="icons.svg#steps"/></svg><h2 id="tSteps">What to do</h2></div>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <section class="card" id="avoidCard" hidden>
+    <div class="sec-title"><svg class="i" aria-hidden="true" style="color:var(--danger)"><use href="icons.svg#no"/></svg><h2 id="tAvoid">Do not</h2></div>
+    <ul class="avoid" id="avoid"></ul>
+  </section>
+
+  <section class="card shelter-card" id="routeCard" hidden>
+    <div class="sec-title"><svg class="i" aria-hidden="true"><use href="icons.svg#exit"/></svg><h2 id="tNearest">Nearest evacuation sites</h2></div>
+    <p class="small" id="tPrivacy">Your location stays on your phone. It is never sent to Daiboju.</p>
+    <div id="places" role="status" aria-live="polite"><button class="btn safe" id="locate" type="button"><svg class="i" aria-hidden="true"><use href="icons.svg#pin"/></svg><span id="tLocate">Find my nearest safe place</span></button></div>
+    <p class="small" id="tsunamiTip" hidden style="margin-top:12px"></p>
+  </section>
+
+  <section class="calls" aria-label="Emergency numbers">
+    <a class="btn signal" href="tel:119"><b>119</b><span id="t119">Fire / Ambulance</span></a>
+    <a class="btn" href="tel:110"><b>110</b><span id="t110">Police</span></a>
+    <a class="btn ghost aed" href="https://sunveda.tech/app/aedoko/"><svg class="i" aria-hidden="true" style="color:var(--danger)"><use href="icons.svg#aed"/></svg><span id="tAed">Someone collapsed? Find an AED</span></a>
+  </section>
+
+  <footer id="tFoot">Data: Japan Meteorological Agency, GSI. Always follow your city, police and fire services.</footer>
+</main>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const API = window.DAIBOJU_API || '';
+const q = new URLSearchParams(location.search);
+const lang = (q.get('l') || 'en').slice(0, 5);
+document.documentElement.lang = lang;
+
+// Interface labels. The guidance itself comes from the server in the user's language.
+const T = {
+  en: { steps: 'What to do', avoid: 'Do not', nearest: 'Nearest evacuation sites', privacy: 'Your exact location stays on your phone. To find sites, your phone downloads public map data for your area from GSI, Japan’s mapping agency.', locate: 'Find my nearest safe place', walk: 'Walk there', min: 'min walk', none: 'No designated site found nearby.', search: 'Search evacuation sites in Google Maps', noLoc: 'Location is off. Turn it on, or search in Google Maps:', unavailT: 'Next steps could not be loaded', unavail: 'Protect yourself first and follow official instructions. Call 119 if anyone is hurt or trapped.', straight: 'straight-line', partial: 'Some evacuation-site data could not be loaded, so a closer site may be missing.', loadFail: 'Evacuation-site data could not be loaded.', c119: '119 Fire / Ambulance', c110: '110 Police', aed: 'Someone collapsed? Find an AED', tsunami: 'If you cannot get there in time, go up to the 3rd floor or higher of the nearest sturdy concrete building now.', drill: 'DRILL · This is not a real emergency', intensity: 'Intensity', mag: 'Magnitude' },
+  ja: { steps: 'すること', avoid: 'してはいけないこと', nearest: '最寄りの避難場所', privacy: '正確な位置情報はスマホの中だけで使われます。避難場所を探すため、スマホがお住まいの地域の公開地図データを国土地理院から取得します。', locate: '最寄りの避難場所を探す', walk: '歩いて行く', min: '分（徒歩）', none: '近くに指定緊急避難場所が見つかりませんでした。', search: 'Googleマップで避難場所を検索', noLoc: '位置情報がオフです。オンにするか、Googleマップで検索してください：', unavailT: '次の行動を読み込めませんでした', unavail: 'まず身の安全を確保し、公式の指示に従ってください。けが人や閉じ込められた人がいれば119番へ。', straight: '直線距離', partial: '一部の避難場所データを読み込めなかったため、より近い場所が表示されていない可能性があります。', loadFail: '避難場所データを読み込めませんでした。', c119: '119 消防・救急', c110: '110 警察', aed: '人が倒れたら：AEDを探す', tsunami: '間に合わない場合は、今すぐ近くの頑丈な鉄筋コンクリートの建物の3階以上へ。', drill: '訓練 · これは本当の災害ではありません', intensity: '震度', mag: 'マグニチュード' },
+  zh: { steps: '该做什么', avoid: '不要做', nearest: '最近的避难场所', privacy: '您的精确位置只留在手机上。为查找避难场所，手机会从日本国土地理院下载您所在区域的公开地图数据。', locate: '查找最近的安全地点', walk: '步行前往', min: '分钟步行', none: '附近未找到指定避难场所。', search: '在谷歌地图中搜索避难场所', noLoc: '定位已关闭。请打开定位，或在谷歌地图中搜索：', unavailT: '无法加载下一步指引', unavail: '请先保护好自己并听从官方指示。如有人受伤或被困，请拨打119。', straight: '直线距离', partial: '部分避难场所数据未能加载，可能遗漏更近的地点。', loadFail: '无法加载避难场所数据。', c119: '119 消防/急救', c110: '110 警察', aed: '有人倒下？查找AED', tsunami: '如果来不及，立即登上附近坚固钢筋混凝土建筑的3楼或更高。', drill: '演练 · 这不是真实的紧急情况', intensity: '震度', mag: '震级' },
+  ko: { steps: '해야 할 일', avoid: '하지 마세요', nearest: '가장 가까운 대피소', privacy: '정확한 위치는 휴대폰에만 남습니다. 대피소를 찾기 위해 휴대폰이 일본 국토지리원에서 해당 지역의 공개 지도 데이터를 내려받습니다.', locate: '가장 가까운 안전한 곳 찾기', walk: '걸어서 가기', min: '분 도보', none: '근처에 지정 대피소가 없습니다.', search: 'Google 지도에서 대피소 검색', noLoc: '위치가 꺼져 있습니다. 켜거나 Google 지도에서 검색하세요:', unavailT: '다음 행동을 불러올 수 없습니다', unavail: '먼저 안전을 확보하고 공식 지시에 따르세요. 다치거나 갇힌 사람이 있으면 119에 전화하세요.', straight: '직선거리', partial: '일부 대피소 데이터를 불러오지 못해 더 가까운 장소가 빠졌을 수 있습니다.', loadFail: '대피소 데이터를 불러올 수 없습니다.', c119: '119 소방/구급', c110: '110 경찰', aed: '사람이 쓰러졌나요? AED 찾기', tsunami: '제때 도착할 수 없다면 지금 가까운 튼튼한 콘크리트 건물의 3층 이상으로 올라가세요.', drill: '훈련 · 실제 상황이 아닙니다', intensity: '진도', mag: '규모' },
+  vi: { steps: 'Việc cần làm', avoid: 'Không được', nearest: 'Nơi sơ tán gần nhất', privacy: 'Vị trí chính xác của bạn chỉ ở trên điện thoại. Để tìm nơi sơ tán, điện thoại tải dữ liệu bản đồ công khai của khu vực từ GSI, cơ quan bản đồ Nhật Bản.', locate: 'Tìm nơi an toàn gần nhất', walk: 'Đi bộ đến đó', min: 'phút đi bộ', none: 'Không tìm thấy nơi sơ tán chỉ định gần đây.', search: 'Tìm nơi sơ tán trên Google Maps', noLoc: 'Vị trí đang tắt. Hãy bật lên, hoặc tìm trên Google Maps:', unavailT: 'Không tải được hướng dẫn tiếp theo', unavail: 'Hãy bảo vệ bản thân trước và làm theo hướng dẫn chính thức. Gọi 119 nếu có người bị thương hoặc mắc kẹt.', straight: 'đường chim bay', partial: 'Một phần dữ liệu nơi sơ tán không tải được, có thể thiếu nơi gần hơn.', loadFail: 'Không tải được dữ liệu nơi sơ tán.', c119: '119 Cứu hỏa / Cấp cứu', c110: '110 Cảnh sát', aed: 'Có người ngã quỵ? Tìm AED', tsunami: 'Nếu không kịp, hãy lên tầng 3 trở lên của tòa nhà bê tông chắc chắn gần nhất ngay.', drill: 'DIỄN TẬP · Đây không phải tình huống thật', intensity: 'Cấp động đất', mag: 'Độ lớn' },
+  pt: { steps: 'O que fazer', avoid: 'Não faça', nearest: 'Locais de evacuação mais próximos', privacy: 'Sua localização exata fica no seu celular. Para encontrar locais, o celular baixa dados públicos do mapa da sua área do GSI, a agência cartográfica do Japão.', locate: 'Encontrar o local seguro mais próximo', walk: 'Ir a pé', min: 'min a pé', none: 'Nenhum local designado encontrado perto.', search: 'Buscar locais de evacuação no Google Maps', noLoc: 'A localização está desligada. Ative-a ou busque no Google Maps:', unavailT: 'Não foi possível carregar os próximos passos', unavail: 'Proteja-se primeiro e siga as instruções oficiais. Ligue 119 se alguém estiver ferido ou preso.', straight: 'em linha reta', partial: 'Alguns dados de locais de evacuação não carregaram; pode faltar um local mais próximo.', loadFail: 'Não foi possível carregar os dados dos locais de evacuação.', c119: '119 Bombeiros / Ambulância', c110: '110 Polícia', aed: 'Alguém desmaiou? Encontre um DEA', tsunami: 'Se não der tempo, suba agora ao 3º andar ou acima do prédio de concreto firme mais próximo.', drill: 'SIMULADO · Não é uma emergência real', intensity: 'Intensidade', mag: 'Magnitude' },
+  es: { steps: 'Qué hacer', avoid: 'No hagas', nearest: 'Lugares de evacuación más cercanos', privacy: 'Tu ubicación exacta se queda en tu teléfono. Para buscar lugares, tu teléfono descarga datos públicos del mapa de tu zona desde GSI, la agencia cartográfica de Japón.', locate: 'Buscar el lugar seguro más cercano', walk: 'Ir caminando', min: 'min a pie', none: 'No se encontró ningún lugar designado cerca.', search: 'Buscar lugares de evacuación en Google Maps', noLoc: 'La ubicación está desactivada. Actívala o busca en Google Maps:', unavailT: 'No se pudieron cargar los próximos pasos', unavail: 'Protégete primero y sigue las instrucciones oficiales. Llama al 119 si alguien está herido o atrapado.', straight: 'en línea recta', partial: 'No se cargaron algunos datos de lugares de evacuación; puede faltar uno más cercano.', loadFail: 'No se pudieron cargar los datos de lugares de evacuación.', c119: '119 Bomberos / Ambulancia', c110: '110 Policía', aed: '¿Alguien se desmayó? Busca un DEA', tsunami: 'Si no llegas a tiempo, sube ya al 3.er piso o más alto del edificio de concreto firme más cercano.', drill: 'SIMULACRO · No es una emergencia real', intensity: 'Intensidad', mag: 'Magnitud' },
+};
+// Match full tags like "zh-CN" or "pt-BR" to their base language.
+const t = T[lang] || T[lang.slice(0, 2).toLowerCase()] || T.en;
+const set = (id, text) => ($(id).textContent = text);
+set('tSteps', t.steps); set('tAvoid', t.avoid); set('tNearest', t.nearest); set('tPrivacy', t.privacy);
+set('tLocate', t.locate); set('t119', t.c119.replace(/^\d+\s*/, '')); set('t110', t.c110.replace(/^\d+\s*/, '')); set('tAed', t.aed);
+// One pictogram per action, like a safety sign.
+const ACTION_ICON = { high_ground_now: 'high', coast_high_ground: 'high', leave_coast: 'tsunami', check_building: 'quake', stay_alert: 'home', evacuate_now: 'exit', safest_place_now: 'home', prepare: 'steps', shelter_indoors: 'home', follow_officials: 'warn' };
+const icon = (id) => `<svg class="i" aria-hidden="true"><use href="icons.svg#${id}"/></svg>`;
+
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('避難場所')}`;
+
+// No-key demo (tour.html): ?demo=quake|tsunami|typhoon uses data generated from the real
+// rules and templates instead of calling the API. Shelter search still uses real GSI data.
+const demoKey = q.get('demo');
+if (demoKey) await new Promise((done) => document.head.append(Object.assign(document.createElement('script'), { src: 'demo-data.js', onload: done, onerror: done })));
+const demo = window.DAIBOJU_DEMO?.scenarios?.[demoKey];
+
+let data;
+try {
+  if (demo) {
+    data = { event: { id: 'demo', hazard: demo.hazard, drill: true, facts: demo.facts }, pref: demo.pref, area: demo.area, action: demo.action, showRoute: true, shelterLayer: demo.shelterLayer, guidance: demo.guidance[lang] || demo.guidance.en };
+  } else {
+  // Never guess the prefecture: a link without one is treated as unavailable, not as Tokyo.
+  if (!/^\d{2}$/.test(q.get('p') || '')) throw new Error('no prefecture in link');
+  data = await fetch(`${API}/api/guidance?${new URLSearchParams({ e: q.get('e') || '', p: q.get('p'), l: lang, h: q.get('h') || '' })}`, { signal: AbortSignal.timeout(10000) }).then((r) => r.json());
+  }
+} catch {
+  data = null;
+}
+if (!data || data.error) {
+  // Guidance is unavailable (outage, bad or expired link). Say so plainly, keep the
+  // emergency numbers, and still offer the evacuation-site search.
+  set('title', t.unavailT); set('summary', t.unavail);
+  $('head').classList.add('calm');
+  // Shelters are designated per hazard: only search if the link says which hazard this is.
+  const LAYER = { earthquake: 'skhb04', tsunami: 'skhb05', rain: 'skhb01', typhoon: 'skhb01', landslide: 'skhb02', volcano: 'skhb08' };
+  const layer = LAYER[q.get('h')];
+  $('routeCard').hidden = false;
+  if (layer) {
+    data = { shelterLayer: layer };
+    $('locate').addEventListener('click', locate);
+  } else {
+    $('places').innerHTML = `<a class="btn safe" href="${mapsSearch}" target="_blank" rel="noopener">${t.search}</a>`;
+  }
+} else {
+  const g = data.guidance || {};
+  set('title', g.title || 'Daiboju');
+  // Less to read: skip the summary when it only repeats the first step.
+  set('summary', g.summary && g.summary !== g.steps?.[0] ? g.summary : '');
+  $('summary').hidden = !$('summary').textContent;
+  document.title = `Daiboju · ${g.title || ''}`;
+  if (!['high_ground_now', 'coast_high_ground', 'evacuate_now', 'safest_place_now', 'check_building'].includes(data.action)) $('head').classList.add('calm');
+  $('headIcon').setAttribute('href', `icons.svg#${ACTION_ICON[data.action] || 'warn'}`);
+  $('steps').innerHTML = (g.steps || []).map((s) => `<li>${esc(s)}</li>`).join('');
+  if (g.avoid?.length) { $('avoidCard').hidden = false; $('avoid').innerHTML = g.avoid.map((s) => `<li>${icon('no')}<span>${esc(s)}</span></li>`).join(''); }
+  if (data.event?.drill) { $('drill').hidden = false; $('drill').innerHTML = `${icon('drill')}<span>${esc(t.drill)}</span>`; }
+
+  const f = data.event?.facts || {};
+  // Every field below is optional: this page must render the steps even if the payload is partial.
+  const chips = data.pref ? [['pin', `${data.pref.en} · ${data.pref.ja}`]] : [];
+  if (data.area?.intensity) chips.push(['quake', `${t.intensity} ${data.area.intensity}`]);
+  if (f.magnitude) chips.push(['wave', `${t.mag} ${f.magnitude}`]);
+  if (f.epicenter) chips.push(['warn', f.epicenter]);
+  if (data.area?.region) chips.push(['tsunami', data.area.region]);
+  if (data.area?.height) chips.push(['tsunami', data.area.height]);
+  if (f.name) chips.push(['typhoon', f.name]);
+  $('facts').innerHTML = chips.map(([ic, c]) => `<li>${icon(ic)}${esc(c)}</li>`).join('');
+
+  if (data.showRoute) {
+    $('routeCard').hidden = false;
+    if (data.event?.hazard === 'tsunami') { $('tsunamiTip').hidden = false; set('tsunamiTip', t.tsunami); }
+    $('locate').addEventListener('click', locate);
+    // In a real emergency every tap counts: ask for location right away if already permitted.
+    navigator.permissions?.query({ name: 'geolocation' }).then((p) => p.state === 'granted' && locate()).catch(() => {});
+  }
+}
+
+// --- Nearest designated evacuation sites, computed on the device --------------------------
+// GSI publishes 指定緊急避難場所 as GeoJSON tiles at zoom 10, one layer per hazard type.
+function tileOf(lat, lon, z) {
+  const n = 2 ** z;
+  const x = Math.floor(((lon + 180) / 360) * n);
+  const r = (lat * Math.PI) / 180;
+  const y = Math.floor(((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2) * n);
+  return { x, y };
+}
+function meters(a, b) {
+  const R = 6371000, toR = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * toR, dLon = (b.lon - a.lon) * toR;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * toR) * Math.cos(b.lat * toR) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+async function shelters(lat, lon, layer) {
+  const z = 10, { x, y } = tileOf(lat, lon, z);
+  const urls = [];
+  for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) urls.push(`https://cyberjapandata.gsi.go.jp/xyz/${layer}/${z}/${x + dx}/${y + dy}.geojson`);
+  // GSI answers 404 for tiles with no sites: that is an empty tile, not a failure.
+  const tiles = await Promise.allSettled(urls.map((u) => fetch(u, { signal: AbortSignal.timeout(8000) }).then((r) => {
+    if (r.status === 404) return { features: [] };
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  })));
+  const failed = tiles.filter((x) => x.status === 'rejected').length;
+  const out = [];
+  for (const tl of tiles) for (const ft of tl.value?.features || []) {
+    if (ft.geometry?.type !== 'Point') continue;
+    const [plon, plat] = ft.geometry.coordinates;
+    if (!Number.isFinite(plon) || !Number.isFinite(plat)) continue;
+    const p = ft.properties || {};
+    out.push({ lat: plat, lon: plon, name: p.name || p['名称'] || p['施設・場所名'] || 'Evacuation site', address: p.address || p['住所'] || p['所在地'] || '', d: meters({ lat, lon }, { lat: plat, lon: plon }) });
+  }
+  return { list: out.sort((a, b) => a.d - b.d).slice(0, 3), failed, total: urls.length };
+}
+function locate() {
+  $('places').innerHTML = '<p class="muted">…</p>';
+  navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+    let r = { list: [], failed: 9, total: 9 };
+    try { r = await shelters(coords.latitude, coords.longitude, data.shelterLayer); } catch {}
+    const searchBtn = `<a class="btn safe" href="${mapsSearch}" target="_blank" rel="noopener">${t.search}</a>`;
+    if (!r.list.length) {
+      // Never present a failed download as "nothing nearby".
+      $('places').innerHTML = `<p>${r.failed ? t.loadFail : t.none}</p>${searchBtn}`;
+      return;
+    }
+    const warning = r.failed ? `<p class="notice err small" style="margin-top:12px">${t.partial}</p>${searchBtn}` : '';
+    const list = r.list;
+    $('places').innerHTML = list.map((s) => `
+      <div class="place">
+        <div class="name">${esc(s.name)}</div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=walking" target="_blank" rel="noopener">${icon('exit')}${t.walk}</a>
+        <div class="dist">${s.d < 1000 ? Math.round(s.d) + ' m' : (s.d / 1000).toFixed(1) + ' km'} ${t.straight}${s.address ? ' · ' + esc(s.address) : ''}</div>
+      </div>`).join('') + warning;
+  }, () => {
+    $('places').innerHTML = `<p>${t.noLoc}</p><a class="btn safe" href="${mapsSearch}" target="_blank" rel="noopener">${t.search}</a>`;
+  }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+}
+</script>
+</body>
+</html>
