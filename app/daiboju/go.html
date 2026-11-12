@@ -73,11 +73,21 @@ const icon = (id) => `<svg class="i" aria-hidden="true"><use href="icons.svg#${i
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('避難場所')}`;
 
+// No-key demo (tour.html): ?demo=quake|tsunami|typhoon uses data generated from the real
+// rules and templates instead of calling the API. Shelter search still uses real GSI data.
+const demoKey = q.get('demo');
+if (demoKey) await new Promise((done) => document.head.append(Object.assign(document.createElement('script'), { src: 'demo-data.js', onload: done, onerror: done })));
+const demo = window.DAIBOJU_DEMO?.scenarios?.[demoKey];
+
 let data;
 try {
+  if (demo) {
+    data = { event: { id: 'demo', hazard: demo.hazard, drill: true, facts: demo.facts }, pref: demo.pref, area: demo.area, action: demo.action, showRoute: true, shelterLayer: demo.shelterLayer, guidance: demo.guidance[lang] || demo.guidance.en };
+  } else {
   // Never guess the prefecture: a link without one is treated as unavailable, not as Tokyo.
   if (!/^\d{2}$/.test(q.get('p') || '')) throw new Error('no prefecture in link');
   data = await fetch(`${API}/api/guidance?${new URLSearchParams({ e: q.get('e') || '', p: q.get('p'), l: lang, h: q.get('h') || '' })}`, { signal: AbortSignal.timeout(10000) }).then((r) => r.json());
+  }
 } catch {
   data = null;
 }
