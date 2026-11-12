@@ -98,6 +98,11 @@ if (!cfg) {
   $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">The alert service is not reachable right now. Try again shortly.</p>';
   throw new Error('Daiboju API unreachable');
 }
+if (!cfg.signupOpen && !params.has('drill')) {
+  // The service accepts only drill opt-ins until launch (SIGNUP_OPEN on the server).
+  $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">Daiboju is in preview.</p>';
+  throw new Error('Daiboju sign-up is not open yet');
+}
 
 const CH = {
   webpush: { label: 'Browser', icon: 'browser', field: null },
