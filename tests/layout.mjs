@@ -16,7 +16,7 @@ const VIEWPORTS = [
 
 const SHARED_LANGUAGES = ["en", "ja", "ko", "zh", "es", "de", "fr", "pt", "ru", "ar", "hi", "it"];
 const AEDOKO_LANGUAGES = ["ja", "ja-x-easy", "en", "zh-Hans", "zh-Hant", "ko", "pt", "es", "vi", "tl", "ne", "id", "th", "hi", "fr", "ru"];
-const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/", "/feedback/?lang=en", "/feedback/?lang=ja", "/feedback/admin/", "/app/daiboju/", "/app/daiboju/go.html?p=13&l=ja&lang=ja", "/app/daiboju/?drill=1&daiboju-mock=1", "/app/daiboju/go.html?e=layout&p=12&l=ja&daiboju-mock=1&lang=ja", "/app/daiboju/go.html?e=layout&p=12&l=en&daiboju-mock=1", "/app/daiboju/demo.html"];
+const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/", "/feedback/?lang=en", "/feedback/?lang=ja", "/feedback/admin/", "/app/daiboju/", "/app/daiboju/go.html?p=13&l=ja&lang=ja", "/app/daiboju/?drill=1&daiboju-mock=1", "/app/daiboju/go.html?e=layout&p=12&l=ja&daiboju-mock=1&lang=ja", "/app/daiboju/go.html?e=layout&p=12&l=en&daiboju-mock=1", "/app/daiboju/demo.html", "/app/daiboju/tour.html", "/app/daiboju/go.html?demo=tsunami&l=en&h=tsunami"];
 
 // Daiboju's API is deployed separately on Cloud Run; tests never call the live service. Routes with `daiboju-mock` get populated fixtures so the
 // connected sign-up form and the full guidance page are audited; other Daiboju routes see the API
