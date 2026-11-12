@@ -60,7 +60,7 @@
         <h3>We never keep</h3>
         <ul>
           <li>Your name or an account</li>
-          <li>Your location. The route is found on your phone</li>
+          <li>Your location. The nearest site is found on your phone, using public map data for your area from GSI (Japan’s mapping agency)</li>
           <li>Anything about you in the AI. It writes one message per area and language</li>
         </ul>
       </div>
@@ -70,7 +70,6 @@
 
   <footer>
     <p>Built by SunVeda with Gemini 4 Argon and Google Maps. Someone collapsed? <a href="https://sunveda.tech/app/aedoko/">Find an AED with AEDoko</a>.</p>
-    <p class="small">* The first alert is sent in English for these languages; the next steps are written in your language.</p>
   </footer>
 </main>
 
@@ -100,8 +99,7 @@ const CH = {
 // Language: preselect from the browser.
 const guess = (navigator.language || 'en').slice(0, 2);
 for (const [code, name] of Object.entries(cfg.languages)) {
-  const star = cfg.templateLanguages.includes(code) ? '' : ' *';
-  $('lang').add(new Option(name + star, code, false, code === (cfg.languages[guess] ? guess : 'en')));
+  $('lang').add(new Option(name, code, false, code === (cfg.languages[guess] ? guess : 'en')));
 }
 $('pref').add(new Option('Choose… · 選択', ''));
 for (const p of cfg.prefectures) $('pref').add(new Option(`${p.en} · ${p.ja}`, p.code, false, p.code === '13' && params.has('drill')));
@@ -164,11 +162,11 @@ $('form').addEventListener('submit', async (e) => {
         <div class="code">${esc(data.code)}</div>
         ${httpsUrl(data.lineAddUrl) ? `<a class="btn safe" href="${esc(httpsUrl(data.lineAddUrl))}" target="_blank" rel="noopener">Open LINE · LINEを開く</a>` : '<span class="small muted">(LINE account link not configured yet)</span>'}`);
     } else {
-      show(`<strong>You're set. · 登録しました。</strong><br>You will get alerts for ${$('pref').selectedOptions[0].text} in ${$('lang').selectedOptions[0].text.replace(' *', '')}.
+      show(`<strong>You're set. · 登録しました。</strong><br>You will get alerts for ${esc($('pref').selectedOptions[0].text)} in ${esc($('lang').selectedOptions[0].text)}.
         <br><a class="small" href="${esc(API)}/api/unsubscribe?id=${encodeURIComponent(data.id)}&t=${encodeURIComponent(data.unsubToken)}">Delete my data</a>`);
     }
   } catch (err) {
-    show(err.message, true);
+    show(esc(err.message), true);
   } finally {
     $('submit').disabled = false;
   }

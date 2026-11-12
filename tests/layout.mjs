@@ -25,7 +25,7 @@ const DAIBOJU_FIXTURES = {
   config: {
     vapidPublicKey: null, lineAddUrl: null, dryRun: false,
     channels: { webpush: true, email: true, line: true, sms: true, whatsapp: true },
-    languages: { en: "English", ja: "日本語", zh: "中文(简体)", ko: "한국어", vi: "Tiếng Việt", pt: "Português", es: "Español", ne: "नेपाली", my: "မြန်မာ" },
+    languages: { en: "English", ja: "日本語", zh: "中文(简体)", ko: "한국어", vi: "Tiếng Việt", pt: "Português", es: "Español" },
     templateLanguages: ["en", "ja", "zh", "ko", "vi", "pt", "es"],
     prefectures: [{ code: "12", ja: "千葉県", en: "Chiba" }, { code: "13", ja: "東京都", en: "Tokyo" }, { code: "46", ja: "鹿児島県", en: "Kagoshima" }],
   },
