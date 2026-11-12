@@ -208,7 +208,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 ### Taxable development announcement
 
 1. The homepage Taxable card links to its entry at `/app/#taxable` in the existing catalogue.
-2. Both cards identify the crypto tax calculator as in development and not yet ready for tax filing. The catalogue distinguishes one live application from one in development.
+2. Both cards identify the crypto tax calculator as in development and not yet ready for tax filing. The catalogue distinguishes two live applications (AEDoko and Daiboju) from three in development (Taxable, Health App and Familiar).
 3. **Follow development** opens the public `sunveda/taxable` repository in a new tab. The website does not embed or call the separately developed Taxable application or API.
 
 ### Daiboju disaster alerts
