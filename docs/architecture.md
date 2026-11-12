@@ -152,7 +152,7 @@ flowchart TB
 | Analytics API and alias redirect | Cloudflare Worker, ES modules                                                             | Cloudflare Workers, route `sunveda.tech/api/analytics*` and `sunveda.tech/analyse*` | `analytics/worker/`                                                                                                |
 | Analytics database               | Cloudflare D1                                                                             | APAC region                                                                         | Schema in `analytics/worker/schema.sql`                                                                            |
 | Daily collector                  | Zero-dependency Node.js 24 scripts with transient retry and 30-day gap reconciliation     | GitHub Actions                                                                      | `analytics/collect.mjs`, `analytics/reconcile.mjs`, `.github/workflows/analytics.yml`                              |
-| Multilingual layout QA           | Playwright with 196 route, language, and viewport combinations                            | GitHub Actions on pull requests, `main`, weekly, and manual dispatch                | `tests/layout.mjs`, `.github/workflows/layout-tests.yml`                                                           |
+| Multilingual layout QA           | Playwright with 212 route, language, and viewport combinations                            | GitHub Actions on pull requests, `main`, weekly, and manual dispatch                | `tests/layout.mjs`, `.github/workflows/layout-tests.yml`                                                           |
 | Human-readable archive           | Markdown reports                                                                          | Orphan-style `analytics-data` Git branch                                            | `analytics/reports/YYYY-MM-DD.md` on that branch                                                                   |
 | Legal and event pages            | Plain HTML                                                                                | GitHub Pages from `main`                                                            | `privacy.html`, `terms.html`, `rsvp/index.html`                                                                    |
 | Domain and CDN                   | `CNAME` plus Cloudflare DNS/CDN                                                           | Cloudflare in front of GitHub Pages                                                 | `CNAME` and Cloudflare configuration                                                                               |
@@ -204,7 +204,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 ### Daiboju disaster alerts (preview)
 
 1. GitHub Pages serves the static Daiboju pages at `/app/daiboju/` (sign-up, `go.html` next steps, `demo.html` drill console marked `noindex`).
-2. The pages call the separately deployed Daiboju API (`window.DAIBOJU_API` in `app/daiboju/config.js`) with CORS limited to `https://sunveda.tech`. Until that API is deployed, the sign-up form shows a "sign-up opens soon" notice and sends nothing.
+2. The pages call the separately deployed Daiboju API (`window.DAIBOJU_API` in `app/daiboju/config.js`) with CORS limited to `https://sunveda.tech`. Sign-up is closed by a launch gate (`DAIBOJU_SIGNUP_OPEN = false` in `config.js`) until `privacy.html` covers Daiboju; meanwhile the form shows "Sign-up opens soon" and sends nothing.
 3. Sign-up sends only a delivery address (push subscription, email, phone or a LINE linking code), language and prefecture to the API, which stores the contact encrypted in Upstash Redis.
 4. Alert messages link back to `/app/daiboju/go?...`. That page fetches non-personal guidance from the API, then computes the nearest designated evacuation site in the browser from GSI tiles and opens a Google Maps walking-directions link. Coordinates are never sent to SunVeda.
 
@@ -232,7 +232,7 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 1. GitHub Actions runs the Playwright suite for relevant pull requests and pushes to `main`, every Monday at 09:15 JST, or by manual dispatch.
 2. The suite serves the checked-out static files on a loopback-only ephemeral port.
 3. Chromium checks 360×800, 390×844, 768×1024, and 1366×768 viewports.
-4. The homepage and `/app/` run in all 12 shared locales, AEDoko runs in all 16 available language choices, and the legal, RSVP, analytics and Daiboju routes run in English (the Daiboju next-steps page also in Japanese).
+4. The homepage and `/app/` run in all 12 shared locales, AEDoko runs in all 16 available language choices, and the legal, RSVP, analytics and Daiboju routes run in English (Daiboju next steps also in Japanese). Daiboju routes with `daiboju-mock` get mocked API fixtures so the connected sign-up form and full guidance page are audited; the others audit the API-unreachable fallbacks.
 5. The job fails when it finds text clipping, multi-line heading collisions, header collisions, mobile-menu overflow, or document-level horizontal overflow.
 
 ### AEDoko community contributions
