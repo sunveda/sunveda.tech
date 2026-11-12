@@ -130,7 +130,11 @@ async function auditLayout(page, scenario) {
     const isVisible = element => {
       const style = getComputedStyle(element);
       const box = element.getBoundingClientRect();
-      return style.display !== "none" && style.visibility !== "hidden" && box.width > 0 && box.height > 0;
+      // The intentional visually-hidden (screen-reader-only) pattern: an absolutely positioned 1×1 px
+      // box clipped to nothing. A visible element that merely collapses is still audited.
+      const clippedAway = style.clip === "rect(0px, 0px, 0px, 0px)" || /inset\(50%\)/.test(style.clipPath);
+      const visuallyHidden = style.position === "absolute" && box.width <= 1 && box.height <= 1 && clippedAway;
+      return style.display !== "none" && style.visibility !== "hidden" && box.width > 0 && box.height > 0 && !visuallyHidden;
     };
 
     const lineOverlap = element => {

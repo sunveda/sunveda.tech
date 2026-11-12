@@ -34,7 +34,7 @@ shipped/in-flight/planned status changes.
 | Taxable crypto tax calculator | in-flight | Announce on the homepage and `/app/#taxable` as in development; link the public development repository, with no claim of readiness for tax filing |
 | AEDoko emergency finder `/app/aedoko/` | shipped | Vendored static bundle from `sunveda/aedoko` |
 | AEDoko on-demand interactive map | shipped | Lazy MapLibre bundle, loads only when opened |
-| Daiboju disaster-alert pages `/app/daiboju/` | in-flight | Static pages synced from `sunveda/daiboju`; Cloud Run service deployed 2026-11-12 (`daiboju-668725030350.asia-northeast1.run.app`); real sign-ups wait for a privacy-policy update |
+| Daiboju disaster-alert pages `/app/daiboju/` | shipped (test mode) | Listed as live 2026-11-12. Static pages synced from `sunveda/daiboju`; Cloud Run service `daiboju-668725030350.asia-northeast1.run.app`. Sign-up open on the site and covered by `privacy.html`; the service also needs `SIGNUP_OPEN=1`. Until real channels and a persistent store are configured, alerts are simulated (`CHANNELS_DRY_RUN=1`), sign-ups live in memory, and the sign-up page shows a test-mode notice |
 | AEDoko community contribution pipeline | shipped | Issue Forms → unverified draft proposal PR; import/validation stays a separate manual step |
 | Multilingual layout regression QA | shipped | Playwright, 220 route/language/viewport combinations |
 | RSVP parking page `/rsvp/` | shipped | Bilingual thank-you, redirects home; original invitation content archived under `docs/archive/` |
