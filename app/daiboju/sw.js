@@ -33,7 +33,8 @@ self.addEventListener('notificationclick', (event) => {
 });
 
 // The browser can replace a push subscription at any time. Re-subscribe and tell the API,
-// otherwise alerts would silently stop. Uses what the sign-up page stored on this device.
+// otherwise alerts would silently stop. Uses the language and prefecture the sign-up page stored
+// on this device (no credentials).
 self.addEventListener('pushsubscriptionchange', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open('daiboju');
@@ -46,10 +47,8 @@ self.addEventListener('pushsubscriptionchange', (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ channel: 'webpush', contact: sub.toJSON(), lang: reg.lang, pref: reg.pref, drill: reg.drill }),
     });
-    if (!res.ok) return;
-    const data = await res.json();
-    // Remove the old record now rather than waiting for a failed delivery.
-    await fetch(`${reg.api}/api/unsubscribe?id=${encodeURIComponent(reg.id)}&t=${encodeURIComponent(reg.t)}`, { method: 'POST' }).catch(() => {});
-    await cache.put('push-registration', new Response(JSON.stringify({ ...reg, id: data.id, t: data.unsubToken })));
+    // The old endpoint is dead: its next delivery returns 404/410 and the API deletes that record,
+    // so no delete token needs to be kept in the browser.
+    if (!res.ok) console.warn('[daiboju] could not register the renewed push subscription');
   })());
 });

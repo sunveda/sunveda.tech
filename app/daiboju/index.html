@@ -165,7 +165,8 @@ $('form').addEventListener('submit', async (e) => {
     if (ch === 'webpush') {
       try {
         const cache = await caches.open('daiboju');
-        await cache.put('push-registration', new Response(JSON.stringify({ api: new URL(API || '.', location.href).href.replace(/\/$/, ''), lang: body.lang, pref: body.pref, drill: body.drill, id: data.id, t: data.unsubToken })));
+        // Only what is needed to re-subscribe; no record id or delete token is stored in the browser.
+        await cache.put('push-registration', new Response(JSON.stringify({ api: new URL(API || '.', location.href).href.replace(/\/$/, ''), lang: body.lang, pref: body.pref, drill: body.drill })));
       } catch { /* renewal is best-effort */ }
     }
     if (ch === 'line') {

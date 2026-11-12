@@ -74,7 +74,9 @@ const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIC
 
 let data;
 try {
-  data = await fetch(`${API}/api/guidance?${new URLSearchParams({ e: q.get('e') || '', p: q.get('p') || '13', l: lang, h: q.get('h') || '' })}`, { signal: AbortSignal.timeout(10000) }).then((r) => r.json());
+  // Never guess the prefecture: a link without one is treated as unavailable, not as Tokyo.
+  if (!/^\d{2}$/.test(q.get('p') || '')) throw new Error('no prefecture in link');
+  data = await fetch(`${API}/api/guidance?${new URLSearchParams({ e: q.get('e') || '', p: q.get('p'), l: lang, h: q.get('h') || '' })}`, { signal: AbortSignal.timeout(10000) }).then((r) => r.json());
 } catch {
   data = null;
 }
