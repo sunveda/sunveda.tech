@@ -151,8 +151,12 @@ $('form').addEventListener('submit', async (e) => {
       const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(cfg.vapidPublicKey) });
       body.contact = sub.toJSON();
     } else if (CH[ch].field) {
-      body.contact = $('contact').value.replace(/[\s-]/g, '');
-      if (ch !== 'email' && body.contact.startsWith('0')) body.contact = '+81' + body.contact.slice(1);
+      if (ch === 'email') {
+        body.contact = $('contact').value.trim();
+      } else {
+        body.contact = $('contact').value.replace(/[\s\-()]/g, '');
+        if (body.contact.startsWith('0')) body.contact = '+81' + body.contact.slice(1);
+      }
     }
     const res = await fetch(API + '/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const data = await res.json();
