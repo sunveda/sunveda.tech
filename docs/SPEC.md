@@ -36,7 +36,7 @@ shipped/in-flight/planned status changes.
 | AEDoko on-demand interactive map | shipped | Lazy MapLibre bundle, loads only when opened |
 | Daiboju disaster-alert pages `/app/daiboju/` | in-flight | Static pages synced from `sunveda/daiboju`; Cloud Run service deployed 2026-11-12 (`daiboju-668725030350.asia-northeast1.run.app`); real sign-ups wait for a privacy-policy update |
 | AEDoko community contribution pipeline | shipped | Issue Forms → unverified draft proposal PR; import/validation stays a separate manual step |
-| Multilingual layout regression QA | shipped | Playwright, 212 route/language/viewport combinations |
+| Multilingual layout regression QA | shipped | Playwright, 220 route/language/viewport combinations |
 | RSVP parking page `/rsvp/` | shipped | Bilingual thank-you, redirects home; original invitation content archived under `docs/archive/` |
 | Event feedback guest form (`/feedback/`) | shipped | Name + at least one contact method + overall experience + privacy acknowledgement required; food/decoration/cake/biryani questions and video upload optional |
 | Event feedback host dashboard (`/feedback/admin/`) | shipped | Private password session, paginated review, CSV export |
