@@ -103,8 +103,9 @@ if (!cfg) {
 }
 const drillOnly = window.DAIBOJU_SIGNUP_OPEN === false || !cfg.signupOpen;
 if (drillOnly && !params.has('drill')) closedNotice();
-// Be honest while nothing is really sent: the service reports dry-run mode in /api/config.
-if (cfg.dryRun) $('testMode').hidden = false;
+// Be honest while nothing is really sent. Fail closed: the notice stays unless the service
+// explicitly reports that it delivers for real (dryRun === false).
+$('testMode').hidden = cfg.dryRun === false;
 
 const CH = {
   webpush: { label: 'Browser', icon: 'browser', field: null },
