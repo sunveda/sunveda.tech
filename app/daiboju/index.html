@@ -128,7 +128,10 @@ for (const p of cfg.prefectures) $('pref').add(new Option(`${p.en} · ${p.ja}`, 
 const pushOk = 'serviceWorker' in navigator && 'PushManager' in window;
 let first = true;
 for (const [key, c] of Object.entries(CH)) {
-  const available = (cfg.channels[key] || cfg.dryRun) && (key !== 'webpush' || pushOk);
+  // Browser push cannot even be simulated without the server's VAPID key (the browser needs it to
+  // subscribe), and LINE sign-up is a dead end without the account's add-friend link.
+  const needs = { webpush: pushOk && Boolean(cfg.vapidPublicKey), line: Boolean(cfg.lineAddUrl) };
+  const available = (cfg.channels[key] || cfg.dryRun) && (needs[key] ?? true);
   const id = `ch-${key}`;
   $('channels').insertAdjacentHTML('beforeend',
     `<input type="radio" name="ch" id="${id}" value="${key}" ${available ? '' : 'disabled'} ${available && first ? 'checked' : ''}>

@@ -130,7 +130,9 @@ async function auditLayout(page, scenario) {
     const isVisible = element => {
       const style = getComputedStyle(element);
       const box = element.getBoundingClientRect();
-      return style.display !== "none" && style.visibility !== "hidden" && box.width > 0 && box.height > 0;
+      // A 1×1 px box is the standard visually-hidden (screen-reader-only) pattern, not visible text.
+      const visuallyHidden = box.width <= 1 && box.height <= 1;
+      return style.display !== "none" && style.visibility !== "hidden" && box.width > 0 && box.height > 0 && !visuallyHidden;
     };
 
     const lineOverlap = element => {
