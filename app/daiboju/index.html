@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daiboju · Disaster alerts in your language</title>
+<meta name="description" content="When an earthquake, tsunami, typhoon or flood hits Japan, Daiboju tells you what to do, in your language. No account. No tracking.">
+<meta name="theme-color" content="#d9381e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+<script src="config.js"></script>
+</head>
+<body>
+<main>
+  <a class="brand" href="./"><img class="brand-mark" src="icon.svg" alt="" width="36" height="36">Daiboju</a>
+
+  <h1>When disaster hits, know what to do. In your language.</h1>
+  <p class="muted">災害のとき、何をすればいいか。あなたの言葉で。</p>
+  <p>Earthquakes, tsunamis, typhoons and floods. You get a first alert within seconds, then clear next steps and a walking route to the nearest evacuation site once the official details are in.</p>
+
+  <form class="card" id="form" novalidate>
+    <h2>Get alerts · 通知を受け取る</h2>
+
+    <label for="lang">Language · 言語</label>
+    <select id="lang" required></select>
+
+    <label for="pref">Where you live or stay · 地域</label>
+    <select id="pref" required></select>
+
+    <fieldset style="border:0;padding:0;margin:16px 0 0">
+      <legend style="font-weight:650;margin-bottom:6px">How to reach you · 受け取り方法</legend>
+      <div class="channels" id="channels"></div>
+    </fieldset>
+
+    <div id="contactBox" hidden>
+      <label for="contact" id="contactLabel">Contact</label>
+      <input id="contact" autocomplete="off">
+    </div>
+
+    <label id="drillBox" hidden style="font-weight:500"><input type="checkbox" id="drill"> Also send me drill messages (for the demo)</label>
+
+    <button class="btn signal" id="submit" type="submit">Turn on alerts · 通知をオンにする</button>
+    <div id="result" role="status" aria-live="polite" style="margin-top:14px"></div>
+  </form>
+
+  <section class="card">
+    <h2>Privacy by design · プライバシー</h2>
+    <div class="privacy">
+      <div>
+        <h3>We keep only</h3>
+        <ul>
+          <li>Where to send the alert, encrypted</li>
+          <li>Your language</li>
+          <li>Your prefecture</li>
+        </ul>
+      </div>
+      <div>
+        <h3>We never keep</h3>
+        <ul>
+          <li>Your name or an account</li>
+          <li>Your location. The route is found on your phone</li>
+          <li>Anything about you in the AI. It writes one message per area and language</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted" style="margin:12px 0 0">Every message has a link that deletes your data in one tap. Alerts come from official Japan Meteorological Agency data. Always follow instructions from your city, police and fire services.</p>
+  </section>
+
+  <footer>Built by SunVeda with Gemini 4 Argon and Google Maps. Someone collapsed? <a href="https://sunveda.tech/app/aedoko/">Find an AED with AEDoko</a>.</footer>
+</main>
+
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const API = window.DAIBOJU_API || '';
+const params = new URLSearchParams(location.search);
+const cfg = await fetch(API + '/api/config').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+if (!cfg) {
+  $('form').innerHTML = '<h2>Sign-up opens soon · 登録は近日公開</h2><p class="muted">The alert service is not connected yet. Please check back shortly.</p>';
+  throw new Error('Daiboju API unreachable');
+}
+
+const CH = {
+  webpush: { label: 'This browser', sub: 'Push notification', field: null },
+  line: { label: 'LINE', sub: 'No phone number needed', field: null },
+  email: { label: 'Email', sub: '', field: { type: 'email', label: 'Email address', ph: 'you@example.com' } },
+  sms: { label: 'SMS', sub: 'Works without internet apps', field: { type: 'tel', label: 'Mobile number (with country code)', ph: '+81 90 1234 5678' } },
+  whatsapp: { label: 'WhatsApp', sub: '', field: { type: 'tel', label: 'WhatsApp number (with country code)', ph: '+81 90 1234 5678' } },
+};
+
+// Language: preselect from the browser.
+const guess = (navigator.language || 'en').slice(0, 2);
+for (const [code, name] of Object.entries(cfg.languages)) {
+  const star = cfg.templateLanguages.includes(code) ? '' : ' *';
+  $('lang').add(new Option(name + star, code, false, code === (cfg.languages[guess] ? guess : 'en')));
+}
+$('pref').add(new Option('Choose… · 選択', ''));
+for (const p of cfg.prefectures) $('pref').add(new Option(`${p.en} · ${p.ja}`, p.code, false, p.code === '13' && params.has('drill')));
+
+// Channels: hide the ones the server has not configured, unless running in dry-run mode.
+const pushOk = 'serviceWorker' in navigator && 'PushManager' in window;
+let first = true;
+for (const [key, c] of Object.entries(CH)) {
+  const available = (cfg.channels[key] || cfg.dryRun) && (key !== 'webpush' || pushOk);
+  const id = `ch-${key}`;
+  $('channels').insertAdjacentHTML('beforeend',
+    `<input type="radio" name="ch" id="${id}" value="${key}" ${available ? '' : 'disabled'} ${available && first ? 'checked' : ''}>
+     <label for="${id}">${c.label}<small>${available ? c.sub : 'Not available yet'}</small></label>`);
+  if (available) first = false;
+}
+const channel = () => document.querySelector('input[name=ch]:checked')?.value;
+function syncContact() {
+  const f = CH[channel()]?.field;
+  $('contactBox').hidden = !f;
+  if (f) Object.assign($('contact'), { type: f.type, placeholder: f.ph, autocomplete: f.type === 'email' ? 'email' : 'tel' }), ($('contactLabel').textContent = f.label);
+}
+$('channels').addEventListener('change', syncContact);
+syncContact();
+if (params.has('drill')) { $('drillBox').hidden = false; $('drill').checked = true; }
+
+const show = (html, err = false) => ($('result').innerHTML = `<div class="notice ${err ? 'err' : ''}">${html}</div>`);
+
+function urlB64ToUint8(b64) {
+  const s = atob((b64 + '='.repeat((4 - (b64.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(s, (c) => c.charCodeAt(0));
+}
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const ch = channel();
+  const body = { channel: ch, lang: $('lang').value, pref: $('pref').value, drill: $('drill').checked };
+  if (!body.pref) return show('Please choose your prefecture. · 地域を選択してください。', true);
+  if (!ch) return show('No delivery method is available yet.', true);
+  $('submit').disabled = true;
+  try {
+    if (ch === 'webpush') {
+      const reg = await navigator.serviceWorker.register('sw.js');
+      if ((await Notification.requestPermission()) !== 'granted') throw new Error('Notifications are blocked in this browser.');
+      if (!cfg.vapidPublicKey) throw new Error('Push is not configured on the server yet.');
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(cfg.vapidPublicKey) });
+      body.contact = sub.toJSON();
+    } else if (CH[ch].field) {
+      body.contact = $('contact').value.replace(/[\s-]/g, '');
+      if (ch !== 'email' && body.contact.startsWith('0')) body.contact = '+81' + body.contact.slice(1);
+    }
+    const res = await fetch(API + '/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    if (ch === 'line') {
+      show(`<strong>One more step.</strong> Add the Daiboju LINE account and send this code within 15 minutes:
+        <div class="code">${data.code}</div>
+        ${data.lineAddUrl ? `<a class="btn safe" href="${data.lineAddUrl}" target="_blank" rel="noopener">Open LINE · LINEを開く</a>` : '<span class="small muted">(LINE account link not configured yet)</span>'}`);
+    } else {
+      show(`<strong>You're set. · 登録しました。</strong><br>You will get alerts for ${$('pref').selectedOptions[0].text} in ${$('lang').selectedOptions[0].text.replace(' *', '')}.
+        <br><a class="small" href="${API}/api/unsubscribe?id=${data.id}&t=${data.unsubToken}">Delete my data now</a>`);
+    }
+  } catch (err) {
+    show(err.message, true);
+  } finally {
+    $('submit').disabled = false;
+  }
+});
+</script>
+<p class="small muted" style="max-width:40rem;margin:-48px auto 40px;padding:0 16px">* The first alert is sent in English for these languages; the next steps are written in your language.</p>
+</body>
+</html>
