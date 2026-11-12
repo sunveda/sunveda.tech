@@ -88,21 +88,20 @@
 const $ = (id) => document.getElementById(id);
 const API = window.DAIBOJU_API || '';
 const params = new URLSearchParams(location.search);
-if (window.DAIBOJU_SIGNUP_OPEN === false) {
-  // Launch gate: sign-up stays closed until the privacy policy covers Daiboju.
+// Launch gate: until the privacy policy covers Daiboju, only drill opt-ins (?drill=1) are possible.
+// The page sets DAIBOJU_SIGNUP_OPEN = false; the service enforces it too (SIGNUP_OPEN).
+const closedNotice = () => {
   $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">Daiboju is in preview.</p>';
   throw new Error('Daiboju sign-up is not open yet');
-}
+};
+if (window.DAIBOJU_SIGNUP_OPEN === false && !params.has('drill')) closedNotice();
 const cfg = await fetch(API + '/api/config', { signal: AbortSignal.timeout(8000) }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 if (!cfg) {
   $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">The alert service is not reachable right now. Try again shortly.</p>';
   throw new Error('Daiboju API unreachable');
 }
-if (!cfg.signupOpen && !params.has('drill')) {
-  // The service accepts only drill opt-ins until launch (SIGNUP_OPEN on the server).
-  $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">Daiboju is in preview.</p>';
-  throw new Error('Daiboju sign-up is not open yet');
-}
+const drillOnly = window.DAIBOJU_SIGNUP_OPEN === false || !cfg.signupOpen;
+if (drillOnly && !params.has('drill')) closedNotice();
 
 const CH = {
   webpush: { label: 'Browser', icon: 'browser', field: null },
@@ -139,7 +138,7 @@ function syncContact() {
 }
 $('channels').addEventListener('change', syncContact);
 syncContact();
-if (params.has('drill')) { $('drillBox').hidden = false; $('drill').checked = true; }
+if (params.has('drill')) { $('drillBox').hidden = false; $('drill').checked = true; $('drill').disabled = drillOnly; }
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const httpsUrl = (u) => { try { const x = new URL(u); return x.protocol === 'https:' ? x.href : null; } catch { return null; } };

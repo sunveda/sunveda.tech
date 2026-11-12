@@ -51,7 +51,7 @@ const API = window.DAIBOJU_API || '';
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 const safeLink = (u) => { try { const x = new URL(u, location.href); return ['https:', 'http:'].includes(x.protocol) ? x.href : '#'; } catch { return '#'; } };
-const { scenarios } = await fetch(API + '/api/drill').then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))).catch((err) => {
+const { scenarios } = await fetch(API + '/api/drill', { signal: AbortSignal.timeout(10000) }).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))).catch((err) => {
   $('status').textContent = `The Daiboju API is not reachable (${err.message}). Drills need a deployed API.`;
   return { scenarios: {} };
 });
