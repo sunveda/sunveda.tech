@@ -18,7 +18,7 @@ const SHARED_LANGUAGES = ["en", "ja", "ko", "zh", "es", "de", "fr", "pt", "ru", 
 const AEDOKO_LANGUAGES = ["ja", "ja-x-easy", "en", "zh-Hans", "zh-Hant", "ko", "pt", "es", "vi", "tl", "ne", "id", "th", "hi", "fr", "ru"];
 const OTHER_ROUTES = ["/privacy.html", "/terms.html", "/rsvp/", "/a/", "/feedback/?lang=en", "/feedback/?lang=ja", "/feedback/admin/", "/app/daiboju/", "/app/daiboju/go.html?p=13&l=ja&lang=ja", "/app/daiboju/?drill=1&daiboju-mock=1", "/app/daiboju/go.html?e=layout&p=12&l=ja&daiboju-mock=1&lang=ja", "/app/daiboju/go.html?e=layout&p=12&l=en&daiboju-mock=1", "/app/daiboju/demo.html"];
 
-// Daiboju's API is deployed separately. Routes with `daiboju-mock` get populated fixtures so the
+// Daiboju's API is deployed separately (Cloud Run); with an empty DAIBOJU_API the pages call same-origin /api/*. Routes with `daiboju-mock` get populated fixtures so the
 // connected sign-up form and the full guidance page are audited; other Daiboju routes see the API
 // as unreachable and audit the fallback states.
 const DAIBOJU_FIXTURES = {
@@ -305,7 +305,7 @@ async function runViewport(browser, origin, viewport) {
     if (location.href.includes("daiboju-mock")) window.DAIBOJU_SIGNUP_OPEN = true;
   });
   await page.route(/googletagmanager|goatcounter|unpkg\.com/, route => route.abort());
-  await page.route(/daiboju\.vercel\.app\/api\//, daibojuMock);
+  await page.route(/\/api\/(config|guidance|drill)(\?|$)/, daibojuMock);
 
   const scenarios = [
     ...SHARED_LANGUAGES.flatMap(language => [
