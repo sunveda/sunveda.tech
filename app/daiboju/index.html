@@ -39,6 +39,7 @@
 
   <form class="card" id="form" novalidate>
     <h2>Get alerts</h2>
+    <p id="testMode" class="small" role="note" hidden style="margin:8px 0 0;padding:10px 12px;border-radius:10px;background:var(--card);border:2px solid var(--danger)"><strong>Test mode.</strong> Alerts are simulated and not delivered yet, and sign-ups may be cleared when the service restarts. Do not rely on Daiboju for warnings.</p>
 
     <div class="field">
       <span class="num" aria-hidden="true">1</span>
@@ -91,7 +92,7 @@ const params = new URLSearchParams(location.search);
 // Launch gate: until the privacy policy covers Daiboju, only drill opt-ins (?drill=1) are possible.
 // The page sets DAIBOJU_SIGNUP_OPEN = false; the service enforces it too (SIGNUP_OPEN).
 const closedNotice = () => {
-  $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">Daiboju is in preview.</p>';
+  $('form').innerHTML = '<h2>Sign-up opens soon</h2><p class="muted" style="margin-top:6px">Check back soon.</p>';
   throw new Error('Daiboju sign-up is not open yet');
 };
 if (window.DAIBOJU_SIGNUP_OPEN === false && !params.has('drill')) closedNotice();
@@ -102,6 +103,8 @@ if (!cfg) {
 }
 const drillOnly = window.DAIBOJU_SIGNUP_OPEN === false || !cfg.signupOpen;
 if (drillOnly && !params.has('drill')) closedNotice();
+// Be honest while nothing is really sent: the service reports dry-run mode in /api/config.
+if (cfg.dryRun) $('testMode').hidden = false;
 
 const CH = {
   webpush: { label: 'Browser', icon: 'browser', field: null },

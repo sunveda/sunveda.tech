@@ -4,6 +4,6 @@
 // Deployed 2026-11-12 to project daiboju (asia-northeast1).
 window.DAIBOJU_API = 'https://daiboju-668725030350.asia-northeast1.run.app';
 
-// Launch gate: real sign-ups stay closed until privacy.html covers Daiboju's alert contacts.
-// Flip to true in the same PR that ships that privacy update. (The layout tests open it to audit the form.)
-if (window.DAIBOJU_SIGNUP_OPEN === undefined) window.DAIBOJU_SIGNUP_OPEN = false;
+// Launch gate: open since privacy.html covers Daiboju's alert contacts (2026-11-12).
+// The service enforces its own gate too: real sign-ups also need SIGNUP_OPEN=1 on Cloud Run.
+if (window.DAIBOJU_SIGNUP_OPEN === undefined) window.DAIBOJU_SIGNUP_OPEN = true;
