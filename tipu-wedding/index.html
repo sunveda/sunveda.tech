@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sarthak Singh (Tipu) &amp; Siddhi Sonare · Wedding RSVP</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The wedding of Sarthak Singh (Tipu) and Siddhi Sonare">
+  <meta property="og:description" content="13–14 December in Nagpur · 17 December in Patna. View the invitation and RSVP.">
+  <meta property="og:url" content="https://sunveda.tech/tipu-wedding/">
+  <meta property="og:image" content="https://sunveda.tech/tipu-wedding/assets/wedding-portrait.jpg">
+  <meta property="og:image:alt" content="Siddhi and Sarthak Singh (Tipu) greeting guests with folded hands">
+  <link rel="icon" href="assets/group-thumbnail.webp">
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="#invitation"><img src="assets/lotus-crest.webp" alt=""><span data-i18n="invitation"></span></a>
+    <nav><a href="#schedule" data-i18n="events"></a><a href="#whatsapp" data-i18n="groupNav"></a><a href="#rsvp" data-i18n="rsvpNav"></a></nav>
+    <div class="languages" role="group" aria-label="Language" id="languages">
+      <button type="button" data-lang="en" lang="en" aria-pressed="true">English</button>
+      <button type="button" data-lang="hi" lang="hi" aria-pressed="false">हिन्दी</button>
+      <button type="button" data-lang="mr" lang="mr" aria-pressed="false">मराठी</button>
+    </div>
+  </header>
+  <main class="layout">
+    <article id="invitation" class="invitation">
+      <div class="card-inside">
+        <div class="calendar-line"><span data-i18n="month"></span><i></i><span data-i18n="route"></span></div>
+        <div class="portrait-frame">
+          <img class="parrot left" src="assets/mango-parrot.webp" alt="">
+          <img class="portrait" id="couple" src="assets/couple.webp" alt="">
+          <img class="parrot right" src="assets/mango-parrot.webp" alt="">
+        </div>
+        <p class="family-line" data-i18n="familyInvite"></p>
+        <h1><span data-i18n="groom"></span><em data-i18n="together"></em><span data-i18n="bride"></span></h1>
+        <div class="lotus-strip" aria-hidden="true"></div>
+      </div>
+    </article>
+    <section class="rsvp" id="rsvp" aria-labelledby="form-title">
+      <div id="editor">
+        <h2 id="form-title" tabindex="-1" data-i18n="heading"></h2>
+        <p class="lede" data-i18n="intro"></p>
+        <button hidden type="button" class="text-button" id="previous" data-i18n="editPrevious"></button>
+        <form id="guest-form" novalidate>
+          <fieldset class="attendance"><legend data-i18n="attending"></legend>
+            <div class="choices">
+              <label><input type="radio" name="attending" value="yes" required><span data-i18n="yes"></span></label>
+              <label><input type="radio" name="attending" value="no"><span data-i18n="no"></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="contact"><legend data-i18n="contact"></legend>
+            <label><span data-i18n="name"></span><input id="guest-name" name="name" maxlength="100" autocomplete="name" required></label>
+            <label><span data-i18n="phone"></span><input id="phone" name="phone" type="tel" maxlength="32" autocomplete="tel" aria-describedby="phone-hint" required></label>
+            <small id="phone-hint" data-i18n="phoneHint"></small>
+            <label><span><span data-i18n="email"></span> <small class="optional" data-i18n="optional"></small></span><input id="email" name="email" type="email" autocomplete="email" maxlength="200"></label>
+          </fieldset>
+          <div id="party">
+            <fieldset class="days"><legend data-i18n="selectEvents"></legend>
+              <p class="hint" data-i18n="choose"></p>
+              <label><input type="checkbox" name="days" value="nagpur13"><span><b data-i18n="event13"></b><small><span data-i18n="d13"></span> · <span data-i18n="nagpur"></span></small></span></label>
+              <label><input type="checkbox" name="days" value="nagpur14"><span><b data-i18n="event14"></b><small><span data-i18n="d14"></span> · <span data-i18n="nagpur"></span></small></span></label>
+              <label><input type="checkbox" name="days" value="patna17"><span><b data-i18n="event17"></b><small><span data-i18n="d17"></span> · <span data-i18n="patna"></span></small></span></label>
+            </fieldset>
+            <fieldset><legend data-i18n="company"></legend>
+              <p class="hint" data-i18n="included"></p>
+              <div id="guests"></div>
+              <button class="secondary" type="button" id="add"><span aria-hidden="true">＋</span> <span data-i18n="add"></span></button>
+              <p class="total"><span data-i18n="count"></span> · <b id="count"></b></p>
+            </fieldset>
+          </div>
+          <label class="note"><span><span data-i18n="note"></span> <small class="optional" data-i18n="optional"></small></span><textarea id="note" name="note" rows="3" maxlength="500"></textarea></label>
+          <div class="feedback" id="error" role="alert" hidden></div>
+          <button class="primary" id="send" type="submit"><span data-i18n="submit"></span><span aria-hidden="true"> →</span></button>
+        </form>
+        <div class="edit-actions" id="lookup-actions" hidden>
+          <button type="button" class="secondary" id="retry" data-i18n="retry"></button>
+          <button type="button" class="text-button" id="fresh" data-i18n="startNew"></button>
+        </div>
+      </div>
+      <div id="confirmation" hidden>
+        <img class="receipt-crest" src="assets/lotus-crest.webp" alt="">
+        <h2 tabindex="-1" id="saved-title" data-i18n="saved"></h2>
+        <p class="lede" id="thanks"></p>
+        <p class="receipt"><span data-i18n="receipt"></span> · <strong id="receipt-id"></strong></p>
+        <p data-i18n="groupBody"></p>
+        <a class="primary group-link" target="_blank" rel="noopener noreferrer"><span data-i18n="join"></span><span aria-hidden="true"> ↗</span></a>
+        <p class="missing-group" hidden data-i18n="groupUnavailable"></p>
+        <div class="edit-actions">
+          <button class="secondary" id="edit" type="button" data-i18n="edit"></button>
+          <button class="text-button" id="copy" type="button" data-i18n="copyEdit"></button>
+        </div>
+        <p class="hint" data-i18n="copyHelp"></p>
+        <p role="status" id="copy-status"></p>
+        <input id="edit-url" readonly hidden>
+        <button class="text-button" type="button" id="another" data-i18n="startNew"></button>
+      </div>
+      <p class="preview" hidden id="preview"></p>
+    </section>
+    <aside class="info">
+      <section id="schedule" class="schedule">
+        <h2 data-i18n="itinerary"></h2>
+        <div class="venue">
+          <h3 data-i18n="ceremonyTitle"></h3>
+          <dl>
+            <dt><span data-i18n="weekday13"></span> · <span data-i18n="d13"></span></dt><dd data-i18n="times13"></dd>
+            <dt><span data-i18n="weekday14"></span> · <span data-i18n="d14"></span></dt><dd data-i18n="times14"></dd>
+          </dl>
+          <b data-i18n="nagVenue"></b><p data-i18n="nagAddress"></p>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=3+Angels+Resort+and+Celebration+Lawn%2C+Besa-Pipla+Road%2C+near+Golden+Vista%2C+Besa%2C+Nagpur+440034"><span data-i18n="map"></span> ↗</a>
+        </div>
+        <div class="venue">
+          <h3 data-i18n="receptionTitle"></h3>
+          <dl><dt><span data-i18n="weekday17"></span> · <span data-i18n="d17"></span></dt><dd data-i18n="times17"></dd></dl>
+          <b data-i18n="patVenue"></b><p data-i18n="patAddress"></p>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=Khagaul+Club%2C+near+Gokulam+Apartment+and+HP+Petrol+Pump%2C+Sarari+Gumti%2C+Danapur-Bihta+Road%2C+Khagaul%2C+Patna%2C+Bihar+801105"><span data-i18n="map"></span> ↗</a>
+        </div>
+        <small data-i18n="zone"></small>
+      </section>
+      <section class="group" id="whatsapp">
+        <img class="group-icon" src="assets/group-thumbnail.webp" alt="" width="64" height="64">
+        <h2 data-i18n="groupTitle"></h2><p data-i18n="groupBody"></p>
+        <a class="group-link" target="_blank" rel="noopener noreferrer"><span data-i18n="join"></span> ↗</a>
+        <p class="missing-group" hidden data-i18n="groupUnavailable"></p>
+      </section>
+      <p class="family-contact"><span data-i18n="phoneFamily"></span> · <a href="tel:+917709185905">+91 77091 85905</a></p>
+    </aside>
+  </main>
+  <template id="guest-row"><div class="guest">
+    <label><span data-i18n="guestName"></span><input class="person-name" maxlength="100"></label>
+    <label><span data-i18n="ageGroup"></span><select class="person-group"><option value="adult" data-i18n="adult"></option><option value="child" data-i18n="child"></option></select></label>
+    <button class="text-button remove" type="button" data-i18n="remove"></button>
+  </div></template>
+  <script>var CONFIG = {"apiUrl":"https://script.google.com/macros/s/AKfycbxjXSBrvTO77vbNMVHdO_AQZJFyBedQeLAPXyEJzrGnJKWQE_-A_lT21SRoXyvD9LGh/exec","maxPeople":50};</script>
+  <script src="translations.js"></script>
+  <script src="validation.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
