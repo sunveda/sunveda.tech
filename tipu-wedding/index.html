@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sarthak Singh (Tipu) &amp; Siddhi Sonare · Wedding RSVP</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
   <meta property="og:type" content="website">
@@ -18,7 +18,7 @@
 <body>
   <header class="topbar">
     <a class="wordmark" href="#invitation"><img src="assets/lotus-crest.webp" alt=""><span data-i18n="invitation"></span></a>
-    <nav><a href="#schedule" data-i18n="events"></a><a href="#whatsapp" data-i18n="groupNav"></a><a href="#rsvp" data-i18n="rsvpNav"></a></nav>
+    <nav><a href="#schedule" data-i18n="events"></a><a href="#rsvp" data-i18n="rsvpNav"></a><a href="#whatsapp" data-i18n="groupNav"></a></nav>
     <div class="languages" role="group" aria-label="Language" id="languages">
       <button type="button" data-lang="en" lang="en" aria-pressed="true">English</button>
       <button type="button" data-lang="hi" lang="hi" aria-pressed="false">हिन्दी</button>
@@ -85,9 +85,6 @@
         <h2 tabindex="-1" id="saved-title" data-i18n="saved"></h2>
         <p class="lede" id="thanks"></p>
         <p class="receipt"><span data-i18n="receipt"></span> · <strong id="receipt-id"></strong></p>
-        <p data-i18n="groupBody"></p>
-        <a class="primary group-link" target="_blank" rel="noopener noreferrer"><span data-i18n="join"></span><span aria-hidden="true"> ↗</span></a>
-        <p class="missing-group" hidden data-i18n="groupUnavailable"></p>
         <div class="edit-actions">
           <button class="secondary" id="edit" type="button" data-i18n="edit"></button>
           <button class="text-button" id="copy" type="button" data-i18n="copyEdit"></button>
@@ -97,6 +94,16 @@
         <input id="edit-url" readonly hidden>
         <button class="text-button" type="button" id="another" data-i18n="startNew"></button>
       </div>
+      <section class="group" id="whatsapp" aria-labelledby="group-title">
+        <img class="group-icon" src="assets/group-thumbnail.webp" alt="" width="64" height="64">
+        <h2 id="group-title" data-i18n="groupTitle"></h2>
+        <p data-i18n="groupBody"></p>
+        <a class="group-link" target="_blank" rel="noopener noreferrer">
+          <img src="assets/whatsapp-glyph.svg" alt="" width="26" height="26">
+          <span data-i18n="join"></span><span aria-hidden="true">↗</span>
+        </a>
+        <p class="missing-group" hidden data-i18n="groupUnavailable"></p>
+      </section>
       <p class="preview" hidden id="preview"></p>
     </section>
     <aside class="info">
@@ -118,12 +125,6 @@
           <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=Khagaul+Club%2C+near+Gokulam+Apartment+and+HP+Petrol+Pump%2C+Sarari+Gumti%2C+Danapur-Bihta+Road%2C+Khagaul%2C+Patna%2C+Bihar+801105"><span data-i18n="map"></span> ↗</a>
         </div>
         <small data-i18n="zone"></small>
-      </section>
-      <section class="group" id="whatsapp">
-        <img class="group-icon" src="assets/group-thumbnail.webp" alt="" width="64" height="64">
-        <h2 data-i18n="groupTitle"></h2><p data-i18n="groupBody"></p>
-        <a class="group-link" target="_blank" rel="noopener noreferrer"><span data-i18n="join"></span> ↗</a>
-        <p class="missing-group" hidden data-i18n="groupUnavailable"></p>
       </section>
       <p class="family-contact"><span data-i18n="phoneFamily"></span> · <a href="tel:+917709185905">+91 77091 85905</a></p>
     </aside>
