@@ -472,8 +472,30 @@ small,
   font-weight: 600;
 }
 .family-contact {
-  font-size: 0.92rem;
+  container-type: inline-size;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
   text-align: center;
+}
+.family-contact ul {
+  display: flex;
+  justify-content: center;
+  gap: 0 1.25rem;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.family-contact a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  white-space: nowrap;
+}
+@container (max-width: 28rem) {
+  .family-contact ul {
+    flex-direction: column;
+  }
 }
 .receipt-crest {
   width: 85px;
