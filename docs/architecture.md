@@ -38,7 +38,8 @@ flowchart TB
     apphub[Application catalogue<br/>/app/]
     aedoko[AEDoko emergency finder<br/>/app/aedoko/]
     daiboju[Daiboju disaster-alert pages<br/>/app/daiboju/]
-    pages[Legal and RSVP pages]
+    pages[Legal and birthday RSVP pages]
+    wedding[Wedding invitation and RSVP<br/>/tipu-wedding/]
     feedback[Guest form + private host dashboard<br/>/feedback/ · /feedback/admin/]
   end
 
@@ -102,6 +103,9 @@ flowchart TB
   cf -->|/app/aedoko/| aedoko
   cf -->|/app/daiboju/| daiboju
   cf -->|/privacy, /terms, /rsvp| pages
+  cf -->|/tipu-wedding/| wedding
+  wedding -->|Household RSVP or private edit| weddingScript[Wedding Apps Script]
+  weddingScript --> weddingSheet[(Private wedding response spreadsheet)]
   cf -->|/analyse → 308 /a/| worker
   cf -->|/api/analytics*| worker
   dashboard -->|GET aggregate snapshots| worker
@@ -164,12 +168,15 @@ flowchart TB
 | Daily collector                  | Zero-dependency Node.js 24 scripts with transient retry and 30-day gap reconciliation     | GitHub Actions                                                                      | `analytics/collect.mjs`, `analytics/reconcile.mjs`, `.github/workflows/analytics.yml`                              |
 | Multilingual layout QA           | Playwright with 220 route, language, and viewport combinations                            | GitHub Actions on pull requests, `main`, weekly, and manual dispatch                | `tests/layout.mjs`, `.github/workflows/layout-tests.yml`                                                           |
 | Human-readable archive           | Markdown reports                                                                          | Orphan-style `analytics-data` Git branch                                            | `analytics/reports/YYYY-MM-DD.md` on that branch                                                                   |
+| Wedding RSVP | Static English, Hindi and Marathi form with a dedicated Apps Script endpoint | GitHub Pages at `/tipu-wedding/` and an owner-managed Google Sheet | `tipu-wedding/`, generated from [sunveda/tipu-wedding](https://github.com/sunveda/tipu-wedding) |
 | Legal and event pages            | Plain HTML                                                                                | GitHub Pages from `main`                                                            | `privacy.html`, `terms.html`, `rsvp/index.html`                                                                    |
 | Domain and CDN                   | `CNAME` plus Cloudflare DNS/CDN                                                           | Cloudflare in front of GitHub Pages                                                 | `CNAME` and Cloudflare configuration                                                                               |
 
 ### Birthday event page context
 
 After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone who celebrated on 12 September 2026, a note that RSVPs and cancellations are closed, and a 20-second counter that then redirects to the homepage (a `<noscript>` meta refresh covers the same thing without JavaScript). It keeps the invitation's warm identity because the link still sits in LINE and WhatsApp group history, so its Open Graph card has to make sense to someone opening it months later. It no longer links to the Apps Script RSVP web app, which is closed in [the birthday app repository](https://github.com/sunveda/sanya-2nd-birthday-celebrations); the event details, venue directions and timeline it used to carry are archived verbatim at [`docs/archive/rsvp-invitation-2026-09-12.html`](archive/rsvp-invitation-2026-09-12.html) and summarised in [`docs/archive/README.md`](archive/README.md), alongside that repository's [CONTEXT.md](https://github.com/sunveda/sanya-2nd-birthday-celebrations/blob/main/CONTEXT.md).
+
+To update the wedding RSVP, regenerate `tipu-wedding/` with the website build command in the wedding repository. A merge to the website’s `main` branch publishes the guest page. Apps Script deployments are managed separately.
 
 ## Technology choices
 
@@ -258,6 +265,9 @@ After the party, `/rsvp/` is a parking page: a bilingual thank-you for everyone 
 
 ## Security boundaries
 
+The wedding page sends household details directly to its Apps Script over HTTPS. The static site serves the form and artwork. Guest records and edit-key hashes stay in the private wedding spreadsheet. Each private edit link carries its bearer key in the URL fragment. The backend uses file-scoped Google authorization.
+
+
 - Provider credentials and the ingestion token are GitHub Actions secrets.
 - Local collector credentials use macOS Keychain services prefixed with `sunveda.analytics.`.
 - The Worker stores only `INGEST_TOKEN` as an encrypted Worker secret.
@@ -323,6 +333,7 @@ flowchart LR
 
 | Date           | Change                                                                                                     | Revision impact                                                                                                                                                  |
 | -------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2026-11-23** | Published the trilingual wedding RSVP at `/tipu-wedding/`, backed by the wedding Apps Script and private Sheet. | Uses the existing static application and external API pattern. The birthday route keeps its archived thank-you page. |
 | **2026-09-01** | Added the static `/app/` catalogue route and linked it from the main site.                                 | No revision increment: this extends the existing GitHub Pages application-hosting pattern without changing a platform, runtime, data flow, or security boundary. |
 | **2026-09-01** | Added Playwright multilingual layout regression checks for pull requests, `main`, and weekly verification. | No revision increment: this is repository QA only and does not change the public runtime, hosting boundary, or visitor data flow.                                |
 | **2026-09-11** | Added the translated `#site-directory` homepage section linking to every public visitor page.               | No revision increment: a human-readable navigation aid; no change to the XML sitemap, existing `noindex` settings, or a runtime/deployment boundary.             |
